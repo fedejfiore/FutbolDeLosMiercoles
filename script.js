@@ -49,6 +49,8 @@ function cargarPartidosYCronicas() {
                         if (!fecha) continue;
 
                         // Lógica Ganador (Fila 2 del Sheet)
+                        // Analiza si en la fila de "Ganador" hay un 1 o un 2. 
+                        // Si está vacío, se asume Empate.
                         const valGanador = data[1][j + 1]; 
                         let s1 = "🤝 Empate"; let s2 = "🤝 Empate";
                         if (valGanador === "1") { s1 = "👑 Ganador"; s2 = "Perdedor"; }
@@ -57,6 +59,7 @@ function cargarPartidosYCronicas() {
                         let e1 = ""; let e2 = "";
                         for (let i = 3; i < data.length; i++) {
                             const n = data[i][1]; const pel = data[i][j]; const pech = data[i][j+1]; const eq = data[i][j+2];
+                            // Se agregan las viñetas mediante <li>
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
@@ -81,11 +84,11 @@ function abrirPartido(fecha, e1, e2, cron, s1, s2) {
                 <h3 style="color:#1a3c1a; margin-bottom:10px; font-family:'Oswald'">📅 ${fecha}</h3>
                 <div style="display:flex; justify-content:space-between; text-align:left;">
                     <div style="width:48%">
-                        <strong style="font-size:0.7rem; color:#d4af37">${s1}</strong>
+                        <strong style="font-size:0.75rem; color:#d4af37">${s1}</strong>
                         <ul class="lista-equipos-modal">${e1}</ul>
                     </div>
                     <div style="width:48%">
-                        <strong style="font-size:0.7rem; color:#d4af37">${s2}</strong>
+                        <strong style="font-size:0.75rem; color:#d4af37">${s2}</strong>
                         <ul class="lista-equipos-modal">${e2}</ul>
                     </div>
                 </div>
@@ -122,6 +125,7 @@ function cargarMatriz() {
                     let val = parseInt(cell);
                     if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
                         let intensity = Math.min(val / 5, 1); 
+                        // Forzamos texto blanco para legibilidad sobre el verde
                         colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: white; font-weight: bold;"`;
                     }
                     html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
@@ -150,7 +154,11 @@ function cargarTabla() {
                 }
             });
             $('#body-general').html(html);
-            $('#tabla-general').DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"}, "order": [[2, "desc"]], "destroy": true});
+            $('#tabla-general').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"}, 
+                "order": [[2, "desc"]], 
+                "destroy": true
+            });
         }
     });
 }
