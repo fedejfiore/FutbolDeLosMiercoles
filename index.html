@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Miércoles - Oficial</title>
+    <title>Fútbol Miércoles - Qatar vibe</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav class="floating-menu">
+    <nav class="floating-menu top">
         <a href="#inicio">🏠</a>
-        <a href="#posiciones">🏆</a>
+        <a href="#top3">🏆</a>
+        <a href="#posiciones">📊</a>
         <a href="#partidos">📅</a>
         <a href="#sinergia">🔥</a>
     </nav>
@@ -22,14 +23,17 @@
             <img src="logo.png" alt="Logo" class="main-logo-v2">
             <h1>FÚTBOL DE LOS MIÉRCOLES</h1>
             
-            <div class="countdown-card-v2">
-                <span class="label">RUMBO AL MUNDIAL 2026</span>
+            <div class="countdown-argentina">
+                <div class="arg-flag-strip"></div>
+                <span class="label">MISION: EL MUNDIAL 2026</span>
                 <div id="countdown" class="timer">--d --h</div>
+                <div class="arg-flag-strip"></div>
             </div>
 
-            <div class="video-link-container" style="margin-top: 30px;">
-                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-video">
-                    🎥 Ver Videos de la Cancha
+            <div class="video-link-container">
+                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-video-premium">
+                    <span class="icon">🎥</span>
+                    <span class="text">REPETICIONES SPORTSREEL</span>
                 </a>
             </div>
         </div>
@@ -37,8 +41,20 @@
 
     <div class="grass-background">
         <div class="container">
+            
+            <section id="top3" class="card-section stats-grid">
+                <div class="stat-box">
+                    <h3>⚽ Dueños de la Pelota</h3>
+                    <div id="top-pelota" class="top-list">Cargando...</div>
+                </div>
+                <div class="stat-box">
+                    <h3>🎽 Señores de la Pechera</h3>
+                    <div id="top-pechera" class="top-list">Cargando...</div>
+                </div>
+            </section>
+
             <section id="posiciones" class="card-section">
-                <h2>🏆 Tabla de Posiciones</h2>
+                <h2>📊 Tabla de Posiciones</h2>
                 <table id="tabla-general" class="display" style="width:100%">
                     <thead>
                         <tr><th>Jugador</th><th>PJ</th><th>Pts</th><th>Promedio</th></tr>
@@ -48,7 +64,7 @@
             </section>
 
             <section id="partidos" class="card-section">
-                <h2>📅 Historial de Partidos</h2>
+                <h2>📅 Partidos y Crónicas</h2>
                 <div id="contenedor-fechas" class="grid-fechas-scroll"></div>
             </section>
 
@@ -56,21 +72,6 @@
                 <h2>🔥 Sinergia (Mapa de Calor)</h2>
                 <div id="heatmap-container"></div>
             </section>
-        </div>
-    </div>
-
-    <div id="modal-cronica" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="autor-box">
-                <img src="peter.jpg" alt="Peter" class="foto-peter">
-                <div>
-                    <h3>Las Crónicas de Peter</h3>
-                    <p id="fecha-cronica"></p>
-                </div>
-            </div>
-            <hr>
-            <div id="texto-cronica-full" class="cronica-body text-format"></div>
         </div>
     </div>
 
