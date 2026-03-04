@@ -1,63 +1,65 @@
 :root {
-    --dark-blue: #001220;
-    --mundial-green: #00d084;
+    --grass: #2d5a27;
     --gold: #d4af37;
+    --dark: #001220;
     --white: #ffffff;
 }
 
-body { font-family: 'Roboto', sans-serif; background: #f4f7f6; margin: 0; color: #333; }
+/* Fondo Césped */
+.grass-background {
+    background: linear-gradient(0deg, rgba(45,90,39,1) 0%, rgba(34,69,29,1) 100%);
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    padding: 60px 0;
+}
 
-header {
-    background: linear-gradient(135deg, var(--dark-blue) 0%, #003366 100%);
-    color: white;
-    padding: 60px 20px;
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0,18,32,0.85), rgba(0,18,32,0.85)), url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 20px;
     text-align: center;
-    border-bottom: 5px solid var(--mundial-green);
+    color: white;
 }
 
-.main-logo { height: 100px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+.main-logo-v2 { width: 280px; filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); margin-bottom: 20px; }
 
-.countdown-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
-    border-radius: 12px;
-    padding: 15px 30px;
-    display: inline-block;
-    border: 1px solid rgba(255,255,255,0.2);
+/* Menú Flotante */
+.floating-menu {
+    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,18,32,0.95); backdrop-filter: blur(10px);
+    padding: 15px 30px; border-radius: 50px; display: flex; gap: 25px; z-index: 9999;
+    border: 1px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.floating-menu a { text-decoration: none; font-size: 1.6rem; transition: 0.3s; }
+.floating-menu a:hover { transform: translateY(-5px); }
+
+/* Scroll Horizontal de Partidos */
+.grid-fechas-scroll {
+    display: flex; overflow-x: auto; gap: 20px; padding: 20px 10px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+}
+.fecha-card {
+    min-width: 300px; scroll-snap-align: start; background: white;
+    border-radius: 12px; padding: 20px; border-top: 6px solid var(--grass);
 }
 
-.countdown-timer { font-family: 'Oswald'; font-size: 2.5rem; font-weight: bold; color: var(--gold); }
-
-.btn-video {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--mundial-green);
-    color: var(--dark-blue);
-    padding: 12px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: 0.3s;
+/* Formato de Texto para Crónicas */
+.text-format {
+    white-space: pre-wrap; /* Mantiene los saltos de línea de la celda */
+    word-wrap: break-word;
 }
 
-.btn-video:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,208,132,0.4); }
+/* Modal */
+.modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+.modal-content { background: white; margin: 5% auto; padding: 30px; border-radius: 20px; width: 90%; max-width: 650px; position: relative; }
+.close-modal { position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer; color: #333; }
+.foto-peter { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; }
+.autor-box { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; }
 
-.container { max-width: 1100px; margin: -30px auto 50px; padding: 0 20px; }
+.btn-cronica { background: var(--dark); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-family: 'Oswald'; margin-top: 15px; }
+.btn-cronica:hover { background: var(--gold); }
 
-.card-section { background: white; border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-
-.grid-fechas { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-
-.fecha-card { border-top: 5px solid var(--mundial-green); padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-
-.equipos-flex { display: flex; justify-content: space-around; margin-top: 10px; }
-
-.puntos-tag { background: var(--gold); color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-
-/* Matriz */
-.table-responsive { overflow-x: auto; }
-.matrix-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
-.matrix-table td { border: 1px solid #eee; padding: 8px; text-align: center; }
-.m-header { background: #f8f9fa; font-weight: bold; }
+.container { max-width: 1100px; margin: auto; }
+.card-section { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; }

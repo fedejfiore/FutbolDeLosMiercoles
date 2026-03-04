@@ -3,58 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Miércoles - Dashboard Mundialista</title>
+    <title>Fútbol Miércoles - Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="logo.png" alt="Logo Equipo" class="main-logo">
-        </div>
-        
-        <h1>FÚTBOL DE LOS MIÉRCOLES</h1>
-        
-        <div id="countdown-box" class="countdown-card">
-            <span class="countdown-label">Rumbo al Mundial 2026</span>
-            <div id="countdown" class="countdown-timer">Cargando...</div>
-        </div>
+    <nav class="floating-menu">
+        <a href="#inicio">🏠</a>
+        <a href="#posiciones">🏆</a>
+        <a href="#partidos">📅</a>
+        <a href="#sinergia">🔥</a>
+    </nav>
 
-        <div class="video-link-container">
-            <a href="#" target="_blank" class="btn-video">
-                🎥 Ver Videos de la Cancha
-            </a>
+    <header id="inicio" class="hero-section">
+        <div class="hero-content">
+            <img src="logo.png" alt="Logo" class="main-logo-v2">
+            <h1>FÚTBOL DE LOS MIÉRCOLES</h1>
+            <div class="countdown-card-v2">
+                <span class="label">RUMBO AL MUNDIAL 2026</span>
+                <div id="countdown" class="timer">--d --h</div>
+            </div>
         </div>
     </header>
 
-    <div class="container">
-        <section class="card-section">
-            <h2>🏆 Tabla de Posiciones</h2>
-            <table id="tabla-general" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Jugador</th>
-                        <th>PJ</th>
-                        <th>Pts</th>
-                        <th>Promedio</th>
-                    </tr>
-                </thead>
-                <tbody id="body-general"></tbody>
-            </table>
-        </section>
+    <div class="grass-background">
+        <div class="container">
+            <section id="posiciones" class="card-section">
+                <h2>🏆 Tabla de Posiciones</h2>
+                <table id="tabla-general" class="display" style="width:100%">
+                    <thead>
+                        <tr><th>Jugador</th><th>PJ</th><th>Pts</th><th>Promedio</th></tr>
+                    </thead>
+                    <tbody id="body-general"></tbody>
+                </table>
+            </section>
 
-        <section class="card-section">
-            <h2>📅 Partidos Recientes</h2>
-            <div id="contenedor-fechas" class="grid-fechas"></div>
-        </section>
+            <section id="partidos" class="card-section">
+                <h2>📅 Historial de Partidos</h2>
+                <div id="contenedor-fechas" class="grid-fechas-scroll"></div>
+            </section>
 
-        <section class="card-section">
-            <h2>🔥 Sinergia (Mapa de Calor)</h2>
-            <p>Frecuencia con la que los jugadores comparten equipo.</p>
-            <div id="heatmap-container"></div>
-        </section>
+            <section id="sinergia" class="card-section">
+                <h2>🔥 Sinergia (Mapa de Calor)</h2>
+                <div id="heatmap-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="modal-cronica" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="autor-box">
+                <img src="peter.jpg" alt="Peter" class="foto-peter">
+                <div>
+                    <h3>Las Crónicas de Peter</h3>
+                    <p id="fecha-cronica"></p>
+                </div>
+            </div>
+            <hr>
+            <div id="texto-cronica-full" class="cronica-body text-format"></div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
