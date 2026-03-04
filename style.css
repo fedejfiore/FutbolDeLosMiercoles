@@ -185,3 +185,14 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 footer p {
     display: none; /* Elimina el texto 'Año Mundialista' si no puedes editar el HTML */
 }
+
+.elemento-sin-cursor {
+    /* Evita que aparezca el cursor de texto al hacer clic */
+    caret-color: transparent; 
+    
+    /* Evita que el usuario pueda seleccionar el texto (opcional) */
+    user-select: none; 
+    
+    /* Asegura que el puntero siempre sea la flecha y no la "I" de texto */
+    cursor: default; 
+}
