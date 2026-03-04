@@ -213,3 +213,61 @@ footer p {
     /* Asegura que el puntero siempre sea la flecha y no la "I" de texto */
     cursor: default; 
 }
+
+/* --- BOTONES DE FECHAS (Historial) --- */
+.mini-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+    justify-content: center;
+}
+
+.mini-fecha-card {
+    background: var(--dark-navy) !important;
+    color: var(--white) !important;
+    border: 2px solid var(--gold) !important;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.mini-fecha-card:hover {
+    background: var(--gold) !important;
+    color: var(--dark-navy) !important;
+    transform: translateY(-5px);
+}
+2. El Modal que "abre abajo" (Fix Definitivo)
+Para que no dependa de ningún padre, vamos a usar display: flex en el contenedor del modal.
+
+Reemplazá tu bloque .modal y .modal-content-match por este:
+
+CSS
+.modal {
+    display: none; 
+    position: fixed !important; /* Forzamos el fixed */
+    z-index: 999999 !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    
+    /* Agregamos esto para centrar sí o sí */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content-match {
+    position: relative; /* Cambiado de absolute a relative para que flex lo centre */
+    width: 90%;
+    max-width: 400px;
+    height: 550px; /* Altura fija para que los hijos estiren */
+    perspective: 1000px;
+    margin: 0; /* Eliminamos márgenes */
+}
