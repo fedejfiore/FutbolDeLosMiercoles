@@ -102,7 +102,7 @@ function abrirPartido(fecha, e1, e2, cron, s1, s2) {
                     <img src="peter.png" class="img-autor-mini" onerror="this.src='https://via.placeholder.com/40'">
                     <strong>CRÓNICAS DE PETER</strong>
                 </div>
-                <div class="text-format-mini">${cron || "Peter no escribió nada aún."}</div>
+                <div class="text-format-mini">${cron || "Peter no emitio comentarios al respecto.."}</div>
                 <p class="hint-back">🔄 Toca para volver</p>
             </div>
         </div>
