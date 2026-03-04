@@ -1,4 +1,3 @@
-// URLs de tus Google Sheets publicadas como CSV
 const URL_GENERAL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=0&single=true&output=csv';
 const URL_EQUIPOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=284173081&single=true&output=csv';
 const URL_MATRIZ  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=790605336&single=true&output=csv';
@@ -9,66 +8,25 @@ let dataGlobalJugadores = [];
 $(document).ready(function() {
     cargarTabla();
     cargarPartidosYCronicas();
-    cargarMatriz(); 
-    iniciarContador(); 
-    
-    // Cerrar modales al hacer clic en la X
-    $('.close-modal').click(function() {
-        $('#modal-partido, #modal-jugador').fadeOut();
-    });
+    cargarMatriz();
+    iniciarContador();
+    $('.close-modal').click(() => $('#modal-partido, #modal-jugador').fadeOut());
 });
 
-// 1. CONTADOR MUNDIALISTA (Centrado y funcional)
 function iniciarContador() {
     const metaMundial = new Date("June 11, 2026 16:00:00").getTime();
-    
     function updateTimer() {
         const ahora = new Date().getTime();
         const diff = metaMundial - ahora;
-
-        if (diff <= 0) {
-            $('#countdown').html("¡EMPEZÓ EL MUNDIAL!");
-            return;
-        }
-
+        if (diff <= 0) { $('#countdown').html("¡EMPEZÓ EL MUNDIAL!"); return; }
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        
-        // Formato limpio: X días Y horas
         $('#countdown').html(`${d}<small>d</small> ${h}<small>h</small>`);
     }
-
     updateTimer();
-    setInterval(updateTimer, 60000); // Actualiza cada minuto
+    setInterval(updateTimer, 60000);
 }
 
-// 2. MAPA DE CALOR (Con cabeceras bloqueadas vía CSS)
-function cargarMatriz() {
-    Papa.parse(URL_MATRIZ, {
-        download: true,
-        header: false,
-        complete: function(res) {
-            let html = '<div class="table-responsive"><table class="matrix-table">';
-            res.data.forEach((row, i) => {
-                html += '<tr>';
-                row.forEach((cell, j) => {
-                    let colorStyle = "";
-                    let val = parseInt(cell);
-                    // Lógica de color según intensidad
-                    if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
-                        let intensity = Math.min(val / 5, 1); 
-                        colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: ${intensity > 0.5 ? 'white' : 'black'}"`;
-                    }
-                    html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
-                });
-                html += '</tr>';
-            });
-            $('#heatmap-container').html(html + '</table></div>');
-        }
-    });
-}
-
-// 3. LOGÍSTICA, PARTIDOS Y CRÓNICAS
 function cargarPartidosYCronicas() {
     Papa.parse(URL_CRONICAS, {
         download: true, header: true,
@@ -88,29 +46,24 @@ function cargarPartidosYCronicas() {
                     const headers = data[0];
                     for (let j = 2; j < headers.length; j += 3) {
                         const fecha = headers[j];
-                        if (!fecha || fecha.trim() === "") continue;
+                        if (!fecha) continue;
 
-                        let listaE1 = ""; let listaE2 = "";
-                        for (let i = 2; i < data.length; i++) {
-                            const n = data[i][1]; 
-                            const pel = data[i][j]; 
-                            const pech = data[i][j+1]; 
-                            const eq = data[i][j+2];
-                            
-                            if(n && eq) {
-                                let icons = `${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}`;
-                                // Agregamos viñetas manuales <li> para que el CSS las tome
-                                if(eq == "1") listaE1 += `<li>${n} ${icons}</li>`;
-                                if(eq == "2") listaE2 += `<li>${n} ${icons}</li>`;
-                                
-                                if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
-                                if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
-                            }
+                        // Lógica Ganador (Fila 2 del Sheet)
+                        const valGanador = data[1][j + 1]; 
+                        let s1 = "🤝 Empate"; let s2 = "🤝 Empate";
+                        if (valGanador === "1") { s1 = "👑 Ganador"; s2 = "Perdedor"; }
+                        else if (valGanador === "2") { s1 = "Perdedor"; s2 = "👑 Ganador"; }
+
+                        let e1 = ""; let e2 = "";
+                        for (let i = 3; i < data.length; i++) {
+                            const n = data[i][1]; const pel = data[i][j]; const pech = data[i][j+1]; const eq = data[i][j+2];
+                            if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
+                            if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
+                            if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
+                            if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                         }
 
-                        let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${listaE1}', '${listaE2}', \`${dicCronicas[fecha.trim()] || ''}\`)">
-                            ${fecha}
-                        </div>`;
+                        let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
                     mostrarTop3(conteoPelota, '#top-pelota', '⚽');
@@ -121,46 +74,33 @@ function cargarPartidosYCronicas() {
     });
 }
 
-function mostrarTop3(dict, selector, icon) {
-    const sorted = Object.entries(dict).sort((a,b) => b[1] - a[1]).slice(0, 3);
-    const medals = ['🥇', '🥈', '🥉'];
-    let html = '';
-    sorted.forEach((item, i) => {
-        html += `<div class="top-item"><span>${medals[i]} ${item[0]}</span> <span>${item[1]} ${icon}</span></div>`;
-    });
-    $(selector).html(html);
-}
-
-// 4. MODAL DE PARTIDO (Interactividad con Peter)
-function abrirPartido(fecha, e1, e2, cron) {
+function abrirPartido(fecha, e1, e2, cron, s1, s2) {
     let content = `
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="color:#1a3c1a; margin-bottom:15px; font-family:'Oswald'">📅 ${fecha}</h3>
+                <h3 style="color:#1a3c1a; margin-bottom:10px; font-family:'Oswald'">📅 ${fecha}</h3>
                 <div style="display:flex; justify-content:space-between; text-align:left;">
                     <div style="width:48%">
-                        <strong style="font-size:0.7rem; color:#d4af37">EQUIPO 1</strong>
+                        <strong style="font-size:0.7rem; color:#d4af37">${s1}</strong>
                         <ul class="lista-equipos-modal">${e1}</ul>
                     </div>
                     <div style="width:48%">
-                        <strong style="font-size:0.7rem; color:#d4af37">EQUIPO 2</strong>
+                        <strong style="font-size:0.7rem; color:#d4af37">${s2}</strong>
                         <ul class="lista-equipos-modal">${e2}</ul>
                     </div>
                 </div>
-                <div style="margin-top:20px; border-top:1px solid #eee; padding-top:10px; cursor:pointer;" onclick="girarCarta()">
-                    <img src="peter.png" style="width:50px; height:50px; border-radius:50%; border:3px solid #d4af37;" onerror="this.src='https://via.placeholder.com/50'">
-                    <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para leer crónica 🔄</p>
+                <div class="footer-card-click" onclick="girarCarta()">
+                    <img src="peter.png" class="img-autor-btn" onerror="this.src='https://via.placeholder.com/50'">
+                    <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para crónica 🔄</p>
                 </div>
             </div>
-            <div class="card-back" onclick="girarCarta()" style="cursor:pointer;">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; border-bottom:1px solid #d4af37; padding-bottom:10px;">
-                    <img src="peter.png" style="width:40px; height:40px; border-radius:50%;" onerror="this.src='https://via.placeholder.com/40'">
-                    <strong style="font-family:'Oswald'">CRÓNICAS DE PETER</strong>
+            <div class="card-back" onclick="girarCarta()">
+                <div class="header-cronica">
+                    <img src="peter.png" class="img-autor-mini" onerror="this.src='https://via.placeholder.com/40'">
+                    <strong>CRÓNICAS DE PETER</strong>
                 </div>
-                <div class="text-format-mini" style="font-size:0.85rem; text-align:left; line-height:1.4;">
-                    ${cron || "Peter no escribió nada aún. Seguro estaba festejando el triunfo."}
-                </div>
-                <p style="margin-top:15px; font-size:0.6rem; color:gray;">(Clic para volver)</p>
+                <div class="text-format-mini">${cron || "Peter no escribió nada aún."}</div>
+                <p class="hint-back">🔄 Toca para volver</p>
             </div>
         </div>
     `;
@@ -168,11 +108,31 @@ function abrirPartido(fecha, e1, e2, cron) {
     $('#modal-partido').fadeIn();
 }
 
-function girarCarta() {
-    $('#flip-card-match').toggleClass('flipped');
+function girarCarta() { $('#flip-card-match').toggleClass('flipped'); }
+
+function cargarMatriz() {
+    Papa.parse(URL_MATRIZ, {
+        download: true, header: false,
+        complete: function(res) {
+            let html = '<div class="table-responsive"><table class="matrix-table">';
+            res.data.forEach((row, i) => {
+                html += '<tr>';
+                row.forEach((cell, j) => {
+                    let colorStyle = "";
+                    let val = parseInt(cell);
+                    if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
+                        let intensity = Math.min(val / 5, 1); 
+                        colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: white; font-weight: bold;"`;
+                    }
+                    html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            $('#heatmap-container').html(html + '</table></div>');
+        }
+    });
 }
 
-// 5. TABLA GENERAL (Mantiene tu prolijidad intacta)
 function cargarTabla() {
     Papa.parse(URL_GENERAL, {
         download: true, header: true,
@@ -190,23 +150,19 @@ function cargarTabla() {
                 }
             });
             $('#body-general').html(html);
-            $('#tabla-general').DataTable({
-                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"},
-                "order": [[2, "desc"]],
-                "destroy": true,
-                "columnDefs": [{
-                    "targets": 3,
-                    "type": "num",
-                    "render": function (data, type) {
-                        if (type === 'sort' || type === 'type') {
-                            return parseFloat(data.toString().replace(',', '.').replace('"', '')) || 0;
-                        }
-                        return data;
-                    }
-                }]
-            });
+            $('#tabla-general').DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"}, "order": [[2, "desc"]], "destroy": true});
         }
     });
+}
+
+function mostrarTop3(dict, selector, icon) {
+    const sorted = Object.entries(dict).sort((a,b) => b[1] - a[1]).slice(0, 3);
+    const medals = ['🥇', '🥈', '🥉'];
+    let html = '';
+    sorted.forEach((item, i) => {
+        html += `<div class="top-item"><span>${medals[i]} ${item[0]}</span> <span>${item[1]} ${icon}</span></div>`;
+    });
+    $(selector).html(html);
 }
 
 function verJugador(nombre) {
@@ -220,9 +176,4 @@ function verJugador(nombre) {
         <p style="margin-top:20px; color:#2d5a27; font-weight:bold; font-size:1.3rem;">Promedio: ${j.Promiedo}</p>`;
     $('#detalle-jugador').html(html);
     $('#modal-jugador').fadeIn();
-    
-    // Al seleccionar jugador, scrolleamos suavemente al mapa de calor
-    $('html, body').animate({
-        scrollTop: $("#sinergia").offset().top - 80
-    }, 800);
 }
