@@ -3,75 +3,180 @@
     --arg-gold: #f6b40e;
     --grass-dark: #1e3d1a;
     --grass-light: #2d5a27;
+    --white: #ffffff;
+    --dark-blue: #001220;
 }
 
-/* Menú Superior */
-.floating-menu.top {
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--grass-dark); /* Color base por si falla la imagen */
+}
+
+/* MENÚ FLOTANTE SUPERIOR */
+.floating-menu {
+    position: fixed;
     top: 20px;
-    bottom: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 18, 32, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 30px;
+    border-radius: 50px;
+    display: flex;
+    gap: 25px;
+    z-index: 9999;
+    border: 1px solid var(--arg-gold);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* Fondo de Césped Realista */
-.grass-background {
-    background: linear-gradient(var(--grass-dark), var(--grass-light));
-    background-image: 
-        linear-gradient(90deg, rgba(255,255,255,0.05) 50%, transparent 50%),
-        linear-gradient(rgba(255,255,255,0.05) 50%, transparent 50%);
-    background-size: 80px 80px;
-    padding: 40px 0;
+.floating-menu a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: 0.3s;
 }
 
-/* Contador Albiceleste */
+.floating-menu a:hover { transform: scale(1.2) translateY(-3px); }
+
+/* HERO SECTION */
+.hero-section {
+    background: linear-gradient(rgba(0, 18, 32, 0.8), rgba(0, 18, 32, 0.8)), 
+                url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    padding: 120px 20px 80px;
+    text-align: center;
+    color: white;
+    border-bottom: 5px solid var(--arg-blue);
+}
+
+.main-logo-v2 {
+    width: 250px;
+    max-width: 80%;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+    margin-bottom: 20px;
+}
+
+/* CONTADOR ALBICESTE */
 .countdown-argentina {
     background: white;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 15px 40px;
     display: inline-block;
     border: 3px solid var(--arg-blue);
-    position: relative;
-    overflow: hidden;
     color: #333;
-}
-.arg-flag-strip {
-    height: 5px;
-    background: linear-gradient(to right, var(--arg-blue), white, var(--arg-blue));
-    width: 100%;
-}
-.countdown-argentina .timer {
-    font-family: 'Oswald';
-    font-size: 3rem;
-    color: var(--arg-blue);
-    text-shadow: 1px 1px 0px var(--arg-gold);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* Botón SportsReel Premium */
+.arg-flag-strip {
+    height: 4px;
+    background: linear-gradient(to right, var(--arg-blue), white, var(--arg-blue));
+    width: 100%;
+    margin: 5px 0;
+}
+
+.countdown-argentina .timer {
+    font-family: 'Oswald', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--arg-blue);
+    margin: 5px 0;
+}
+
+/* BOTÓN SPORTSREEL */
 .btn-video-premium {
     background: linear-gradient(45deg, #27ae60, #2ecc71);
     color: white;
     padding: 15px 35px;
     border-radius: 50px;
     text-decoration: none;
-    font-family: 'Oswald';
+    font-family: 'Oswald', sans-serif;
     display: inline-flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+    margin-top: 30px;
+    font-weight: bold;
     box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     transition: 0.3s;
-    border: 2px solid rgba(255,255,255,0.2);
 }
-.btn-video-premium:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(46,204,113,0.4); }
 
-/* Top 3 Cards */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: rgba(255,255,255,0.9); }
-.stat-box { text-align: center; padding: 15px; border-radius: 10px; background: #f8f9fa; }
-.top-item { font-weight: bold; padding: 5px; border-bottom: 1px solid #ddd; }
+.btn-video-premium:hover { transform: scale(1.05); background: #2ecc71; }
 
-/* CARD REVERSIBLE (Flip Card) */
+/* CONTENEDOR CON PASTO */
+.grass-background {
+    background-color: var(--grass-light);
+    background-image: 
+        linear-gradient(90deg, rgba(255,255,255,0.05) 50%, transparent 50%),
+        linear-gradient(rgba(255,255,255,0.05) 50%, transparent 50%);
+    background-size: 100px 100px;
+    padding: 60px 0;
+    min-height: 100vh;
+}
+
+.container { 
+    max-width: 1100px; 
+    margin: 0 auto; 
+    padding: 0 20px;
+}
+
+/* SECCIONES (CARDS) */
+.card-section {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+h2 {
+    font-family: 'Oswald';
+    color: var(--dark-blue);
+    border-left: 6px solid var(--arg-blue);
+    padding-left: 15px;
+    text-transform: uppercase;
+}
+
+/* TOP 3 LOGÍSTICA */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.stat-box {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.top-item {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+}
+
+/* FLIP CARDS (REVERSIBLES) */
+.grid-fechas-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 25px;
+    padding: 20px 0;
+    scrollbar-width: thin;
+}
+
 .fecha-card {
-    min-width: 300px;
-    height: 350px;
+    min-width: 320px;
+    height: 380px;
     perspective: 1000px;
 }
+
 .card-inner {
     position: relative;
     width: 100%;
@@ -80,6 +185,7 @@
     transform-style: preserve-3d;
     cursor: pointer;
 }
+
 .fecha-card.flipped .card-inner { transform: rotateY(180deg); }
 
 .card-front, .card-back {
@@ -87,24 +193,81 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    background: white;
     border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    border-top: 8px solid var(--arg-blue);
-}
-.card-back {
-    transform: rotateY(180deg);
-    background: #fdfdfd;
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
 }
-.btn-flip {
-    background: var(--arg-blue);
-    color: white;
-    border: none;
-    padding: 5px 10px;
+
+.card-front {
+    background: white;
+    border-top: 8px solid var(--arg-blue);
+}
+
+.card-back {
+    background: #fcfcfc;
+    transform: rotateY(180deg);
+    border-top: 8px solid var(--arg-gold);
+}
+
+.fecha-header {
+    font-family: 'Oswald';
+    font-size: 1.4rem;
+    color: var(--arg-blue);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.equipos-flex {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+}
+
+.equipo-col ul { list-style: none; padding: 0; font-size: 0.9rem; }
+
+.hint-flip {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: auto;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* CRÓNICA DENTRO DE CARD */
+.cronica-body {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    overflow-y: auto;
+    padding-right: 5px;
+    color: #444;
+}
+
+.text-format-mini {
+    white-space: pre-wrap;
+}
+
+/* MATRIZ DE CALOR */
+.table-responsive { overflow-x: auto; border-radius: 10px; }
+.matrix-table { width: 100%; border-collapse: collapse; background: white; }
+.matrix-table td { border: 1px solid #eee; padding: 10px; text-align: center; font-size: 0.8rem; }
+.m-header { background: #eee; font-weight: bold; }
+
+/* TABLA GENERAL */
+.puntos-tag {
+    background: var(--arg-gold);
+    color: #000;
+    padding: 3px 10px;
     border-radius: 5px;
-    font-size: 0.7rem;
-    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .main-logo-v2 { width: 180px; }
+    .timer { font-size: 2rem !important; }
+    .hero-section { padding-top: 100px; }
+    .floating-menu { width: 90%; justify-content: space-between; padding: 10px 20px; }
 }
