@@ -76,9 +76,52 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 .card-front { background: white; border-top: 10px solid var(--grass-pitch); }
 .card-back { transform: rotateY(180deg); background: #fdfdfd !important; color: #333 !important; }
 
+/* Contenedor de las fechas */
+.mini-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Esto evita que se amontonen */
+    gap: 15px;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* La card individual */
+.mini-fecha-card {
+    background: var(--dark-navy);
+    color: var(--white);
+    border: 2px solid var(--gold);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.modal-content-match {
+    margin: 8vh auto;
+    width: 90%;
+    max-width: 380px;
+    height: 500px; /* Esta altura es clave para que el giro se vea bien */
+    perspective: 1000px;
+}
+
+.mini-fecha-card:hover {
+    background: var(--gold);
+    color: var(--dark-navy);
+    transform: translateY(-5px); /* El pequeño salto al pasar el mouse */
+}
+
 /* OTROS */
 .grass-background { background-color: var(--grass-pitch); padding: 40px 0 100px; }
 .card-section { background: white; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
 .floating-menu.top { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); background: rgba(0, 18, 32, 0.95); padding: 10px 25px; border-radius: 50px; display: flex; gap: 20px; z-index: 10000; border: 1px solid var(--gold); }
 .floating-menu a { text-decoration: none; font-size: 1.5rem; transition: 0.3s; }
 .floating-menu a:hover { transform: scale(1.2); }
+
+.footer-trofeo {
+    width: 120px; /* Aquí controlas el tamaño. Cámbialo a 150px si lo quieres más grande */
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 10px var(--gold)); /* Esto le da el brillo dorado */
+}
