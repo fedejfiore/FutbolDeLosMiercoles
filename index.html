@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fútbol Miércoles - Dashboard Mundialista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo Equipo" class="main-logo">
+        </div>
+        
+        <h1>FÚTBOL DE LOS MIÉRCOLES</h1>
+        
+        <div id="countdown-box" class="countdown-card">
+            <span class="countdown-label">Rumbo al Mundial 2026</span>
+            <div id="countdown" class="countdown-timer">Cargando...</div>
+        </div>
+
+        <div class="video-link-container">
+            <a href="#" target="_blank" class="btn-video">
+                🎥 Ver Videos de la Cancha
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="card-section">
+            <h2>🏆 Tabla de Posiciones</h2>
+            <table id="tabla-general" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Jugador</th>
+                        <th>PJ</th>
+                        <th>Pts</th>
+                        <th>Promedio</th>
+                    </tr>
+                </thead>
+                <tbody id="body-general"></tbody>
+            </table>
+        </section>
+
+        <section class="card-section">
+            <h2>📅 Partidos Recientes</h2>
+            <div id="contenedor-fechas" class="grid-fechas"></div>
+        </section>
+
+        <section class="card-section">
+            <h2>🔥 Sinergia (Mapa de Calor)</h2>
+            <p>Frecuencia con la que los jugadores comparten equipo.</p>
+            <div id="heatmap-container"></div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
