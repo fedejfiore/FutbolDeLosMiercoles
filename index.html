@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Miércoles - Bon Vivant Edition</title>
+    <title>Fútbol Miércoles 19HS</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -22,13 +22,14 @@
     <header id="inicio" class="hero-section">
         <div class="hero-content">
             <img src="logo.png" alt="Logo" class="main-logo-v2">
-            <h1>FÚTBOL DE LOS MIÉRCOLES</h1>
+            
             <div class="countdown-argentina">
                 <div class="arg-flag-strip"></div>
-                <span class="label">MISIÓN: EL MUNDIAL 2026</span>
-                <div id="countdown" class="timer">--d --h</div>
+                <span class="label">MUNDIAL 2026</span>
+                <div id="countdown" class="timer">Cargando...</div>
                 <div class="arg-flag-strip"></div>
             </div>
+            
             <div class="video-link-container">
                 <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-video-premium">
                     🎥 REPETICIONES SPORTSREEL
@@ -39,32 +40,29 @@
 
     <div class="grass-background">
         <div class="container">
-            <section id="top3" class="card-section stats-grid">
-                <div class="stat-box">
+            <section id="top3" class="stats-grid">
+                <div class="stat-box-pitch">
                     <h3>⚽ DUEÑOS DE LA PELOTA</h3>
-                    <div id="top-pelota" class="top-list">Cargando...</div>
+                    <div id="top-pelota" class="top-list-content"></div>
                 </div>
-                <div class="stat-box">
+                <div class="stat-box-pitch">
                     <h3>🎽 SEÑORES DE LA PECHERA</h3>
-                    <div id="top-pechera" class="top-list">Cargando...</div>
+                    <div id="top-pechera" class="top-list-content"></div>
                 </div>
             </section>
 
             <section id="posiciones" class="card-section">
                 <h2 class="centered-title">🏆 TABLA DE POSICIONES</h2>
-                <div class="table-container">
-                    <table id="tabla-general" class="display cell-border" style="width:100%">
-                        <thead>
-                            <tr><th>Jugador</th><th>PJ</th><th>Pts</th><th>Promedio</th></tr>
-                        </thead>
-                        <tbody id="body-general"></tbody>
-                    </table>
-                </div>
+                <table id="tabla-general" class="display cell-border" style="width:100%">
+                    <thead>
+                        <tr><th>Jugador</th><th>PJ</th><th>Pts</th><th>Promedio</th></tr>
+                    </thead>
+                    <tbody id="body-general"></tbody>
+                </table>
             </section>
 
             <section id="partidos" class="card-section">
                 <h2 class="centered-title">📅 HISTORIAL DE PARTIDOS</h2>
-                <p class="section-subtitle">Toca una fecha para ver equipos y crónica</p>
                 <div id="contenedor-fechas" class="mini-card-grid"></div>
             </section>
 
@@ -75,23 +73,12 @@
         </div>
     </div>
 
-    <div id="modal-partido" class="modal">
-        <div class="modal-content-match">
-            <span class="close-modal" onclick="cerrarModalPartidos()">&times;</span>
-            <div id="detalle-partido-dinamico"></div>
-        </div>
-    </div>
-
-    <div id="modal-jugador" class="modal">
-        <div class="modal-content-player">
-            <span class="close-modal" onclick="cerrarModalJugador()">&times;</span>
-            <div id="detalle-jugador"></div>
-        </div>
-    </div>
+    <div id="modal-partido" class="modal"><div class="modal-content-match"><span class="close-modal" onclick="cerrarModalPartidos()">&times;</span><div id="detalle-partido-dinamico"></div></div></div>
+    <div id="modal-jugador" class="modal"><div class="modal-content-player"><span class="close-modal" onclick="cerrarModalJugador()">&times;</span><div id="detalle-jugador"></div></div></div>
 
     <footer>
         <img src="trofeo.png" alt="Trofeo" class="footer-trofeo">
-        <p>AÑO MUNDIALISTA 2026 - FÚTBOL DE LOS MIÉRCOLES</p>
+        <p>AÑO MUNDIALISTA 2026</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
