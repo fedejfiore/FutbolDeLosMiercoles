@@ -66,45 +66,46 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 .matrix-table tr:first-child td { top: 0; }
 .matrix-table td:first-child { left: 0; z-index: 11; text-align: left; min-width: 120px; }
 
-//* 5. MODAL Y FLIP CARD - FIX TOTAL */
+/* --- FIX MODAL: Posicionamiento central flotante --- */
 .modal {
-    display: none; 
-    position: fixed; /* Fix: Para que flote sobre la pantalla y no abra abajo */
-    z-index: 100000; 
-    left: 0;
+    display: none;
+    position: fixed;    /* Fijo en la pantalla, no en el documento */
+    z-index: 999999;    /* Máxima prioridad */
     top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
-    backdrop-filter: blur(5px);
-    overflow: hidden;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    overflow: hidden;   /* Bloquea el scroll del fondo */
+}
+
+.modal-content-match {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrado absoluto */
+    width: 90%;
+    max-width: 400px;
+    height: 550px;      /* Altura fija para asegurar que el blanco llene todo */
+    perspective: 1000px;
 }
 
 .close-modal {
     position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 40px;
-    color: var(--gold); /* Cruz con color */
+    top: -45px;
+    right: 0;
+    font-size: 35px;
+    color: var(--gold);
     cursor: pointer;
-    z-index: 100001;
-    font-weight: bold;
 }
 
-.modal-content-match {
-    position: relative;
-    margin: 5vh auto; 
-    width: 95%;
-    max-width: 400px;
-    height: 550px; /* Altura para que el fondo blanco llene todo */
-    perspective: 1000px;
-}
-
+/* --- FIX CARDS: Llenado de fondo y Peter chico --- */
 .flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.6s;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
 }
 
@@ -112,42 +113,44 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 
 .card-front, .card-back {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 100%;       /* Obliga al fondo blanco a llenar el 100% del alto */
     backface-visibility: hidden;
     border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 25px;
     display: flex;
-    flex-direction: column;
-    background: white;
+    flex-direction: column; /* Organiza el contenido verticalmente */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
 .card-front {
+    background: #ffffff; /* Blanco puro */
     border-top: 10px solid var(--grass-pitch);
 }
 
 .card-back {
     transform: rotateY(180deg);
-    background: #fdfdfd !important;
+    background: #fdfdfd;
     color: #333 !important;
     border-top: 10px solid var(--gold);
 }
 
-/* 6. LISTA DE JUGADORES Y VIÑETAS */
+/* Lista de Jugadores (Asegura visibilidad) */
 .lista-equipos-modal {
     list-style: none;
     padding: 0;
     margin: 10px 0;
-    flex-grow: 1;
+    flex-grow: 1;       /* Empuja la sección de Peter al final */
+    overflow-y: auto;   /* Si hay muchos jugadores, permite scroll interno */
 }
 
 .lista-equipos-modal li {
     font-size: 0.85rem;
     padding: 4px 0;
-    border-bottom: 1px solid #f0f0f0;
-    text-align: left;
+    border-bottom: 1px solid #eee;
+    color: #333;
     display: flex;
     align-items: center;
 }
@@ -155,76 +158,28 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 .lista-equipos-modal li::before {
     content: "•";
     color: var(--gold);
+    margin-right: 8px;
     font-weight: bold;
-    display: inline-block; 
-    width: 1em;
 }
 
-/* 7. FOTO DE PETER (Círculo pequeño en ambas caras) */
+/* Foto de Peter (Círculo pequeño y centrado) */
 .img-autor-btn, .img-autor-mini {
     width: 45px !important;
     height: 45px !important;
     border-radius: 50% !important;
     object-fit: cover;
     border: 2px solid var(--gold);
-    margin: 10px auto 5px !important;
+    margin: 10px auto 0 !important;
     display: block;
 }
 
-.footer-card-click, .header-cronica {
+.footer-card-click {
     text-align: center;
     padding-top: 10px;
-    border-top: 1px solid #eee;
-}
-
-.header-cronica {
-    border-top: 0;
-    border-bottom: 1px solid var(--gold);
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-}
-
-.footer-card-click p {
-    font-size: 0.65rem;
-    color: #888;
-    margin: 0;
-}
-
-.text-format-mini {
-    flex-grow: 1;
-    overflow-y: auto;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    text-align: left;
-    white-space: pre-wrap;
-}
-
-/* 8. HISTORIAL (Mini Cards) */
-.mini-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 15px;
-    justify-content: center;
-}
-
-.mini-fecha-card {
-    background: var(--dark-navy);
-    color: var(--white);
-    border: 2px solid var(--gold);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
+    border-top: 1px solid #f0f0f0;
     cursor: pointer;
-    font-family: 'Oswald', sans-serif;
-    transition: all 0.3s ease;
 }
 
-.mini-fecha-card:hover {
-    background: var(--gold);
-    color: var(--dark-navy);
-    transform: translateY(-5px);
-}
-}
 
 /* OTROS */
 .grass-background { background-color: var(--grass-pitch); padding: 40px 0 100px; }
