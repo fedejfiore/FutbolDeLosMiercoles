@@ -1,3 +1,4 @@
+// URLs de tus Google Sheets publicadas como CSV
 const URL_GENERAL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=0&single=true&output=csv';
 const URL_EQUIPOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=284173081&single=true&output=csv';
 const URL_MATRIZ  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=790605336&single=true&output=csv';
@@ -11,10 +12,13 @@ $(document).ready(function() {
     cargarMatriz(); 
     iniciarContador(); 
     
-    $('.close-modal').click(() => $('#modal-partido, #modal-jugador').fadeOut());
+    // Cerrar modales al hacer clic en la X
+    $('.close-modal').click(function() {
+        $('#modal-partido, #modal-jugador').fadeOut();
+    });
 });
 
-// 1. CONTADOR MUNDIALISTA (Corregido)
+// 1. CONTADOR MUNDIALISTA (Centrado y funcional)
 function iniciarContador() {
     const metaMundial = new Date("June 11, 2026 16:00:00").getTime();
     
@@ -29,14 +33,16 @@ function iniciarContador() {
 
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        $('#countdown').html(`${d}d ${h}h`);
+        
+        // Formato limpio: X días Y horas
+        $('#countdown').html(`${d}<small>d</small> ${h}<small>h</small>`);
     }
 
     updateTimer();
-    setInterval(updateTimer, 60000); 
+    setInterval(updateTimer, 60000); // Actualiza cada minuto
 }
 
-// 2. MAPA DE CALOR (Fix: PapaParse sin cabecera)
+// 2. MAPA DE CALOR (Con cabeceras bloqueadas vía CSS)
 function cargarMatriz() {
     Papa.parse(URL_MATRIZ, {
         download: true,
@@ -48,11 +54,12 @@ function cargarMatriz() {
                 row.forEach((cell, j) => {
                     let colorStyle = "";
                     let val = parseInt(cell);
+                    // Lógica de color según intensidad
                     if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
                         let intensity = Math.min(val / 5, 1); 
                         colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: ${intensity > 0.5 ? 'white' : 'black'}"`;
                     }
-                    html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'm-header' : ''}">${cell || ''}</td>`;
+                    html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
                 });
                 html += '</tr>';
             });
@@ -61,7 +68,7 @@ function cargarMatriz() {
     });
 }
 
-// 3. LOGÍSTICA Y PARTIDOS
+// 3. LOGÍSTICA, PARTIDOS Y CRÓNICAS
 function cargarPartidosYCronicas() {
     Papa.parse(URL_CRONICAS, {
         download: true, header: true,
@@ -92,8 +99,10 @@ function cargarPartidosYCronicas() {
                             
                             if(n && eq) {
                                 let icons = `${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}`;
+                                // Agregamos viñetas manuales <li> para que el CSS las tome
                                 if(eq == "1") listaE1 += `<li>${n} ${icons}</li>`;
                                 if(eq == "2") listaE2 += `<li>${n} ${icons}</li>`;
+                                
                                 if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                                 if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                             }
@@ -122,23 +131,36 @@ function mostrarTop3(dict, selector, icon) {
     $(selector).html(html);
 }
 
+// 4. MODAL DE PARTIDO (Interactividad con Peter)
 function abrirPartido(fecha, e1, e2, cron) {
     let content = `
-        <div class="flip-card-inner" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="color:#1a3c1a; margin-bottom:15px;">📅 ${fecha}</h3>
+                <h3 style="color:#1a3c1a; margin-bottom:15px; font-family:'Oswald'">📅 ${fecha}</h3>
                 <div style="display:flex; justify-content:space-between; text-align:left;">
-                    <div style="width:48%"><strong>E1</strong><ul style="padding:0; list-style:none; font-size:0.8rem;">${e1}</ul></div>
-                    <div style="width:48%"><strong>E2</strong><ul style="padding:0; list-style:none; font-size:0.8rem;">${e2}</ul></div>
+                    <div style="width:48%">
+                        <strong style="font-size:0.7rem; color:#d4af37">EQUIPO 1</strong>
+                        <ul class="lista-equipos-modal">${e1}</ul>
+                    </div>
+                    <div style="width:48%">
+                        <strong style="font-size:0.7rem; color:#d4af37">EQUIPO 2</strong>
+                        <ul class="lista-equipos-modal">${e2}</ul>
+                    </div>
                 </div>
-                <p style="margin-top:15px; font-size:0.7rem; color:gray;">🔄 Toca para Crónica</p>
+                <div style="margin-top:20px; border-top:1px solid #eee; padding-top:10px; cursor:pointer;" onclick="girarCarta()">
+                    <img src="peter.png" style="width:50px; height:50px; border-radius:50%; border:3px solid #d4af37;" onerror="this.src='https://via.placeholder.com/50'">
+                    <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para leer crónica 🔄</p>
+                </div>
             </div>
-            <div class="card-back">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; border-bottom:1px solid #ddd; padding-bottom:5px;">
-                    <img src="peter.png" style="width:40px; height:40px; border-radius:50%; border:2px solid #d4af37;" onerror="this.src='https://via.placeholder.com/40'">
-                    <strong style="font-size:0.9rem">Crónicas de Peter</strong>
+            <div class="card-back" onclick="girarCarta()" style="cursor:pointer;">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; border-bottom:1px solid #d4af37; padding-bottom:10px;">
+                    <img src="peter.png" style="width:40px; height:40px; border-radius:50%;" onerror="this.src='https://via.placeholder.com/40'">
+                    <strong style="font-family:'Oswald'">CRÓNICAS DE PETER</strong>
                 </div>
-                <div class="text-format-mini" style="font-size:0.8rem; text-align:left; max-height:280px; overflow-y:auto;">${cron || "Peter no emitio opinion al respecto.."}</div>
+                <div class="text-format-mini" style="font-size:0.85rem; text-align:left; line-height:1.4;">
+                    ${cron || "Peter no escribió nada aún. Seguro estaba festejando el triunfo."}
+                </div>
+                <p style="margin-top:15px; font-size:0.6rem; color:gray;">(Clic para volver)</p>
             </div>
         </div>
     `;
@@ -146,6 +168,11 @@ function abrirPartido(fecha, e1, e2, cron) {
     $('#modal-partido').fadeIn();
 }
 
+function girarCarta() {
+    $('#flip-card-match').toggleClass('flipped');
+}
+
+// 5. TABLA GENERAL (Mantiene tu prolijidad intacta)
 function cargarTabla() {
     Papa.parse(URL_GENERAL, {
         download: true, header: true,
@@ -163,7 +190,21 @@ function cargarTabla() {
                 }
             });
             $('#body-general').html(html);
-            $('#tabla-general').DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"}, "order": [[2, "desc"]], "destroy": true});
+            $('#tabla-general').DataTable({
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"},
+                "order": [[2, "desc"]],
+                "destroy": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "type": "num",
+                    "render": function (data, type) {
+                        if (type === 'sort' || type === 'type') {
+                            return parseFloat(data.toString().replace(',', '.').replace('"', '')) || 0;
+                        }
+                        return data;
+                    }
+                }]
+            });
         }
     });
 }
@@ -179,7 +220,9 @@ function verJugador(nombre) {
         <p style="margin-top:20px; color:#2d5a27; font-weight:bold; font-size:1.3rem;">Promedio: ${j.Promiedo}</p>`;
     $('#detalle-jugador').html(html);
     $('#modal-jugador').fadeIn();
+    
+    // Al seleccionar jugador, scrolleamos suavemente al mapa de calor
+    $('html, body').animate({
+        scrollTop: $("#sinergia").offset().top - 80
+    }, 800);
 }
-
-function cerrarModalPartidos() { $('#modal-partido').fadeOut(); }
-function cerrarModalJugador() { $('#modal-jugador').fadeOut(); }

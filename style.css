@@ -244,3 +244,85 @@ footer {
 }
 
 .footer-trofeo { height: 70px; margin-bottom: 15px; }
+
+/* HEADER: Logo arriba, Contador abajo */
+.hero-content {
+    display: flex;
+    flex-direction: column; /* Esto fuerza el orden vertical */
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Espacio entre logo y contador */
+    width: 100%;
+}
+
+.main-logo-v2 {
+    width: 350px;
+    max-width: 85%;
+    display: block;
+    margin: 0 auto;
+}
+
+.countdown-argentina {
+    display: block; /* Asegura que no flote al costado */
+    margin: 0 auto;
+}
+
+/* VIÑETAS PARA EQUIPOS */
+.lista-equipos-modal {
+    padding: 0;
+    list-style: none; /* Quitamos el default para poner el nuestro */
+    text-align: left;
+}
+
+.lista-equipos-modal li {
+    padding: 4px 0;
+    border-bottom: 1px dotted #eee;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+}
+
+.lista-equipos-modal li::before {
+    content: "•"; /* Viñeta elegante */
+    color: var(--gold);
+    font-weight: bold;
+    display: inline-block; 
+    width: 1em;
+    margin-left: -0.5em;
+}
+
+/* FIXED HEADERS PARA MAPA DE CALOR */
+.table-responsive {
+    max-height: 500px; /* Altura máxima con scroll */
+    overflow: auto;
+}
+
+.matrix-table {
+    border-collapse: separate; /* Necesario para el sticky */
+    border-spacing: 0;
+}
+
+/* Anclar Primera Fila (Nombres arriba) */
+.matrix-table tr:first-child td {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--dark-navy) !important;
+}
+
+/* Anclar Primera Columna (Nombres lateral) */
+.matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 11;
+    background: var(--dark-navy) !important;
+    font-weight: bold;
+    text-align: left;
+    min-width: 100px;
+}
+
+/* Esquina superior izquierda (el cruce) */
+.matrix-table tr:first-child td:first-child {
+    z-index: 12;
+}
+
