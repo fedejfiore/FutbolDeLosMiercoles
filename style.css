@@ -270,3 +270,17 @@ CSS
     perspective: 1000px;
     margin: 0; /* Eliminamos márgenes */
 }
+
+.text-format-mini {
+    flex-grow: 1;
+    overflow-y: auto;       /* Permite scroll vertical si la crónica es muy larga */
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: left;
+    padding-right: 5px;     /* Espacio para que el texto no pegue contra el scroll */
+    
+    /* RESPETAR ENTERS Y MANTENERSE ADENTRO */
+    white-space: pre-wrap;      /* Respeta Alt+Enter y hace wrap normal */
+    overflow-wrap: break-word;  /* Rompe palabras largas si es necesario */
+    word-break: break-word;     /* Refuerzo para navegadores antiguos */
+}
