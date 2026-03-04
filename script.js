@@ -75,11 +75,36 @@ function cargarTabla() {
             let html = '';
             res.data.forEach(row => {
                 if(row.Nombre) {
-                    html += `<tr><td><strong>${row.Nombre}</strong></td><td>${row.PJ}</td><td><span style="background:var(--gold); color:white; padding:3px 8px; border-radius:5px; font-weight:bold;">${row.Pts}</span></td><td>${row.Promiedo || '-'}</td></tr>`;
+                    // Nota: 'Promiedo' es como figura en tu CSV actual
+                    const valorPromedio = row.Promiedo || row.Promedio || '0';
+                    html += `<tr>
+                                <td><strong>${row.Nombre}</strong></td>
+                                <td>${row.PJ}</td>
+                                <td><span style="background:var(--gold); color:white; padding:3px 8px; border-radius:5px; font-weight:bold;">${row.Pts}</span></td>
+                                <td>${valorPromedio}</td>
+                             </tr>`;
                 }
             });
             $('#body-general').html(html);
-            $('#tabla-general').DataTable({ "language": { "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json" }, "order": [[2, "desc"]] });
+
+            // FIX: Ordenamiento numérico para la columna de promedio
+            $('#tabla-general').DataTable({
+                "language": { "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json" },
+                "order": [[2, "desc"]],
+                "columnDefs": [
+                    {
+                        "targets": 3, // Columna de Promedio
+                        "type": "num",
+                        "render": function (data, type, row) {
+                            if (type === 'sort' || type === 'type') {
+                                // Limpia el string y cambia coma por punto para que JS lo entienda como número
+                                return parseFloat(data.toString().replace(',', '.').replace('"', '')) || 0;
+                            }
+                            return data;
+                        }
+                    }
+                ]
+            });
         }
     });
 }
@@ -106,7 +131,14 @@ function cargarMatriz() {
 function iniciarContador() {
     const meta = new Date("June 11, 2026 16:00:00").getTime();
     setInterval(() => {
-        const diff = meta - new Date().getTime();
+        const ahora = new Date().getTime();
+        const diff = meta - ahora;
+        
+        if (diff < 0) {
+            $('#countdown').html("¡EN MARCHA!");
+            return;
+        }
+
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         $('#countdown').html(`${d}d ${h}h`);
