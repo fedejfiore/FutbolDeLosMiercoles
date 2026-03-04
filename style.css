@@ -66,26 +66,72 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 .matrix-table tr:first-child td { top: 0; }
 .matrix-table td:first-child { left: 0; z-index: 11; text-align: left; min-width: 120px; }
 
-/* 5. FLIP CARD Y CRÓNICA */
-.flip-card-inner {
-    position: relative; width: 100%; height: 100%; min-height: 400px;
-    transition: transform 0.6s; transform-style: preserve-3d;
+/* 5. MODAL Y FLIP CARD (Detalle Partido) */
+.modal {
+    display: none; 
+    position: fixed; /* Fix: Para que flote sobre el sitio y no abra abajo */
+    z-index: 100000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(5px);
+    overflow: hidden; 
 }
-.flip-card-inner.flipped { transform: rotateY(180deg); }
-.card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 15px; padding: 25px; }
-.card-front { background: white; border-top: 10px solid var(--grass-pitch); }
-.card-back { transform: rotateY(180deg); background: #fdfdfd !important; color: #333 !important; }
 
-/* Contenedor de las fechas */
+.modal-content-match {
+    position: relative;
+    margin: 5vh auto; /* Fix: Centrado vertical y horizontal */
+    width: 95%;
+    max-width: 380px;
+    height: 520px; 
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flip-card-inner.flipped { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.card-front {
+    background: white;
+    border-top: 10px solid var(--grass-pitch);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: #fdfdfd !important;
+    color: #333 !important;
+    overflow-y: auto;
+}
+
+/* 6. HISTORIAL (Mini Cards) */
 .mini-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Esto evita que se amontonen */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 15px;
     justify-content: center;
     padding: 10px;
 }
 
-/* La card individual */
 .mini-fecha-card {
     background: var(--dark-navy);
     color: var(--white);
@@ -98,18 +144,27 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
     transition: all 0.3s ease;
 }
 
-.modal-content-match {
-    margin: 8vh auto;
-    width: 90%;
-    max-width: 380px;
-    height: 500px; /* Esta altura es clave para que el giro se vea bien */
-    perspective: 1000px;
-}
-
 .mini-fecha-card:hover {
     background: var(--gold);
     color: var(--dark-navy);
-    transform: translateY(-5px); /* El pequeño salto al pasar el mouse */
+    transform: translateY(-5px);
+}
+
+/* 7. FOTO DE PETER (Circulito chico) */
+.img-autor-btn {
+    width: 50px; /* Reducido para que no desborde */
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    margin: 10px auto 5px;
+    display: block;
+}
+
+.footer-card-click p {
+    font-size: 0.65rem;
+    color: #888;
+    margin: 0;
 }
 
 /* OTROS */
@@ -120,8 +175,13 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 .floating-menu a:hover { transform: scale(1.2); }
 
 .footer-trofeo {
-    width: 120px; /* Aquí controlas el tamaño. Cámbialo a 150px si lo quieres más grande */
+    width: 60px; /* Reducido de 120px a 60px */
     height: auto;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px var(--gold)); /* Esto le da el brillo dorado */
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 8px var(--gold));
+}
+
+/* Oculta el texto innecesario del footer si lo deseas por CSS */
+footer p {
+    display: none; /* Elimina el texto 'Año Mundialista' si no puedes editar el HTML */
 }
