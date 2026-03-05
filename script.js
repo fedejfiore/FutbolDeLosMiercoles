@@ -4,7 +4,7 @@ const URL_MATRIZ  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0K
 const URL_CRONICAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=2071318824&single=true&output=csv';
 
 let dataGlobalJugadores = [];
-let totalPozoGlobal = 0; 
+let totalPozoGlobal = 0;
 
 $(document).ready(function() {
     cargarTabla();
@@ -46,7 +46,6 @@ function cargarPartidosYCronicas() {
                     totalPozoGlobal = 0; 
 
                     const headers = data[0];
-                    // Salto de 4: Pelota(j), Pechera(j+1), Pozo(j+2), Equipo(j+3)
                     for (let j = 2; j < headers.length; j += 4) {
                         const fecha = headers[j];
                         if (!fecha) continue;
@@ -64,17 +63,14 @@ function cargarPartidosYCronicas() {
                             const n = data[i][1]; 
                             const pel = data[i][j]; 
                             const pech = data[i][j+1]; 
-                            const pozoVal = data[i][j+2]; // Columna Pozo
-                            const eq = data[i][j+3];      // Columna Equipo
-			// DEBUG: Descomenta la siguiente línea para ver qué llega a la consola
-			    console.log(`Jugador: ${n}, Pozo leido: '${pozoVal}', Index: ${j+2}`);
-                            
+                            const pozoVal = data[i][j+2]; 
+                            const eq = data[i][j+3];
+
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                             if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                             
-                            // Lógica de pozo
                             if(pozoVal && !isNaN(pozoVal) && pozoVal != 0) {
                                 pozoPartido += parseFloat(pozoVal);
                                 responsable = n;
@@ -85,7 +81,6 @@ function cargarPartidosYCronicas() {
                         let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}', '${pozoPartido}', '${responsable}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
-                    
                     $('#pozo-total').text(`$${totalPozoGlobal}`);
                     mostrarTop3(conteoPelota, '#top-pelota', '⚽');
                     mostrarTop3(conteoPechera, '#top-pechera', '🎽');
@@ -96,8 +91,7 @@ function cargarPartidosYCronicas() {
 }
 
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pozoHtml = pozo > 0 ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
-    
+    let pozoHtml = (pozo && pozo > 0) ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
     let content = `
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
