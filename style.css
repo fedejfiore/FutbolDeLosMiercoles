@@ -134,6 +134,9 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
     background: #fdfdfd;
     color: #333 !important;
     border-top: 10px solid var(--gold);
+    display: flex;
+    flex-direction: colum;
+    overflow: hidden;
 }
 
 /* Lista de Jugadores (Asegura visibilidad) */
@@ -277,7 +280,7 @@ CSS
     font-size: 0.85rem;
     line-height: 1.5;
     text-align: left;
-    padding-right: 5px;     /* Espacio para que el texto no pegue contra el scroll */
+    padding-right: 10px;     /* Espacio para que el texto no pegue contra el scroll */
     
     /* RESPETAR ENTERS Y MANTENERSE ADENTRO */
     white-space: pre-wrap;      /* Respeta Alt+Enter y hace wrap normal */
