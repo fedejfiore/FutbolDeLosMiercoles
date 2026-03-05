@@ -4,6 +4,7 @@ const URL_MATRIZ  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0K
 const URL_CRONICAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=2071318824&single=true&output=csv';
 
 let dataGlobalJugadores = [];
+let totalPozoGlobal = 0; // Variable para el acumulado total
 
 $(document).ready(function() {
     cargarTabla();
@@ -42,33 +43,50 @@ function cargarPartidosYCronicas() {
                     contenedor.empty();
                     const conteoPelota = {};
                     const conteoPechera = {};
+                    totalPozoGlobal = 0; // Resetear acumulado
 
                     const headers = data[0];
-                    for (let j = 2; j < headers.length; j += 3) {
+                    // Incremento de 4 porque ahora tienes: Pelota, Pechera, Pozo, Equipo
+                    for (let j = 2; j < headers.length; j += 4) {
                         const fecha = headers[j];
                         if (!fecha) continue;
 
-                        // Lógica Ganador (Fila 2 del Sheet)
-                        // Analiza si en la fila de "Ganador" hay un 1 o un 2. 
-                        // Si está vacío, se asume Empate.
                         const valGanador = data[1][j + 1]; 
                         let s1 = "🤝 Empate"; let s2 = "🤝 Empate";
                         if (valGanador === "1") { s1 = "👑 Ganador"; s2 = "Perdedor"; }
                         else if (valGanador === "2") { s1 = "Perdedor"; s2 = "👑 Ganador"; }
 
                         let e1 = ""; let e2 = "";
+                        let pozoPartido = 0;
+                        let responsable = "";
+
                         for (let i = 3; i < data.length; i++) {
-                            const n = data[i][1]; const pel = data[i][j]; const pech = data[i][j+1]; const eq = data[i][j+2];
-                            // Se agregan las viñetas mediante <li>
+                            const n = data[i][1]; 
+                            const pel = data[i][j]; 
+                            const pech = data[i][j+1]; 
+                            const pozoVal = data[i][j+2]; // Columna Pozo
+                            const eq = data[i][j+3];      // Columna Equipo
+
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                             if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
+                            
+                            // Lógica de pozo
+                            if(pozoVal && !isNaN(pozoVal) && pozoVal != 0) {
+                                pozoPartido += parseFloat(pozoVal);
+                                responsable = n;
+                            }
                         }
+                        
+                        totalPozoGlobal += pozoPartido;
 
-                        let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}')">${fecha}</div>`;
+                        let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}', '${pozoPartido}', '${responsable}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
+                    
+                    // Asegúrate de tener un elemento <span id="pozo-total"></span> en tu HTML
+                    $('#pozo-total').text(`$${totalPozoGlobal}`);
                     mostrarTop3(conteoPelota, '#top-pelota', '⚽');
                     mostrarTop3(conteoPechera, '#top-pechera', '🎽');
                 }
@@ -77,7 +95,9 @@ function cargarPartidosYCronicas() {
     });
 }
 
-function abrirPartido(fecha, e1, e2, cron, s1, s2) {
+function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
+    let pozoHtml = pozo > 0 ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
+    
     let content = `
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
@@ -92,6 +112,7 @@ function abrirPartido(fecha, e1, e2, cron, s1, s2) {
                         <ul class="lista-equipos-modal">${e2}</ul>
                     </div>
                 </div>
+                ${pozoHtml}
                 <div class="footer-card-click" onclick="girarCarta()">
                     <img src="peter.png" class="img-autor-btn" onerror="this.src='https://via.placeholder.com/50'">
                     <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para crónica 🔄</p>
@@ -125,7 +146,6 @@ function cargarMatriz() {
                     let val = parseInt(cell);
                     if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
                         let intensity = Math.min(val / 5, 1); 
-                        // Forzamos texto blanco para legibilidad sobre el verde
                         colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: white; font-weight: bold;"`;
                     }
                     html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
