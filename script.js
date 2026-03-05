@@ -66,7 +66,9 @@ function cargarPartidosYCronicas() {
                             const pech = data[i][j+1]; 
                             const pozoVal = data[i][j+2]; // Columna Pozo
                             const eq = data[i][j+3];      // Columna Equipo
-
+			// DEBUG: Descomenta la siguiente línea para ver qué llega a la consola
+			    console.log(`Jugador: ${n}, Pozo leido: '${pozoVal}', Index: ${j+2}`);
+                            
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
