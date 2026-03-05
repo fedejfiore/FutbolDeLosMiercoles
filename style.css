@@ -135,7 +135,8 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
     color: #333 !important;
     border-top: 10px solid var(--gold);
     display: flex;
-    flex-direction: colum;
+    flex-direction: column;
+    height: 100%;
     overflow: hidden;
 }
 
