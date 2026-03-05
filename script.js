@@ -46,9 +46,12 @@ function cargarPartidosYCronicas() {
                     totalPozoGlobal = 0; 
 
                     const headers = data[0];
+                    console.log("Headers detectados:", headers); // DEBUG 1
+
                     for (let j = 2; j < headers.length; j += 4) {
                         const fecha = headers[j];
                         if (!fecha) continue;
+                        console.log("Procesando Fecha:", fecha, "en columna:", j); // DEBUG 2
 
                         const valGanador = data[1][j + 1]; 
                         let s1 = "🤝 Empate"; let s2 = "🤝 Empate";
@@ -66,14 +69,20 @@ function cargarPartidosYCronicas() {
                             const pozoVal = data[i][j+2]; 
                             const eq = data[i][j+3];
 
+                            // DEBUG 3: Ver qué hay en cada celda
+                            if (n) console.log(`Fila ${i} | Jugador: ${n} | Pel:${pel} | Pech:${pech} | Pozo:'${pozoVal}' | Eq:${eq}`);
+
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                             if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                             
-                            if(pozoVal && !isNaN(pozoVal) && pozoVal != 0) {
-                                pozoPartido += parseFloat(pozoVal);
-                                responsable = n;
+                            if(pozoVal && pozoVal != 0) {
+                                let valNum = parseFloat(pozoVal);
+                                if (!isNaN(valNum)) {
+                                    pozoPartido += valNum;
+                                    responsable = n;
+                                }
                             }
                         }
                         
@@ -91,7 +100,7 @@ function cargarPartidosYCronicas() {
 }
 
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pozoHtml = (pozo && pozo > 0) ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
+    let pozoHtml = (pozo && pozo != "0") ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
     let content = `
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
