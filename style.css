@@ -136,7 +136,6 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
     border-top: 10px solid var(--gold);
     display: flex;
     flex-direction: column;
-    height: 100%;
     overflow: hidden;
 }
 
