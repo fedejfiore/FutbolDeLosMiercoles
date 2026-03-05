@@ -281,7 +281,7 @@ CSS
     line-height: 1.5;
     text-align: left;
     padding-right: 10px;     /* Espacio para que el texto no pegue contra el scroll */
-    height: 400px%
+    height: 400px;
 
     /* RESPETAR ENTERS Y MANTENERSE ADENTRO */
     white-space: pre-wrap;      /* Respeta Alt+Enter y hace wrap normal */
