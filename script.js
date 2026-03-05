@@ -43,7 +43,7 @@ function cargarPartidosYCronicas() {
                     contenedor.empty();
                     const conteoPelota = {};
                     const conteoPechera = {};
-                    const conteoPozo = {}; // Desglose por persona
+                    const conteoPozo = {};
                     totalPozoGlobal = 0; 
 
                     const headers = data[0];
@@ -64,7 +64,7 @@ function cargarPartidosYCronicas() {
                             const n = data[i][1]; 
                             const pel = data[i][j]; 
                             const pech = data[i][j+1]; 
-                            const pozoVal = data[i][j+2]; 
+                            const pozoVal = data[i][j+2];
                             const eq = data[i][j+3];
 
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
@@ -86,8 +86,7 @@ function cargarPartidosYCronicas() {
                         let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}', '${pozoPartido}', '${responsable}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
-
-                    // Renderizar desglose
+                    
                     let htmlPozo = '';
                     for (const jugador in conteoPozo) {
                         htmlPozo += `<div class="top-item"><span>👤 ${jugador}</span> <span>$${conteoPozo[jugador]}</span></div>`;
@@ -103,67 +102,6 @@ function cargarPartidosYCronicas() {
     });
 }
 
-function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pozoHtml = (pozo && pozo != "0") ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
-    let content = `
-        <div class="flip-card-inner" id="flip-card-match">
-            <div class="card-front">
-                <h3 style="color:#1a3c1a; margin-bottom:10px; font-family:'Oswald'">📅 ${fecha}</h3>
-                <div style="display:flex; justify-content:space-between; text-align:left;">
-                    <div style="width:48%">
-                        <strong style="font-size:0.75rem; color:#d4af37">${s1}</strong>
-                        <ul class="lista-equipos-modal">${e1}</ul>
-                    </div>
-                    <div style="width:48%">
-                        <strong style="font-size:0.75rem; color:#d4af37">${s2}</strong>
-                        <ul class="lista-equipos-modal">${e2}</ul>
-                    </div>
-                </div>
-                ${pozoHtml}
-                <div class="footer-card-click" onclick="girarCarta()">
-                    <img src="peter.png" class="img-autor-btn" onerror="this.src='https://via.placeholder.com/50'">
-                    <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para crónica 🔄</p>
-                </div>
-            </div>
-            <div class="card-back" onclick="girarCarta()">
-                <div class="header-cronica">
-                    <img src="peter.png" class="img-autor-mini" onerror="this.src='https://via.placeholder.com/40'">
-                    <strong>CRÓNICAS DE PETER</strong>
-                </div>
-                <div class="text-format-mini">${cron || "Peter no emitio comentarios al respecto.."}</div>
-                <p class="hint-back">🔄 Toca para volver</p>
-            </div>
-        </div>
-    `;
-    $('#detalle-partido-dinamico').html(content);
-    $('#modal-partido').fadeIn();
-}
-
-function girarCarta() { $('#flip-card-match').toggleClass('flipped'); }
-
-function cargarMatriz() {
-    Papa.parse(URL_MATRIZ, {
-        download: true, header: false,
-        complete: function(res) {
-            let html = '<div class="table-responsive"><table class="matrix-table">';
-            res.data.forEach((row, i) => {
-                html += '<tr>';
-                row.forEach((cell, j) => {
-                    let colorStyle = "";
-                    let val = parseInt(cell);
-                    if(i > 0 && j > 0 && !isNaN(val) && val > 0) {
-                        let intensity = Math.min(val / 5, 1); 
-                        colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: white; font-weight: bold;"`;
-                    }
-                    html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`;
-                });
-                html += '</tr>';
-            });
-            $('#heatmap-container').html(html + '</table></div>');
-        }
-    });
-}
-
 function cargarTabla() {
     Papa.parse(URL_GENERAL, {
         download: true, header: true,
@@ -174,8 +112,11 @@ function cargarTabla() {
                 if(row.Nombre) {
                     html += `<tr onclick="verJugador('${row.Nombre}')">
                         <td><strong>${row.Nombre}</strong></td>
-                        <td>${row.PJ}</td>
-                        <td><span class="puntos-tag">${row.Pts}</span></td>
+                        <td>${row.PJ || 0}</td>
+                        <td>${row.PG || 0}</td>
+                        <td>${row.PE || 0}</td>
+                        <td>${row.PP || 0}</td>
+                        <td><span class="puntos-tag">${row.Pts || 0}</span></td>
                         <td>${row.Promiedo || '0'}</td>
                     </tr>`;
                 }
@@ -183,32 +124,34 @@ function cargarTabla() {
             $('#body-general').html(html);
             $('#tabla-general').DataTable({
                 "language": {"url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"}, 
-                "order": [[2, "desc"]], 
+                "order": [[5, "desc"]], 
                 "destroy": true
             });
         }
     });
 }
 
-function mostrarTop3(dict, selector, icon) {
-    const sorted = Object.entries(dict).sort((a,b) => b[1] - a[1]).slice(0, 3);
-    const medals = ['🥇', '🥈', '🥉'];
-    let html = '';
-    sorted.forEach((item, i) => {
-        html += `<div class="top-item"><span>${medals[i]} ${item[0]}</span> <span>${item[1]} ${icon}</span></div>`;
-    });
-    $(selector).html(html);
-}
-
 function verJugador(nombre) {
     const j = dataGlobalJugadores.find(item => item.Nombre === nombre);
     if(!j) return;
     let html = `<h2 style="font-family:'Oswald'">${j.Nombre}</h2>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px;">
-            <div style="background:#f4f4f4; padding:10px; border-radius:10px;"><strong>PJ</strong><br>${j.PJ}</div>
-            <div style="background:#f4f4f4; padding:10px; border-radius:10px;"><strong>PTS</strong><br>${j.Pts}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:15px;">
+            <div style="background:#f4f4f4; padding:10px; border-radius:10px;"><strong>PJ</strong><br>${j.PJ || 0}</div>
+            <div style="background:#e8f5e9; padding:10px; border-radius:10px;"><strong>PG</strong><br>${j.PG || 0}</div>
+            <div style="background:#fff3e0; padding:10px; border-radius:10px;"><strong>PE</strong><br>${j.PE || 0}</div>
+            <div style="background:#ffebee; padding:10px; border-radius:10px;"><strong>PP</strong><br>${j.PP || 0}</div>
+            <div style="background:#f4f4f4; padding:10px; border-radius:10px;"><strong>PTS</strong><br>${j.Pts || 0}</div>
         </div>
-        <p style="margin-top:20px; color:#2d5a27; font-weight:bold; font-size:1.3rem;">Promedio: ${j.Promiedo}</p>`;
+        <p style="margin-top:20px; color:#2d5a27; font-weight:bold; font-size:1.3rem;">Promedio: ${j.Promiedo || '0'}</p>`;
     $('#detalle-jugador').html(html);
     $('#modal-jugador').fadeIn();
 }
+
+// Funciones auxiliares
+function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
+    let pozoHtml = (pozo && pozo != "0") ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
+    $('#detalle-partido-dinamico').html(` <div class="flip-card-inner" id="flip-card-match"> <div class="card-front"> <h3 style="color:#1a3c1a; margin-bottom:10px; font-family:'Oswald'">📅 ${fecha}</h3> <div style="display:flex; justify-content:space-between; text-align:left;"> <div style="width:48%"> <strong style="font-size:0.75rem; color:#d4af37">${s1}</strong> <ul class="lista-equipos-modal">${e1}</ul> </div> <div style="width:48%"> <strong style="font-size:0.75rem; color:#d4af37">${s2}</strong> <ul class="lista-equipos-modal">${e2}</ul> </div> </div> ${pozoHtml} <div class="footer-card-click" onclick="girarCarta()"> <img src="peter.png" class="img-autor-btn" onerror="this.src='https://via.placeholder.com/50'"> <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para crónica 🔄</p> </div> </div> <div class="card-back" onclick="girarCarta()"> <div class="header-cronica"> <img src="peter.png" class="img-autor-mini" onerror="this.src='https://via.placeholder.com/40'"> <strong>CRÓNICAS DE PETER</strong> </div> <div class="text-format-mini">${cron || "Peter no emitio comentarios al respecto.."}</div> <p class="hint-back">🔄 Toca para volver</p> </div> </div> `); $('#modal-partido').fadeIn();
+}
+function girarCarta() { $('#flip-card-match').toggleClass('flipped'); }
+function cargarMatriz() { Papa.parse(URL_MATRIZ, { download: true, header: false, complete: function(res) { let html = '<div class="table-responsive"><table class="matrix-table">'; res.data.forEach((row, i) => { html += '<tr>'; row.forEach((cell, j) => { let colorStyle = ""; let val = parseInt(cell); if(i > 0 && j > 0 && !isNaN(val) && val > 0) { let intensity = Math.min(val / 5, 1); colorStyle = `style="background: rgba(39, 174, 96, ${intensity}); color: white; font-weight: bold;"`; } html += `<td ${colorStyle} class="${i === 0 || j === 0 ? 'sticky-header' : ''}">${cell || ''}</td>`; }); html += '</tr>'; }); $('#heatmap-container').html(html + '</table></div>'); } }); }
+function mostrarTop3(dict, selector, icon) { const sorted = Object.entries(dict).sort((a,b) => b[1] - a[1]).slice(0, 3); const medals = ['🥇', '🥈', '🥉']; let html = ''; sorted.forEach((item, i) => { html += `<div class="top-item"><span>${medals[i]} ${item[0]}</span> <span>${item[1]} ${icon}</span></div>`; }); $(selector).html(html); }
