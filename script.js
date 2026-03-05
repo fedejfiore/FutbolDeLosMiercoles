@@ -43,6 +43,7 @@ function cargarPartidosYCronicas() {
                     contenedor.empty();
                     const conteoPelota = {};
                     const conteoPechera = {};
+                    const conteoPozo = {}; // Desglose por persona
                     totalPozoGlobal = 0; 
 
                     const headers = data[0];
@@ -63,20 +64,20 @@ function cargarPartidosYCronicas() {
                             const n = data[i][1]; 
                             const pel = data[i][j]; 
                             const pech = data[i][j+1]; 
-                            const pozoVal = data[i][j+2]; // Pozo (columna 2 del bloque)
-                            const eq = data[i][j+3];      // Equipo (columna 3 del bloque)
+                            const pozoVal = data[i][j+2]; 
+                            const eq = data[i][j+3];
 
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                             if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                             
-                            // Lógica de Pozo mejorada: limpia caracteres extra y suma
                             if(pozoVal && pozoVal.toString().trim() !== "") {
                                 let monto = parseFloat(pozoVal.toString().replace(/[^0-9]/g, ''));
                                 if(!isNaN(monto) && monto > 0) {
                                     pozoPartido += monto;
                                     responsable = n;
+                                    conteoPozo[n] = (conteoPozo[n] || 0) + monto;
                                 }
                             }
                         }
@@ -85,7 +86,15 @@ function cargarPartidosYCronicas() {
                         let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}', '${pozoPartido}', '${responsable}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
-                    $('#pozo-total').text(`$${totalPozoGlobal}`);
+
+                    // Renderizar desglose
+                    let htmlPozo = '';
+                    for (const jugador in conteoPozo) {
+                        htmlPozo += `<div class="top-item"><span>👤 ${jugador}</span> <span>$${conteoPozo[jugador]}</span></div>`;
+                    }
+                    htmlPozo += `<div class="top-item" style="border-top:1px solid #ddd; margin-top:5px;"><strong>Total</strong> <strong>$${totalPozoGlobal}</strong></div>`;
+                    $('#top-pozo').html(htmlPozo);
+
                     mostrarTop3(conteoPelota, '#top-pelota', '⚽');
                     mostrarTop3(conteoPechera, '#top-pechera', '🎽');
                 }
