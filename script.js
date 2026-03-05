@@ -46,12 +46,9 @@ function cargarPartidosYCronicas() {
                     totalPozoGlobal = 0; 
 
                     const headers = data[0];
-                    console.log("Headers detectados:", headers); // DEBUG 1
-
                     for (let j = 2; j < headers.length; j += 4) {
                         const fecha = headers[j];
                         if (!fecha) continue;
-                        console.log("Procesando Fecha:", fecha, "en columna:", j); // DEBUG 2
 
                         const valGanador = data[1][j + 1]; 
                         let s1 = "🤝 Empate"; let s2 = "🤝 Empate";
@@ -66,21 +63,19 @@ function cargarPartidosYCronicas() {
                             const n = data[i][1]; 
                             const pel = data[i][j]; 
                             const pech = data[i][j+1]; 
-                            const pozoVal = data[i][j+2]; 
-                            const eq = data[i][j+3];
-
-                            // DEBUG 3: Ver qué hay en cada celda
-                            if (n) console.log(`Fila ${i} | Jugador: ${n} | Pel:${pel} | Pech:${pech} | Pozo:'${pozoVal}' | Eq:${eq}`);
+                            const pozoVal = data[i][j+2]; // Pozo (columna 2 del bloque)
+                            const eq = data[i][j+3];      // Equipo (columna 3 del bloque)
 
                             if(n && eq == "1") e1 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(n && eq == "2") e2 += `<li>${n} ${pel=='1'?'⚽':''} ${pech=='1'?'🎽':''}</li>`;
                             if(pel=='1') conteoPelota[n] = (conteoPelota[n] || 0) + 1;
                             if(pech=='1') conteoPechera[n] = (conteoPechera[n] || 0) + 1;
                             
-                            if(pozoVal && pozoVal != 0) {
-                                let valNum = parseFloat(pozoVal);
-                                if (!isNaN(valNum)) {
-                                    pozoPartido += valNum;
+                            // Lógica de Pozo mejorada: limpia caracteres extra y suma
+                            if(pozoVal && pozoVal.toString().trim() !== "") {
+                                let monto = parseFloat(pozoVal.toString().replace(/[^0-9]/g, ''));
+                                if(!isNaN(monto) && monto > 0) {
+                                    pozoPartido += monto;
                                     responsable = n;
                                 }
                             }
