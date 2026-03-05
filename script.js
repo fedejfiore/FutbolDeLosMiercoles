@@ -4,7 +4,7 @@ const URL_MATRIZ  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0K
 const URL_CRONICAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0KSEj-UaHgd4ZbVWJ6fCDbK2UtrzwGRts83XTdbOUaG-MgyVSJmqN7y-j1XvNb6WN6PaAr/pub?gid=2071318824&single=true&output=csv';
 
 let dataGlobalJugadores = [];
-let totalPozoGlobal = 0; // Variable para el acumulado total
+let totalPozoGlobal = 0; 
 
 $(document).ready(function() {
     cargarTabla();
@@ -43,10 +43,10 @@ function cargarPartidosYCronicas() {
                     contenedor.empty();
                     const conteoPelota = {};
                     const conteoPechera = {};
-                    totalPozoGlobal = 0; // Resetear acumulado
+                    totalPozoGlobal = 0; 
 
                     const headers = data[0];
-                    // Incremento de 4 porque ahora tienes: Pelota, Pechera, Pozo, Equipo
+                    // Salto de 4: Pelota(j), Pechera(j+1), Pozo(j+2), Equipo(j+3)
                     for (let j = 2; j < headers.length; j += 4) {
                         const fecha = headers[j];
                         if (!fecha) continue;
@@ -80,12 +80,10 @@ function cargarPartidosYCronicas() {
                         }
                         
                         totalPozoGlobal += pozoPartido;
-
                         let miniCard = `<div class="mini-fecha-card" onclick="abrirPartido('${fecha}', '${e1}', '${e2}', \`${dicCronicas[fecha.trim()] || ''}\`, '${s1}', '${s2}', '${pozoPartido}', '${responsable}')">${fecha}</div>`;
                         contenedor.append(miniCard);
                     }
                     
-                    // Asegúrate de tener un elemento <span id="pozo-total"></span> en tu HTML
                     $('#pozo-total').text(`$${totalPozoGlobal}`);
                     mostrarTop3(conteoPelota, '#top-pelota', '⚽');
                     mostrarTop3(conteoPechera, '#top-pechera', '🎽');
