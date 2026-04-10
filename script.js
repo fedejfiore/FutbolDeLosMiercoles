@@ -7,7 +7,7 @@ const WEATHER_API_KEY = 'f31bb7ce57b0669e92e9827acfe293ec';
 
 $(document).ready(function() {
     cargarTabla();
-    cargarHistorialCompleto();
+    cargarPartidosYCronicas();
     actualizarClima();
     iniciarContador();
 
@@ -15,8 +15,8 @@ $(document).ready(function() {
         $(this).toggleClass('active').next('.collapsible-content').slideToggle();
     });
 
+    const audio = document.getElementById('main-audio');
     $('#audio-control').click(function() {
-        const audio = document.getElementById('main-audio');
         if (audio.paused) { audio.play(); $(this).text('⏸️ EL ASADO'); } 
         else { audio.pause(); $(this).text('▶️ EL ASADO'); }
     });
@@ -38,8 +38,8 @@ function cargarTabla() {
             let html = '';
             res.data.forEach(row => {
                 if(row.Nombre) {
-                    let prom = parseFloat(row.Promiedo.replace(',', '.')) || 0;
-                    html += `<tr><td>${row.Nombre}</td><td>${row.PJ}</td><td>${row.PG}</td><td>${row.PE}</td><td>${row.PP}</td><td>${row.Pts}</td><td data-order="${prom}">${row.Promiedo}</td></tr>`;
+                    let p = parseFloat(row.Promiedo.replace(',', '.')) || 0;
+                    html += `<tr><td>${row.Nombre}</td><td>${row.PJ}</td><td>${row.PG}</td><td>${row.PE}</td><td>${row.PP}</td><td>${row.Pts}</td><td data-order="${p}">${row.Promiedo}</td></tr>`;
                 }
             });
             $('#body-general').html(html);
@@ -48,92 +48,82 @@ function cargarTabla() {
     });
 }
 
-function cargarHistorialCompleto() {
+function cargarPartidosYCronicas() {
     Papa.parse(URL_CRONICAS, { download: true, header: true, complete: function(cronRes) {
         const dicCronicas = {}; 
         cronRes.data.forEach(c => { if(c.Fecha) dicCronicas[c.Fecha.trim()] = c.Cronica; });
 
-        Papa.parse(URL_EQUIPOS, { download: true, complete: function(res) {
+        Papa.parse(URL_EQUIPOS, { download: true, header: false, complete: function(res) {
             const data = res.data; 
-            const cPel = {}, cPech = {}, cPozo = {}; 
-            let tPozo = 0;
             const contenedor = $('#contenedor-fechas').empty();
+            const cPel = {}, cPech = {}, cPozo = {}; let tPozo = 0;
 
-            for (let j = 2; j < data[0].length; j += 4) {
-                const f = data[0][j]; if(!f) continue;
+            const headers = data[0];
+            for (let j = 2; j < headers.length; j += 4) {
+                const f = headers[j]; if (!f) continue;
                 
-                let e1 = [], e2 = [], s1 = 0, s2 = 0, resp = "";
-                
+                let e1 = "", e2 = "", pozoFecha = 0, resp = "", g1 = data[1][j+1], g2 = data[2][j+1];
+                let s1 = (g1 == "1") ? "👑 Ganador" : (g1 == "0" ? "🤝 Empate" : "Perdedor");
+                let s2 = (g2 == "1") ? "👑 Ganador" : (g2 == "0" ? "🤝 Empate" : "Perdedor");
+
                 for (let i = 3; i < data.length; i++) {
-                    const nom = data[i][1], ec = data[i][j-1], pel = data[i][j], pech = data[i][j+1], pz = data[i][j+2];
-                    if(ec == '1') e1.push(nom);
-                    if(ec == '2') e2.push(nom);
-                    if(pel == '1') cPel[nom] = (cPel[nom]||0)+1;
-                    if(pech == '1') cPech[nom] = (cPech[nom]||0)+1;
+                    const n = data[i][1], pel = data[i][j], pech = data[i][j+1], pz = data[i][j+2], eq = data[i][j+3];
+                    if(n && eq == "1") e1 += `<li>${n}</li>`;
+                    if(n && eq == "2") e2 += `<li>${n}</li>`;
+                    if(pel == '1') cPel[n] = (cPel[n]||0)+1;
+                    if(pech == '1') cPech[n] = (cPech[n]||0)+1;
                     if(pz) { 
                         let m = parseFloat(pz.toString().replace(/[^0-9]/g, ''));
-                        if(m){ tPozo += m; cPozo[nom] = (cPozo[nom]||0)+m; resp = nom; } 
+                        if(m){ tPozo += m; cPozo[n] = (cPozo[n]||0)+m; resp = n; pozoFecha += m; } 
                     }
                 }
-                
-                s1 = data[1][j] || 0; s2 = data[2][j] || 0;
                 const cron = dicCronicas[f.trim()] || "Peter no emitió comentarios.";
-
-                contenedor.append(`
-                    <div class="mini-fecha-card" onclick="abrirPartido('${f}', '${e1.join(', ')}', '${e2.join(', ')}', \`${cron}\`, ${s1}, ${s2}, '${resp}')">
-                        ${f}
-                    </div>
-                `);
+                contenedor.append(`<div class="mini-fecha-card" onclick="abrirPartido('${f}', '${e1}', '${e2}', \`${cron}\`, '${s1}', '${s2}', '${pozoFecha}', '${resp}')">${f}</div>`);
             }
-            actualizarTops(cPel, cPech, cPozo, tPozo);
+            renderTops(cPel, '#top-pelota', '⚽');
+            renderTops(cPech, '#top-pechera', '🎽');
+            renderPozo(cPozo, tPozo);
         }});
     }});
     cargarMatriz();
 }
 
-function abrirPartido(fecha, e1, e2, cron, s1, s2, resp) {
-    const html = `
+function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, resp) {
+    $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <div class="match-header">📅 ${fecha}</div>
-                <div class="scoreboard">
-                    <div class="team-col"><strong>EQUIPO 1</strong><div class="player-list">${e1}</div></div>
-                    <div class="score-display">${s1} - ${s2}</div>
-                    <div class="team-col"><strong>EQUIPO 2</strong><div class="player-list">${e2}</div></div>
+                <h3>📅 ${fecha}</h3>
+                <div style="display:flex; justify-content:space-between; text-align:left; font-size:0.8rem;">
+                    <div style="width:48%"><strong style="color:var(--gold)">${s1}</strong><ul>${e1}</ul></div>
+                    <div style="width:48%"><strong style="color:var(--gold)">${s2}</strong><ul>${e2}</ul></div>
                 </div>
-                <div class="match-footer">💰 Responsable: ${resp || 'N/A'}</div>
-                <p class="hint">Toca a Peter para la crónica</p>
-                <img src="peter.png" class="peter-btn" onclick="girarCarta(event)">
+                ${pozo > 0 ? `<p style="color:var(--gold); font-size:0.8rem;">💰 Pozo: $${pozo} (${resp})</p>` : ''}
+                <img src="peter.png" style="width:50px; cursor:pointer; border-radius:50%; border:2px solid var(--gold);" onclick="girarCarta()">
+                <p style="font-size:0.6rem;">Clic en Peter para Crónica</p>
             </div>
-            <div class="card-back" onclick="girarCarta(event)">
-                <div class="cronica-header">✍️ CRÓNICA DE PETER</div>
-                <div class="text-format-mini">${cron}</div>
-                <p class="hint-back">🔄 Toca para volver</p>
+            <div class="card-back" onclick="girarCarta()">
+                <div style="font-family:'Oswald'; color:var(--grass-pitch);">✍️ CRÓNICA</div>
+                <div style="font-size:0.8rem; text-align:left; padding:10px; overflow-y:auto; height:350px;">${cron}</div>
             </div>
         </div>
-    `;
-    $('#detalle-partido-dinamico').html(html);
-    $('#modal-partido').css('display', 'flex').hide().fadeIn();
+    `);
+    $('#modal-partido').css('display', 'flex').fadeIn();
 }
 
-function girarCarta(e) {
-    if(e) e.stopPropagation();
-    $('#flip-card-match').toggleClass('flipped');
-}
+function girarCarta() { $('#flip-card-match').toggleClass('flipped'); }
 
-function actualizarTops(cPel, cPech, cPozo, tPozo) {
-    renderTop3(cPel, '#top-pelota', '⚽');
-    renderTop3(cPech, '#top-pechera', '🎽');
-    let hP = '';
-    Object.entries(cPozo).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=> hP += `<div class="top-item"><span>👤 ${k}</span><span>$${v.toLocaleString()}</span></div>`);
-    hP += `<div class="top-item total-pozo"><strong>TOTAL</strong><strong>$${tPozo.toLocaleString()}</strong></div>`;
-    $('#top-pozo').html(hP);
-}
-
-function renderTop3(d, s, icon) {
+function renderTops(d, s, i) {
     const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]).slice(0,3);
-    let h = ''; sorted.forEach(x => h += `<div class="top-item"><span>${x[0]}</span> <span>${x[1]} ${icon}</span></div>`);
+    const medals = ['🥇', '🥈', '🥉'];
+    let h = ''; sorted.forEach((x, idx) => h += `<div class="top-item"><span>${medals[idx]} ${x[0]}</span> <span>${x[1]} ${i}</span></div>`);
     $(s).html(h);
+}
+
+function renderPozo(cPozo, tPozo) {
+    let h = '';
+    Object.entries(cPozo).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=> h += `<div class="top-item"><span>👤 ${k}</span><span>$${v}</span></div>`);
+    h += `<div class="top-item" style="border-top:1px solid var(--gold);"><strong>TOTAL</strong><strong>$${tPozo}</strong></div>`;
+    $('#top-pozo').html(h);
 }
 
 function cargarMatriz() {
@@ -164,8 +154,15 @@ function iniciarContador() {
 function actualizarClima() {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`)
     .then(r => r.json()).then(data => {
-        const d = data.list[0];
-        $('#clima-fecha').text('PRÓXIMO MIÉRCOLES');
-        $('.clima-text').text(`${Math.round(d.main.temp)}°C - ${d.weather[0].description.toUpperCase()}`);
+        const hoy = new Date();
+        const diasHastaMiercoles = (3 - hoy.getDay() + 7) % 7;
+        const fechaMiercoles = new Date(hoy);
+        fechaMiercoles.setDate(hoy.getDate() + (diasHastaMiercoles === 0 && hoy.getHours() >= 19 ? 7 : diasHastaMiercoles));
+        
+        const targetDate = fechaMiercoles.toISOString().split('T')[0];
+        const pronostico = data.list.find(i => i.dt_txt.includes(targetDate) && i.dt_txt.includes("18:00:00")) || data.list[0];
+        
+        $('#clima-fecha').text(fechaMiercoles.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'numeric' }).toUpperCase());
+        $('.clima-text').text(`${Math.round(pronostico.main.temp)}°C - ${pronostico.weather[0].description.toUpperCase()}`);
     });
 }

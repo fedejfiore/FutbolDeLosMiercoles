@@ -9,28 +9,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <nav class="floating-menu top">
         <a href="#inicio">🏠</a>
         <a href="#top3">🏆</a>
         <a href="#posiciones">📊</a>
         <a href="#partidos">📅</a>
-        <a href="#sinergia">🔥</a>
     </nav>
 
     <header id="inicio" class="hero-section">
         <div class="hero-content">
-            <img src="logo.png" alt="Logo" style="width:300px">
+            <img src="logo.png" alt="Logo" class="main-logo-v2">
+            
             <div id="clima-proximo" class="clima-container">
-                <span id="clima-fecha" class="clima-date">CONSULTANDO...</span><br>
-                <span class="clima-text">Cargando pronóstico...</span>
+                <span class="clima-icon">⌛</span>
+                <div class="clima-info">
+                    <span id="clima-fecha" class="clima-date">CONSULTANDO...</span>
+                    <span class="clima-text">Cargando pronóstico...</span>
+                </div>
             </div>
+
             <div class="countdown-argentina">
                 <span class="label">MUNDIAL 2026</span>
-                <div id="countdown" class="timer">--d --h</div>
+                <div id="countdown" class="timer">Cargando...</div>
             </div>
+            
             <div class="video-link-container">
-                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
+                <a href="https://www.sportsreel.com.ar" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
                 <button id="audio-control" class="btn-premium-v2">▶️ EL ASADO</button>
                 <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
             </div>
@@ -41,7 +45,7 @@
         <div class="container">
             <section id="top3" class="stats-grid">
                 <div class="stat-box-pitch"><h3>⚽ PELOTA</h3><div id="top-pelota"></div></div>
-                <div class="stat-box-pitch"><h3>💰 POZO</h3><div id="top-pozo"></div></div>
+                <div class="stat-box-pitch"><h3>💰 POZO DETALLADO</h3><div id="top-pozo"></div></div>
                 <div class="stat-box-pitch"><h3>🎽 PECHERA</h3><div id="top-pechera"></div></div>
             </section>
 
@@ -49,14 +53,16 @@
                 <h2 class="centered-title active">🏆 POSICIONES</h2>
                 <div class="collapsible-content" style="display:block;">
                     <table id="tabla-general" class="display" style="width:100%">
-                        <thead><tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr></thead>
+                        <thead>
+                            <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
+                        </thead>
                         <tbody id="body-general"></tbody>
                     </table>
                 </div>
             </section>
 
             <section id="partidos" class="card-section">
-                <h2 class="centered-title">📅 HISTORIAL</h2>
+                <h2 class="centered-title">📅 HISTORIAL DE PARTIDOS</h2>
                 <div class="collapsible-content">
                     <div id="contenedor-fechas" class="mini-card-grid"></div>
                 </div>
@@ -74,7 +80,7 @@
 
     <div id="modal-partido" class="modal">
         <div class="modal-content-match">
-            <span class="close-modal" style="position:absolute; top:-40px; right:0; color:white; font-size:30px; cursor:pointer;">&times;</span>
+            <span class="close-modal">&times;</span>
             <div id="detalle-partido-dinamico"></div>
         </div>
     </div>
