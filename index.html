@@ -10,16 +10,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#001220">
-    <meta name="apple-mobile-web-app-capable" content="yes">
 </head>
 <body>
 
     <nav class="floating-menu top">
         <a href="#inicio">🏠</a>
-        <a href="#top3">🏆</a>
+        <a href="#anotarse">⚽</a>
         <a href="#posiciones">📊</a>
         <a href="#partidos">📅</a>
-        <a href="#sinergia">🔥</a>
     </nav>
 
     <header id="inicio" class="hero-section">
@@ -28,23 +26,21 @@
             
             <div id="clima-proximo" class="clima-container">
                 <span class="clima-icon">⌛</span>
-                <span class="clima-text">Consultando clima...</span>
+                <div class="clima-info">
+                    <span id="clima-fecha" class="clima-date">CONSULTANDO...</span>
+                    <span class="clima-text">Cargando pronóstico...</span>
+                </div>
             </div>
 
             <div class="countdown-argentina">
-                <div class="arg-flag-strip"></div>
                 <span class="label">MUNDIAL 2026</span>
-                <div id="countdown" class="timer">Cargando...</div>
-                <div class="arg-flag-strip"></div>
+                <div id="countdown" class="timer">--d --h</div>
             </div>
             
             <div class="video-link-container">
-                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">
-                    🎥 REPETICIONES
-                </a>
+                <a href="https://www.sportsreel.com.ar" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
                 <button id="audio-control" class="btn-premium-v2">
-                    <span class="icon">▶️</span> 
-                    <span class="text">EL ASADO</span>
+                    <span class="icon">▶️</span> <span class="text">EL ASADO</span>
                 </button>
                 <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
             </div>
@@ -53,30 +49,47 @@
 
     <div class="grass-background">
         <div class="container">
+            
+            <section id="anotarse" class="card-section">
+                <h2 class="centered-title active">📝 PRÓXIMO PARTIDO</h2>
+                <div class="collapsible-content" style="display: block;">
+                    <div class="registration-box">
+                        <div class="input-group">
+                            <input type="text" id="input-nombre" placeholder="Tu nombre..." autocomplete="off">
+                            <button id="btn-confirmar" class="btn-confirm">ESTARÉ AHÍ ⚽</button>
+                        </div>
+                        <div id="autocomplete-results" class="autocomplete-list"></div>
+                    </div>
+                    <div class="players-list-container">
+                        <h3>ANOTADOS (<span id="count-anotados">0</span>/10)</h3>
+                        <ul id="lista-anotados" class="players-list">
+                            </ul>
+                    </div>
+                </div>
+            </section>
+
             <section id="top3" class="stats-grid">
                 <div class="stat-box-pitch">
                     <h3>⚽ DUEÑOS DE LA PELOTA</h3>
-                    <div id="top-pelota" class="top-list-content"></div>
+                    <div id="top-pelota"></div>
                 </div>
                 <div class="stat-box-pitch">
-                    <h3>💰 POZO</h3>
+                    <h3>💰 POZO ACUMULADO</h3>
                     <div id="top-pozo"></div>
                 </div>
                 <div class="stat-box-pitch">
                     <h3>🎽 SEÑORES DE LA PECHERA</h3>
-                    <div id="top-pechera" class="top-list-content"></div>
+                    <div id="top-pechera"></div>
                 </div>
             </section>
 
             <section id="posiciones" class="card-section">
-                <h2 class="centered-title active">🏆 TABLA DE POSICIONES</h2>
-                <div class="collapsible-content" style="display: block;">
+                <h2 class="centered-title">🏆 TABLA DE POSICIONES</h2>
+                <div class="collapsible-content">
                     <table id="tabla-general" class="display cell-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Nombre</th>
-                                <th>PJ</th> <th>PG</th> <th>PE</th> <th>PP</th> <th>Pts</th>
-                                <th>Promedio</th>
+                                <th>Nombre</th> <th>PJ</th> <th>PG</th> <th>PE</th> <th>PP</th> <th>Pts</th> <th>Promedio</th>
                             </tr>
                         </thead>
                         <tbody id="body-general"></tbody>
@@ -85,26 +98,18 @@
             </section>
 
             <section id="partidos" class="card-section">
-                <h2 class="centered-title">📅 HISTORIAL DE PARTIDOS</h2>
+                <h2 class="centered-title">📅 HISTORIAL</h2>
                 <div class="collapsible-content">
                     <div id="contenedor-fechas" class="mini-card-grid"></div>
-                </div>
-            </section>
-
-            <section id="sinergia" class="card-section">
-                <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
-                <div class="collapsible-content">
-                    <div id="heatmap-container"></div>
                 </div>
             </section>
         </div>
     </div>
 
     <div id="modal-partido" class="modal"><div class="modal-content-match"><span class="close-modal">&times;</span><div id="detalle-partido-dinamico"></div></div></div>
-    <div id="modal-jugador" class="modal"><div class="modal-content-player"><span class="close-modal">&times;</span><div id="detalle-jugador"></div></div></div>
-
+    
     <footer>
-        <img src="trofeo.png" alt="Trofeo" class="footer-trofeo">
+        <img src="trofeo.png" class="footer-trofeo">
         <p>AÑO MUNDIALISTA 2026</p>
     </footer>
 
