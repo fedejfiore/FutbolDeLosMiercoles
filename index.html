@@ -1,64 +1,104 @@
-<nav class="floating-menu top">
-    <a href="#inicio">🏠</a>
-    <a href="#anotarse">⚽</a>
-    <a href="#posiciones">📊</a>
-    <a href="#partidos">📅</a>
-</nav>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fútbol Miércoles 19HS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<header id="inicio" class="hero-section">
-    <div class="hero-content">
-        <img src="logo.png" alt="Logo" class="main-logo-v2">
-        <div id="clima-proximo" class="clima-container">
-            <span class="clima-icon">⌛</span>
-            <div class="clima-info">
-                <span id="clima-fecha" class="clima-date">CONSULTANDO...</span>
-                <span class="clima-text">Cargando pronóstico...</span>
+    <nav class="floating-menu top">
+        <a href="#inicio">🏠</a>
+        <a href="#posiciones">📊</a>
+        <a href="#partidos">📅</a>
+        <a href="#sinergia">🔥</a>
+    </nav>
+
+    <header id="inicio" class="hero-section">
+        <div class="hero-content">
+            <img src="logo.png" alt="Logo" class="main-logo-v2">
+            
+            <div id="clima-proximo" class="clima-container">
+                <span class="clima-icon">⌛</span>
+                <div class="clima-info">
+                    <span id="clima-fecha" class="clima-date" style="display:block; font-size:0.7rem; opacity:0.8;">CONSULTANDO...</span>
+                    <span class="clima-text">Cargando pronóstico...</span>
+                </div>
+            </div>
+
+            <div class="countdown-argentina">
+                <span class="label">MUNDIAL 2026</span>
+                <div id="countdown" class="timer">Cargando...</div>
+            </div>
+            
+            <div class="video-link-container">
+                <a href="https://www.sportsreel.com.ar" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
+                <button id="audio-control" class="btn-premium-v2">▶️ EL ASADO</button>
+                <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
             </div>
         </div>
-        <div class="countdown-argentina">
-            <span class="label">MUNDIAL 2026</span>
-            <div id="countdown" class="timer">--d --h</div>
-        </div>
-        <div class="video-link-container">
-            <a href="https://www.sportsreel.com.ar" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
-            <button id="audio-control" class="btn-premium-v2">▶️ EL ASADO</button>
-            <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
+    </header>
+
+    <div class="grass-background">
+        <div class="container">
+            <section id="anotarse" class="card-section">
+                <h2 class="centered-title active">📝 ANOTARSE</h2>
+                <div class="collapsible-content" style="display: block; padding: 20px;">
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="input-nombre" placeholder="Tu nombre..." style="flex:1; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                        <button id="btn-confirmar" class="btn-premium-v2" style="flex: none; min-width: 100px;">VOY!</button>
+                    </div>
+                    <ul id="lista-anotados" style="margin-top: 15px; padding: 0; list-style: none;"></ul>
+                </div>
+            </section>
+
+            <section id="top3" class="stats-grid">
+                <div class="stat-box-pitch"><h3>⚽ PELOTA</h3><div id="top-pelota"></div></div>
+                <div class="stat-box-pitch"><h3>💰 POZO</h3><div id="top-pozo"></div></div>
+                <div class="stat-box-pitch"><h3>🎽 PECHERA</h3><div id="top-pechera"></div></div>
+            </section>
+
+            <section id="posiciones" class="card-section">
+                <h2 class="centered-title">🏆 POSICIONES</h2>
+                <div class="collapsible-content">
+                    <table id="tabla-general" class="display" style="width:100%">
+                        <thead>
+                            <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
+                        </thead>
+                        <tbody id="body-general"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="partidos" class="card-section">
+                <h2 class="centered-title">📅 HISTORIAL</h2>
+                <div class="collapsible-content">
+                    <div id="contenedor-fechas" class="mini-card-grid"></div>
+                </div>
+            </section>
+
+            <section id="sinergia" class="card-section">
+                <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
+                <div class="collapsible-content">
+                    <div id="heatmap-container"></div>
+                </div>
+            </section>
         </div>
     </div>
-</header>
 
-<div class="grass-background">
-    <div class="container">
-        <section id="top3" class="stats-grid">
-            <div class="stat-box-pitch"><h3>⚽ PELOTA</h3><div id="top-pelota"></div></div>
-            <div class="stat-box-pitch"><h3>💰 POZO</h3><div id="top-pozo"></div></div>
-            <div class="stat-box-pitch"><h3>🎽 PECHERA</h3><div id="top-pechera"></div></div>
-        </section>
+    <div id="modal-partido" class="modal"><div class="modal-content-match"><div id="detalle-partido-dinamico"></div></div></div>
 
-        <section id="posiciones" class="card-section">
-            <h2 class="centered-title active">🏆 POSICIONES</h2>
-            <div class="collapsible-content" style="display:block;">
-                <table id="tabla-general" class="display" style="width:100%">
-                    <thead>
-                        <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
-                    </thead>
-                    <tbody id="body-general"></tbody>
-                </table>
-            </div>
-        </section>
+    <footer>
+        <img src="trofeo.png" class="footer-trofeo">
+        <p>AÑO MUNDIALISTA 2026</p>
+    </footer>
 
-        <section id="partidos" class="card-section">
-            <h2 class="centered-title">📅 HISTORIAL</h2>
-            <div class="collapsible-content">
-                <div id="contenedor-fechas" class="mini-card-grid"></div>
-            </div>
-        </section>
-
-        <section id="sinergia" class="card-section">
-            <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
-            <div class="collapsible-content">
-                <div id="heatmap-container"></div>
-            </div>
-        </section>
-    </div>
-</div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
