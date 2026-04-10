@@ -12,6 +12,31 @@ $(document).ready(function() {
     cargarMatriz();
     iniciarContador();
     $('.close-modal').click(() => $('#modal-partido, #modal-jugador').fadeOut());
+
+    // --- LÓGICA DEL REPRODUCTOR DE AUDIO ---
+    const audio = document.getElementById('main-audio');
+    const audioBtn = $('#audio-control');
+
+    audioBtn.on('click', function() {
+        if (audio.paused) {
+            audio.play();
+            audioBtn.addClass('playing');
+            audioBtn.find('.icon').text('⏸️');
+            audioBtn.find('.text').text('REPRODUCIENDO...');
+        } else {
+            audio.pause();
+            audioBtn.removeClass('playing');
+            audioBtn.find('.icon').text('▶️');
+            audioBtn.find('.text').text('DÓNDE ESTÁN LOS ASADOS');
+        }
+    });
+
+    audio.onended = function() {
+        audioBtn.removeClass('playing');
+        audioBtn.find('.icon').text('▶️');
+        audioBtn.find('.text').text('DÓNDE ESTÁN LOS ASADOS');
+    };
+    // ---------------------------------------
 });
 
 function iniciarContador() {
@@ -147,7 +172,6 @@ function verJugador(nombre) {
     $('#modal-jugador').fadeIn();
 }
 
-// Funciones auxiliares
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
     let pozoHtml = (pozo && pozo != "0") ? `<div style="margin-top:15px; border-top:1px solid #eee; padding-top:10px; color:#d4af37;"><strong>💰 Pozo del partido:</strong> $${pozo} (${responsable})</div>` : "";
     $('#detalle-partido-dinamico').html(` <div class="flip-card-inner" id="flip-card-match"> <div class="card-front"> <h3 style="color:#1a3c1a; margin-bottom:10px; font-family:'Oswald'">📅 ${fecha}</h3> <div style="display:flex; justify-content:space-between; text-align:left;"> <div style="width:48%"> <strong style="font-size:0.75rem; color:#d4af37">${s1}</strong> <ul class="lista-equipos-modal">${e1}</ul> </div> <div style="width:48%"> <strong style="font-size:0.75rem; color:#d4af37">${s2}</strong> <ul class="lista-equipos-modal">${e2}</ul> </div> </div> ${pozoHtml} <div class="footer-card-click" onclick="girarCarta()"> <img src="peter.png" class="img-autor-btn" onerror="this.src='https://via.placeholder.com/50'"> <p style="font-size:0.7rem; color:gray; margin-top:5px;">Clic en Peter para crónica 🔄</p> </div> </div> <div class="card-back" onclick="girarCarta()"> <div class="header-cronica"> <img src="peter.png" class="img-autor-mini" onerror="this.src='https://via.placeholder.com/40'"> <strong>CRÓNICAS DE PETER</strong> </div> <div class="text-format-mini">${cron || "Peter no emitio comentarios al respecto.."}</div> <p class="hint-back">🔄 Toca para volver</p> </div> </div> `); $('#modal-partido').fadeIn();

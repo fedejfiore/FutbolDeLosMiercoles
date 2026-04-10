@@ -288,3 +288,36 @@ CSS
     overflow-wrap: break-word;  /* Rompe palabras largas si es necesario */
     word-break: break-word;     /* Refuerzo para navegadores antiguos */
 }
+
+.audio-player-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-audio-player {
+    background: linear-gradient(45deg, #2c3e50, #000000);
+    color: var(--white);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid var(--gold);
+    font-family: 'Oswald';
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.btn-audio-player:hover {
+    transform: scale(1.03);
+    border-color: var(--white);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.btn-audio-player.playing {
+    background: linear-gradient(45deg, #d4af37, #b8860b);
+    color: var(--dark-navy);
+}
