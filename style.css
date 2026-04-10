@@ -1,4 +1,3 @@
-/* 1. VARIABLES Y RESET */
 :root {
     --grass-pitch: #1a3c1a;
     --grass-light: #2d5a27;
@@ -11,16 +10,15 @@
 * { box-sizing: border-box; }
 body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dark-navy); color: #333; overflow-x: hidden; }
 
-/* 2. MENÚ SUPERIOR */
+/* MENÚ */
 .floating-menu.top {
     position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
     background: rgba(0, 18, 32, 0.95); padding: 12px 30px; border-radius: 50px;
     display: flex; gap: 25px; z-index: 10000; border: 1px solid var(--gold);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
 }
-.floating-menu a { text-decoration: none; font-size: 1.8rem; transition: 0.3s; }
+.floating-menu a { text-decoration: none; font-size: 1.8rem; }
 
-/* 3. HERO & CLIMA */
+/* HERO & CLIMA */
 .hero-section {
     background: linear-gradient(rgba(0,18,32,0.8), rgba(0,18,32,0.8)), 
                 url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
@@ -33,6 +31,7 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
     border: 1px solid var(--gold); border-radius: 12px; padding: 10px 25px;
     margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; color: white;
 }
+.clima-date { display: block; font-size: 0.75rem; opacity: 0.8; font-family: 'Oswald'; }
 
 .countdown-argentina {
     background: var(--white); border-radius: 15px; padding: 15px 40px;
@@ -40,40 +39,50 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dar
 }
 .countdown-argentina .timer { font-family: 'Oswald'; font-size: 3rem; color: var(--arg-blue); font-weight: bold; }
 
-/* 4. BOTONES */
-.video-link-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
 .btn-premium-v2 {
     background: linear-gradient(45deg, var(--gold), #b8860b); color: var(--dark-navy) !important;
-    padding: 14px 28px; border-radius: 10px; font-family: 'Oswald'; font-weight: bold;
-    border: none; cursor: pointer; text-decoration: none; text-transform: uppercase;
+    padding: 14px 28px; border-radius: 10px; font-family: 'Oswald'; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; text-decoration: none;
 }
 
-/* 5. TOPS (HORIZONTAL) */
+/* TOPS HORIZONTALES */
 .stats-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px; max-width: 1200px; margin: 0 auto 40px;
 }
 .stat-box-pitch {
     background: linear-gradient(135deg, #1e4d2b 0%, #2d5a27 100%);
-    border: 2px solid var(--gold); border-radius: 20px; padding: 25px;
-    color: var(--white); text-align: center; position: relative; overflow: hidden;
+    border: 2px solid var(--gold); border-radius: 20px; padding: 25px; color: var(--white); text-align: center; position: relative; overflow: hidden;
 }
 .stat-box-pitch::before {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 80px);
 }
-.top-item { display: flex; justify-content: space-between; padding: 10px; background: rgba(0,0,0,0.2); margin-bottom: 8px; border-radius: 8px; font-family: 'Oswald'; position: relative; z-index: 1; }
+.top-item { display: flex; justify-content: space-between; padding: 8px; background: rgba(0,0,0,0.2); margin-bottom: 5px; border-radius: 5px; font-family: 'Oswald'; position: relative; z-index: 1; }
 
-/* 6. TABLAS Y SECCIONES */
+/* SECCIONES GRASS */
 .grass-background { background-color: var(--grass-pitch); padding: 40px 15px 100px; min-height: 100vh; }
 .card-section { background: white; border-radius: 20px; padding: 25px; margin: 0 auto 30px; max-width: 1000px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
-.centered-title { cursor: pointer; text-align: center; font-family: 'Oswald'; color: var(--grass-pitch); margin: 0; }
-.collapsible-content { display: none; padding-top: 20px; }
+.centered-title { cursor: pointer; text-align: center; font-family: 'Oswald'; color: var(--grass-pitch); margin-bottom: 0; }
+.collapsible-content { display: none; padding-top: 25px; }
 
-/* 7. FOOTER (LA COPA) */
-footer { padding: 60px 20px; text-align: center; color: white; }
+/* HISTORIAL GRID */
+.mini-card-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;
+}
+.mini-fecha-card {
+    background: var(--dark-navy); color: white; border: 1px solid var(--gold); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; font-family: 'Oswald';
+}
+
+/* MATRIZ CON SCROLL */
+.matrix-scroll-wrapper { width: 100%; overflow-x: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 8px; }
+.matrix-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.matrix-table td { border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 0.85rem; }
+.search-input-matriz { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: 'Roboto'; }
+
+/* FOOTER COPA */
+footer { text-align: center; padding: 40px; color: white; }
 .footer-trofeo { width: 80px; filter: drop-shadow(0 0 15px var(--gold)); }
 
-/* MODALES */
+/* MODAL */
 .modal { display: none; position: fixed !important; z-index: 999999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
-.modal-content-match { position: relative; width: 95%; max-width: 400px; height: 550px; }
+.modal-content-match { position: relative; width: 95%; max-width: 400px; background: white; border-radius: 20px; padding: 20px; }

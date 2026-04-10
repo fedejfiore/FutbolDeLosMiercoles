@@ -7,7 +7,7 @@ const WEATHER_API_KEY = 'f31bb7ce57b0669e92e9827acfe293ec';
 
 $(document).ready(function() {
     cargarTabla();
-    cargarHistorial();
+    cargarHistorialCompleto();
     actualizarClima();
     iniciarContador();
 
@@ -20,6 +20,16 @@ $(document).ready(function() {
         if (audio.paused) { audio.play(); $(this).text('⏸️ EL ASADO'); } 
         else { audio.pause(); $(this).text('▶️ EL ASADO'); }
     });
+
+    $('.close-modal').click(() => $('.modal').fadeOut());
+
+    // Buscador Matriz
+    $('#busqueda-matriz').on('keyup', function() {
+        let val = $(this).val().toLowerCase();
+        $(".matrix-table tr").filter(function(i) {
+            if(i>0) $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
+        });
+    });
 });
 
 function cargarTabla() {
@@ -29,8 +39,8 @@ function cargarTabla() {
             let html = '';
             res.data.forEach(row => {
                 if(row.Nombre) {
-                    let p = parseFloat(row.Promiedo.replace(',', '.')) || 0;
-                    html += `<tr><td>${row.Nombre}</td><td>${row.PJ}</td><td>${row.PG}</td><td>${row.PE}</td><td>${row.PP}</td><td>${row.Pts}</td><td data-order="${p}">${row.Promiedo}</td></tr>`;
+                    let prom = parseFloat(row.Promiedo.replace(',', '.')) || 0;
+                    html += `<tr><td>${row.Nombre}</td><td>${row.PJ}</td><td>${row.PG}</td><td>${row.PE}</td><td>${row.PP}</td><td>${row.Pts}</td><td data-order="${prom}">${row.Promiedo}</td></tr>`;
                 }
             });
             $('#body-general').html(html);
@@ -39,24 +49,33 @@ function cargarTabla() {
     });
 }
 
-function cargarHistorial() {
+function cargarHistorialCompleto() {
     Papa.parse(URL_CRONICAS, { download: true, header: true, complete: function(cronRes) {
         const dic = {}; cronRes.data.forEach(c => dic[c.Fecha] = c.Cronica);
         Papa.parse(URL_EQUIPOS, { download: true, complete: function(res) {
             const data = res.data; const cPel = {}, cPech = {}, cPozo = {}; let tPozo = 0;
+            const contenedor = $('#contenedor-fechas').empty();
+
             for (let j = 2; j < data[0].length; j += 4) {
                 const f = data[0][j]; if(!f) continue;
+                contenedor.append(`<div class="mini-fecha-card" onclick="alert('Fecha: ${f}')">${f}</div>`);
                 for (let i = 3; i < data.length; i++) {
                     const n = data[i][1], pel = data[i][j], pech = data[i][j+1], pz = data[i][j+2];
                     if(pel=='1') cPel[n] = (cPel[n]||0)+1;
                     if(pech=='1') cPech[n] = (cPech[n]||0)+1;
-                    if(pz) { let m = parseFloat(pz.replace(/[^0-9]/g, '')); if(m){ tPozo += m; cPozo[n] = (cPozo[n]||0)+m; } }
+                    if(pz) { 
+                        let m = parseFloat(pz.toString().replace(/[^0-9]/g, ''));
+                        if(m){ tPozo += m; cPozo[n] = (cPozo[n]||0)+m; } 
+                    }
                 }
-                $('#contenedor-fechas').append(`<div class="mini-fecha-card" style="background:#001220; color:white; padding:10px; border-radius:8px; cursor:pointer; border:1px solid #d4af37; text-align:center;">${f}</div>`);
             }
             renderTops(cPel, '#top-pelota', '⚽');
             renderTops(cPech, '#top-pechera', '🎽');
-            $('#top-pozo').html(`TOTAL ACUMULADO: $${tPozo}`);
+            
+            let hPozo = '';
+            Object.entries(cPozo).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=> hPozo += `<div class="top-item"><span>👤 ${k}</span><span>$${v}</span></div>`);
+            hPozo += `<div class="top-item" style="border-top:1px solid #d4af37; margin-top:5px;"><strong>TOTAL</strong><strong>$${tPozo}</strong></div>`;
+            $('#top-pozo').html(hPozo);
         }});
     }});
     cargarMatriz();
@@ -64,12 +83,12 @@ function cargarHistorial() {
 
 function cargarMatriz() {
     Papa.parse(URL_MATRIZ, { download: true, complete: function(res) {
-        let h = '<table class="matrix-table" style="width:100%; border-collapse:collapse;">';
+        let h = '<table class="matrix-table">';
         res.data.forEach((r, i) => {
             h += '<tr>';
             r.forEach((c, j) => {
                 let s = (i>0 && j>0 && parseInt(c)>0) ? `style="background:rgba(39,174,96,${Math.min(c/5,1)});color:white;"` : "";
-                h += `<td ${s} style="border:1px solid #ddd; padding:8px;">${c||''}</td>`;
+                h += `<td ${s}>${c||''}</td>`;
             });
             h += '</tr>';
         });
@@ -94,9 +113,10 @@ function iniciarContador() {
 }
 
 function actualizarClima() {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`)
-    .then(r => r.json()).then(d => {
-        $('#clima-fecha').text('PRÓXIMO PARTIDO');
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`;
+    fetch(url).then(r => r.json()).then(data => {
+        const d = data.list[0];
+        $('#clima-fecha').text('PRÓXIMO MIÉRCOLES');
         $('.clima-text').text(`${Math.round(d.main.temp)}°C - ${d.weather[0].description.toUpperCase()}`);
     });
 }
