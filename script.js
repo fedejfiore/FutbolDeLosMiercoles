@@ -15,15 +15,14 @@ $(document).ready(function() {
         $(this).toggleClass('active').next('.collapsible-content').slideToggle();
     });
 
-    const audio = document.getElementById('main-audio');
     $('#audio-control').click(function() {
+        const audio = document.getElementById('main-audio');
         if (audio.paused) { audio.play(); $(this).text('⏸️ EL ASADO'); } 
         else { audio.pause(); $(this).text('▶️ EL ASADO'); }
     });
 
     $('.close-modal').click(() => $('.modal').fadeOut());
-
-    // Buscador Matriz
+    
     $('#busqueda-matriz').on('keyup', function() {
         let val = $(this).val().toLowerCase();
         $(".matrix-table tr").filter(function(i) {
@@ -51,34 +50,90 @@ function cargarTabla() {
 
 function cargarHistorialCompleto() {
     Papa.parse(URL_CRONICAS, { download: true, header: true, complete: function(cronRes) {
-        const dic = {}; cronRes.data.forEach(c => dic[c.Fecha] = c.Cronica);
+        const dicCronicas = {}; 
+        cronRes.data.forEach(c => { if(c.Fecha) dicCronicas[c.Fecha.trim()] = c.Cronica; });
+
         Papa.parse(URL_EQUIPOS, { download: true, complete: function(res) {
-            const data = res.data; const cPel = {}, cPech = {}, cPozo = {}; let tPozo = 0;
+            const data = res.data; 
+            const cPel = {}, cPech = {}, cPozo = {}; 
+            let tPozo = 0;
             const contenedor = $('#contenedor-fechas').empty();
 
             for (let j = 2; j < data[0].length; j += 4) {
                 const f = data[0][j]; if(!f) continue;
-                contenedor.append(`<div class="mini-fecha-card" onclick="alert('Fecha: ${f}')">${f}</div>`);
+                
+                let e1 = [], e2 = [], s1 = 0, s2 = 0, resp = "";
+                
                 for (let i = 3; i < data.length; i++) {
-                    const n = data[i][1], pel = data[i][j], pech = data[i][j+1], pz = data[i][j+2];
-                    if(pel=='1') cPel[n] = (cPel[n]||0)+1;
-                    if(pech=='1') cPech[n] = (cPech[n]||0)+1;
+                    const nom = data[i][1], ec = data[i][j-1], pel = data[i][j], pech = data[i][j+1], pz = data[i][j+2];
+                    if(ec == '1') e1.push(nom);
+                    if(ec == '2') e2.push(nom);
+                    if(pel == '1') cPel[nom] = (cPel[nom]||0)+1;
+                    if(pech == '1') cPech[nom] = (cPech[nom]||0)+1;
                     if(pz) { 
                         let m = parseFloat(pz.toString().replace(/[^0-9]/g, ''));
-                        if(m){ tPozo += m; cPozo[n] = (cPozo[n]||0)+m; } 
+                        if(m){ tPozo += m; cPozo[nom] = (cPozo[nom]||0)+m; resp = nom; } 
                     }
                 }
+                
+                s1 = data[1][j] || 0; s2 = data[2][j] || 0;
+                const cron = dicCronicas[f.trim()] || "Peter no emitió comentarios.";
+
+                contenedor.append(`
+                    <div class="mini-fecha-card" onclick="abrirPartido('${f}', '${e1.join(', ')}', '${e2.join(', ')}', \`${cron}\`, ${s1}, ${s2}, '${resp}')">
+                        ${f}
+                    </div>
+                `);
             }
-            renderTops(cPel, '#top-pelota', '⚽');
-            renderTops(cPech, '#top-pechera', '🎽');
-            
-            let hPozo = '';
-            Object.entries(cPozo).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=> hPozo += `<div class="top-item"><span>👤 ${k}</span><span>$${v}</span></div>`);
-            hPozo += `<div class="top-item" style="border-top:1px solid #d4af37; margin-top:5px;"><strong>TOTAL</strong><strong>$${tPozo}</strong></div>`;
-            $('#top-pozo').html(hPozo);
+            actualizarTops(cPel, cPech, cPozo, tPozo);
         }});
     }});
     cargarMatriz();
+}
+
+function abrirPartido(fecha, e1, e2, cron, s1, s2, resp) {
+    const html = `
+        <div class="flip-card-inner" id="flip-card-match">
+            <div class="card-front">
+                <div class="match-header">📅 ${fecha}</div>
+                <div class="scoreboard">
+                    <div class="team-col"><strong>EQUIPO 1</strong><div class="player-list">${e1}</div></div>
+                    <div class="score-display">${s1} - ${s2}</div>
+                    <div class="team-col"><strong>EQUIPO 2</strong><div class="player-list">${e2}</div></div>
+                </div>
+                <div class="match-footer">💰 Responsable: ${resp || 'N/A'}</div>
+                <p class="hint">Toca a Peter para la crónica</p>
+                <img src="peter.png" class="peter-btn" onclick="girarCarta(event)">
+            </div>
+            <div class="card-back" onclick="girarCarta(event)">
+                <div class="cronica-header">✍️ CRÓNICA DE PETER</div>
+                <div class="text-format-mini">${cron}</div>
+                <p class="hint-back">🔄 Toca para volver</p>
+            </div>
+        </div>
+    `;
+    $('#detalle-partido-dinamico').html(html);
+    $('#modal-partido').css('display', 'flex').hide().fadeIn();
+}
+
+function girarCarta(e) {
+    if(e) e.stopPropagation();
+    $('#flip-card-match').toggleClass('flipped');
+}
+
+function actualizarTops(cPel, cPech, cPozo, tPozo) {
+    renderTop3(cPel, '#top-pelota', '⚽');
+    renderTop3(cPech, '#top-pechera', '🎽');
+    let hP = '';
+    Object.entries(cPozo).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=> hP += `<div class="top-item"><span>👤 ${k}</span><span>$${v.toLocaleString()}</span></div>`);
+    hP += `<div class="top-item total-pozo"><strong>TOTAL</strong><strong>$${tPozo.toLocaleString()}</strong></div>`;
+    $('#top-pozo').html(hP);
+}
+
+function renderTop3(d, s, icon) {
+    const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    let h = ''; sorted.forEach(x => h += `<div class="top-item"><span>${x[0]}</span> <span>${x[1]} ${icon}</span></div>`);
+    $(s).html(h);
 }
 
 function cargarMatriz() {
@@ -96,12 +151,6 @@ function cargarMatriz() {
     }});
 }
 
-function renderTops(d, s, i) {
-    const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]).slice(0,3);
-    let h = ''; sorted.forEach(x => h += `<div class="top-item"><span>${x[0]}</span> <span>${x[1]} ${i}</span></div>`);
-    $(s).html(h);
-}
-
 function iniciarContador() {
     const meta = new Date("June 11, 2026 16:00:00").getTime();
     setInterval(() => {
@@ -113,8 +162,8 @@ function iniciarContador() {
 }
 
 function actualizarClima() {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`;
-    fetch(url).then(r => r.json()).then(data => {
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`)
+    .then(r => r.json()).then(data => {
         const d = data.list[0];
         $('#clima-fecha').text('PRÓXIMO MIÉRCOLES');
         $('.clima-text').text(`${Math.round(d.main.temp)}°C - ${d.weather[0].description.toUpperCase()}`);
