@@ -60,16 +60,17 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     justify-content: center; 
     align-items: center; 
     padding: 20px; 
+    overflow-y: auto; /* Permite scroll si la pantalla es muy pequeña */
 }
 
-/* Contenedor de la tarjeta */
+/* Contenedor 3D: ALTURA FIJA para evitar que se rompa al girar */
 .modal-content-match { 
     width: 95%; 
-    max-width: 450px; /* Un poco más ancha para legibilidad */
-    height: 80vh; 
-    min-height: 550px;
+    max-width: 450px; 
+    height: 600px; /* Altura estable para que el blanco llene todo */
     position: relative; 
-    perspective: 1000px; /* Necesario para el efecto 3D */
+    perspective: 1000px; 
+    margin: auto;
 }
 
 .flip-card-inner { 
@@ -80,74 +81,69 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     transform-style: preserve-3d; 
 }
 
-.flip-card-inner.flipped { 
-    transform: rotateY(180deg); 
-}
+.flip-card-inner.flipped { transform: rotateY(180deg); }
 
-/* CARAS DE LA TARJETA */
 .card-front, .card-back { 
-    position: absolute; /* Deben estar una sobre otra */
+    position: absolute; /* Crucial para el giro */
     top: 0; left: 0; 
     width: 100%; 
     height: 100%; 
-    backface-visibility: hidden; /* EVITA QUE SE ROMPA AL GIRAR */
+    backface-visibility: hidden; 
     -webkit-backface-visibility: hidden;
     border-radius: 25px; 
+    padding: 30px 20px;
     display: flex; 
     flex-direction: column; 
-    overflow-y: auto; 
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    overflow-y: auto; /* Scroll interno para crónicas largas */
 }
 
-/* --- ESTÉTICA DEL FRENTE (PLANILLA AFA) --- */
+/* FRENTE: Estética Planilla Oficial */
 .card-front { 
-    background: linear-gradient(to bottom, #ffffff, #f8f9fa); 
+    background: linear-gradient(to bottom, #ffffff, #f0f4f8); 
     border-top: 12px solid var(--afa-azul-noche);
-    padding: 30px 20px;
     z-index: 2;
 }
 
-/* --- ESTÉTICA DEL DORSO (CRÓNICA) --- */
+/* DORSO: Estética Crónica Peter */
 .card-back { 
     background: #fdfdfd;
     transform: rotateY(180deg); 
     border-top: 12px solid var(--gold); 
-    padding: 40px 25px; /* Más aire para leer mejor */
 }
 
-/* Formato de la Crónica */
-.text-format-mini { 
-    white-space: pre-wrap; 
-    line-height: 1.8; 
-    font-size: 1.1rem; 
-    text-align: left; /* Alineación para lectura fácil */
-    color: #222;
-    padding: 15px;
-    background: rgba(0,0,0,0.03);
-    border-radius: 15px;
-    margin-top: 20px;
-}
-
-/* Formato de los equipos (Para que no sea solo texto suelto) */
+/* FORMATO DE LISTA TIPO TABLA (Para el detalle de equipos) */
 #detalle-partido-dinamico ul {
     list-style: none;
     padding: 0;
     margin: 15px 0;
     width: 100%;
+    border: 1px solid #eee;
+    border-radius: 10px;
 }
 
 #detalle-partido-dinamico li {
     padding: 10px;
     border-bottom: 1px solid #eee;
-    font-size: 1rem;
+    background: white;
+    font-size: 0.95rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(255,255,255,0.5);
 }
 
-#detalle-partido-dinamico li:nth-child(even) {
-    background: rgba(116, 172, 223, 0.05); /* Toque celeste sutil */
+#detalle-partido-dinamico li:nth-child(even) { background: #f9f9f9; }
+
+/* TEXTO DE CRÓNICA (Respeta Alt+Enter) */
+.text-format-mini { 
+    white-space: pre-wrap; 
+    line-height: 1.8; 
+    font-size: 1.05rem; 
+    text-align: left; /* Mejor lectura */
+    color: #222;
+    padding: 15px;
+    background: rgba(0,0,0,0.02);
+    border-radius: 10px;
 }
 
 
