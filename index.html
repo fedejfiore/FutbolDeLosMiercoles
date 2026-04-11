@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miércoles 19HS - Gestión Oficial</title>
+    <title>Fútbol Miércoles 19HS</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
@@ -12,67 +13,83 @@
 </head>
 <body>
 
-    <nav class="floating-menu top">
-        <a href="#inicio">🏠</a>
-        <a href="#top3">🏆</a>
-        <a href="#posiciones">📊</a>
-        <a href="#partidos">📅</a>
-        <a href="#sinergia">🔥</a>
+    <nav class="afa-navbar">
+        <div class="nav-container">
+            <div class="nav-buttons-center">
+                <a href="#inicio">🏠</a>
+                <a href="#top3">🏆</a>
+                <a href="#posiciones">📊</a>
+                <a href="#partidos">📅</a>
+                <a href="#sinergia">🔥</a>
+            </div>
+            <div id="clima-navbar" class="clima-mini">
+                <span class="clima-icon">⌛</span>
+                <span class="clima-text">Cargando...</span>
+            </div>
+        </div>
     </nav>
 
     <header id="inicio" class="hero-section">
         <div class="hero-content">
-            <img src="logo.png" alt="Logo AFA" class="main-logo-v2">
+            <img src="logo.png" alt="Logo" class="main-logo-afa">
             
-            <div id="clima-proximo" class="clima-container">
-                <span class="clima-icon">⌛</span>
-                <div class="clima-info">
-                    <span id="clima-fecha" class="clima-date">CONSULTANDO...</span>
-                    <span class="clima-text">Cargando pronóstico oficial...</span>
+            <div class="hero-main-row">
+                <div class="countdown-container">
+                    <div class="countdown-argentina">
+                        <span class="label">RUMBO AL MUNDIAL 2026</span>
+                        <div id="countdown" class="timer">--d --h</div>
+                    </div>
+                </div>
+
+                <div class="video-link-container">
+                    <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
+                    <button id="audio-control" class="btn-premium-v2">
+                        <span class="icon">▶️</span> <span class="text">single: EL ASADO</span>
+                    </button>
+                    <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
                 </div>
             </div>
 
-            <div class="countdown-argentina">
-                <span class="label">RUMBO AL MUNDIAL 2026</span>
-                <div id="countdown" class="timer">--d --h</div>
-            </div>
-            
-            <div class="video-link-container">
-                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">
-                    🎥 REPETICIONES
-                </a>
-                <button id="audio-control" class="btn-premium-v2">
-                    <span class="icon">▶️</span> <span class="text">single: EL ASADO</span>
-                </button>
-                <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
-            </div>
-
-            <div class="sponsors-banner">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca Cola">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-ypf.png" alt="YPF">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-panini.png" alt="Panini">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-schneider.png" alt="Schneider">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-naranja-x.png" alt="NaranjaX">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-binance.png" alt="Binance">
+            <div class="sponsors-container">
+                <div class="sponsors-banner">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca-Cola">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-ypf.png" alt="YPF">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-panini.png" alt="Panini">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-schneider.png" alt="Schneider">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-naranja-x.png" alt="NaranjaX">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-binance.png" alt="Binance">
+                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-betano.png" alt="Betano">
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="afa-main-bg">
+    <div class="grass-background">
         <div class="container">
             <section id="top3" class="stats-grid">
-                <div class="stat-box-pitch"><h3>⚽ PELOTA</h3><div id="top-pelota"></div></div>
-                <div class="stat-box-pitch"><h3>💰 POZO</h3><div id="top-pozo"></div></div>
-                <div class="stat-box-pitch"><h3>🎽 PECHERA</h3><div id="top-pechera"></div></div>
+                <div class="stat-box-pitch">
+                    <h3>⚽ DUEÑOS DE LA PELOTA</h3>
+                    <div id="top-pelota" class="top-list-content"></div>
+                </div>
+                <div class="stat-box-pitch">
+                    <h3>💰 POZO ACUMULADO</h3>
+                    <div id="top-pozo"></div>
+                </div>
+                <div class="stat-box-pitch">
+                    <h3>🎽 SEÑORES DE LA PECHERA</h3>
+                    <div id="top-pechera" class="top-list-content"></div>
+                </div>
             </section>
 
             <section id="posiciones" class="card-section">
                 <h2 class="centered-title active">🏆 TABLA DE POSICIONES</h2>
-                <div class="collapsible-content" style="display:block;">
+                <div class="collapsible-content" style="display: block;">
                     <table id="tabla-general" class="display cell-border" style="width:100%">
                         <thead>
-                            <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
+                            <tr>
+                                <th>Nombre</th> <th>PJ</th> <th>PG</th> <th>PE</th> <th>PP</th> <th>Pts</th> <th>Promedio</th>
+                            </tr>
                         </thead>
                         <tbody id="body-general"></tbody>
                     </table>
@@ -89,8 +106,7 @@
             <section id="sinergia" class="card-section">
                 <h2 class="centered-title">🔥 PARTIDOS COMPARTIDOS</h2>
                 <div class="collapsible-content">
-                    <input type="text" id="busqueda-matriz" placeholder="Buscar jugador..." class="afa-search-input">
-                    <div id="heatmap-container" class="matrix-scroll-wrapper"></div>
+                    <div id="heatmap-container"></div>
                 </div>
             </section>
         </div>
@@ -98,14 +114,14 @@
 
     <div id="modal-partido" class="modal">
         <div class="modal-content-match">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal">✕</span>
             <div id="detalle-partido-dinamico"></div>
         </div>
     </div>
 
     <footer>
-        <img src="trofeo.png" alt="Copa del Mundo" class="footer-trofeo">
-        <p>La pelota no se mancha</p>
+        <img src="trofeo.png" alt="Trofeo" class="footer-trofeo">
+        <p>la pelota no se mancha</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
