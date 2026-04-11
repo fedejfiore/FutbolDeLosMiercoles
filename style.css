@@ -57,7 +57,7 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 
 .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
 .flip-card-inner.flipped { transform: rotateY(180deg); }
-.card-front, .card-back { position: relative; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; padding: 40px 20px; background: white; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; text-align: center; }
+.card-front, .card-back { position: auto; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px; padding: 40px 20px; background: white; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; text-align: center; }
 .card-back { transform: rotateY(180deg); border-top: 10px solid var(--gold); overflow-y: auto; height: 100%;}
 
 .text-format-mini { white-space: pre-wrap; line-height: 1.8; font-size: 1.1rem; }
