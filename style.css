@@ -128,31 +128,72 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 /* FIX: El frente es 'relative' para empujar el alto del contenedor 
    y que no se corte el texto ni se pegue abajo.
 */
-.card-front { 
-    position: relative; 
-    min-height: 520px; 
+.card-front {
+    position: relative;
+    min-height: 520px;
     border-top: 10px solid var(--afa-azul-noche);
     z-index: 2;
+    /* Fondo con textura sutil de césped o papel */
+    background: linear-gradient(to bottom, #ffffff, #f0f4f8); 
+}
+
+/* Contenedor de equipos tipo "Planilla" */
+.lista-equipos-modal {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden; /* Para que los bordes redondeados funcionen */
+}
+
+/* Cada jugador como una fila de tabla */
+.lista-equipos-modal li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    background: white;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Filas alternadas (Zebra stripping) */
+.lista-equipos-modal li:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.lista-equipos-modal li:last-child {
+    border-bottom: none;
+}
+
+/* Resaltar los iconos (Pelota/Pechera) */
+.lista-equipos-modal li span {
+    margin-left: 8px;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.1));
 }
 
 /* El dorso es 'absolute' para superponerse al frente durante el giro
 */
-.card-back { 
-    position: absolute;
-    top: 0; left: 0;
-    height: 100%; /* Mismo alto que el frente */
-    transform: rotateY(180deg); 
-    border-top: 10px solid var(--gold); 
-    overflow-y: auto; /* Scroll interno solo si la crónica es muy larga */
+.card-back {
+    transform: rotateY(180deg);
+    border-top: 10px solid var(--gold);
+    padding: 30px 15px; /* Reducimos padding lateral para ganar ancho de lectura */
+    background: #fdfdfd;
+    overflow-y: auto;
 }
 
 /* Formato de texto para crónicas (Alt+Enter del Sheet) */
-.text-format-mini { 
-    white-space: pre-wrap; 
-    line-height: 1.8; 
-    font-size: 1.1rem; 
-    width: 100%;
-    margin-top: 15px;
+.text-format-mini {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    text-align: left; /* Alineado a la izquierda es mucho más fácil de leer que centrado */
+    color: #222;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.02); /* Un toque gris sutil de fondo */
+    border-radius: 10px;
 }
 .text-format-mini { white-space: pre-wrap; line-height: 1.8; font-size: 1.1rem; }
 #heatmap-container { width: 100%; overflow-x: auto; margin-top: 20px; }
