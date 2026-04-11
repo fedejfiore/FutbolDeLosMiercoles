@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Miércoles 19HS</title>
+    <title>AFA | Miércoles 19HS - Gestión Oficial</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00355E">
 </head>
 <body>
 
@@ -15,47 +17,58 @@
         <a href="#top3">🏆</a>
         <a href="#posiciones">📊</a>
         <a href="#partidos">📅</a>
+        <a href="#sinergia">🔥</a>
     </nav>
 
     <header id="inicio" class="hero-section">
         <div class="hero-content">
-            <img src="logo.png" alt="Logo" class="main-logo-v2">
+            <img src="logo.png" alt="Logo AFA" class="main-logo-v2">
             
             <div id="clima-proximo" class="clima-container">
                 <span class="clima-icon">⌛</span>
                 <div class="clima-info">
                     <span id="clima-fecha" class="clima-date">CONSULTANDO...</span>
-                    <span class="clima-text">Cargando clima...</span>
+                    <span class="clima-text">Cargando pronóstico oficial...</span>
                 </div>
             </div>
 
             <div class="countdown-argentina">
-                <div class="arg-flag-strip"></div>
-                <span class="label">MUNDIAL 2026</span>
-                <div id="countdown" class="timer">Cargando...</div>
-                <div class="arg-flag-strip"></div>
+                <span class="label">RUMBO AL MUNDIAL 2026</span>
+                <div id="countdown" class="timer">--d --h</div>
             </div>
             
             <div class="video-link-container">
-                <a href="https://www.sportsreel.com.ar" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
-                <button id="audio-control" class="btn-premium-v2">▶️ EL ASADO</button>
+                <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">
+                    🎥 REPETICIONES OFICIALES
+                </a>
+                <button id="audio-control" class="btn-premium-v2">
+                    <span class="icon">▶️</span> <span class="text">EL ASADO</span>
+                </button>
                 <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
+            </div>
+
+            <div class="sponsors-banner">
+                <img src="https://www.afa.com.ar/img/sponsors/Adidas.png" alt="Adidas">
+                <img src="https://www.afa.com.ar/img/sponsors/Coca-Cola.png" alt="Coca Cola">
+                <img src="https://www.afa.com.ar/img/sponsors/YPF.png" alt="YPF">
+                <img src="https://www.afa.com.ar/img/sponsors/Binance.png" alt="Binance">
+                <img src="https://www.afa.com.ar/img/sponsors/Schneider.png" alt="Schneider">
             </div>
         </div>
     </header>
 
-    <div class="grass-background">
+    <div class="afa-main-bg">
         <div class="container">
             <section id="top3" class="stats-grid">
                 <div class="stat-box-pitch"><h3>⚽ PELOTA</h3><div id="top-pelota"></div></div>
-                <div class="stat-box-pitch"><h3>💰 POZO</h3><div id="top-pozo"></div></div>
+                <div class="stat-box-pitch"><h3>💰 POZO DETALLADO</h3><div id="top-pozo"></div></div>
                 <div class="stat-box-pitch"><h3>🎽 PECHERA</h3><div id="top-pechera"></div></div>
             </section>
 
             <section id="posiciones" class="card-section">
-                <h2 class="centered-title active">🏆 POSICIONES</h2>
+                <h2 class="centered-title active">🏆 TABLA DE POSICIONES</h2>
                 <div class="collapsible-content" style="display:block;">
-                    <table id="tabla-general" class="display" style="width:100%">
+                    <table id="tabla-general" class="display cell-border" style="width:100%">
                         <thead>
                             <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
                         </thead>
@@ -74,7 +87,7 @@
             <section id="sinergia" class="card-section">
                 <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
                 <div class="collapsible-content">
-                    <input type="text" id="busqueda-matriz" placeholder="Buscar jugador..." class="search-input-matriz">
+                    <input type="text" id="busqueda-matriz" placeholder="Buscar jugador en la matriz oficial..." class="afa-search-input">
                     <div id="heatmap-container" class="matrix-scroll-wrapper"></div>
                 </div>
             </section>
@@ -89,8 +102,8 @@
     </div>
 
     <footer>
-        <img src="trofeo.png" class="footer-trofeo">
-        <p>AÑO MUNDIALISTA 2026</p>
+        <img src="trofeo.png" alt="Copa del Mundo" class="footer-trofeo">
+        <p>AFA - GESTIÓN DE ACTIVOS DIGITALES 2026</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>

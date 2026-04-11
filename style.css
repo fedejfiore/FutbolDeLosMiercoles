@@ -1,68 +1,86 @@
 :root {
-    --grass-pitch: #1a3c1a; --grass-light: #2d5a27; --gold: #d4af37;
-    --arg-blue: #74acdf; --dark-navy: #001220; --white: #ffffff;
+    --afa-celeste: #74ACDF;
+    --afa-azul-noche: #00355E;
+    --afa-azul-oscuro: #001220;
+    --gold: #D4AF37;
+    --white: #FFFFFF;
+    --grass-pitch: #1a3c1a;
 }
 
-body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--dark-navy); overflow-x: hidden; }
+* { box-sizing: border-box; }
+body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa-azul-oscuro); overflow-x: hidden; }
 
-/* 1. NAVEGACIÓN Y LOGO */
+/* NAVEGACIÓN */
 .floating-menu.top {
     position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-    background: rgba(0, 18, 32, 0.95); padding: 10px 25px; border-radius: 50px;
+    background: rgba(0, 53, 94, 0.95); padding: 10px 25px; border-radius: 50px;
     display: flex; gap: 20px; z-index: 10000; border: 1px solid var(--gold);
 }
 .floating-menu a { text-decoration: none; font-size: 1.5rem; }
 
-.main-logo-v2 { width: 350px; max-width: 90%; margin-bottom: 25px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2)); }
-
-/* 2. HERO Y CLIMA */
+/* HERO SECTION - ARABESCOS */
 .hero-section {
-    background: linear-gradient(rgba(0,18,32,0.8), rgba(0,18,32,0.8)), 
+    background: linear-gradient(rgba(0, 53, 94, 0.85), rgba(0, 18, 32, 0.95)), 
+                url('https://www.transparenttextures.com/patterns/arabesque.png'),
                 url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
-    background-size: cover; background-position: center; padding: 100px 20px 60px;
-    display: flex; flex-direction: column; align-items: center;
+    background-size: auto, auto, cover;
+    padding: 100px 20px 60px; display: flex; flex-direction: column; align-items: center; text-align: center;
+    border-bottom: 4px solid var(--gold);
 }
+
+.main-logo-v2 { width: 300px; max-width: 90%; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2)); }
 
 .clima-container {
-    background: rgba(255,255,255,0.1); border: 1px solid var(--gold); border-radius: 12px;
-    padding: 10px 20px; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 15px; color: white;
+    background: rgba(255, 255, 255, 0.1); border: 1px solid var(--gold); border-radius: 12px;
+    padding: 10px 25px; margin: 20px 0; display: inline-flex; align-items: center; justify-content: center; gap: 15px; color: white;
 }
 
-/* 3. CONTADOR (Ya no ocupa todo el ancho) */
 .countdown-argentina {
-    background: var(--white); border-radius: 10px; padding: 10px 30px;
-    border: 3px solid var(--arg-blue); box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    margin-bottom: 25px; display: inline-block; /* Fix: evita ancho completo */
+    background: var(--white); border-radius: 10px; padding: 15px 40px;
+    border: 4px solid var(--afa-celeste); display: inline-block; margin-bottom: 25px; position: relative;
 }
-.countdown-argentina .timer { font-family: 'Oswald'; font-size: 2.5rem; color: var(--arg-blue); font-weight: bold; }
+.countdown-argentina .timer { font-family: 'Oswald'; font-size: 2.5rem; color: var(--afa-azul-noche); font-weight: bold; }
 
-/* 4. BOTONES REPARADOS */
-.video-link-container { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .btn-premium-v2 {
-    background: linear-gradient(45deg, var(--gold), #b8860b); color: var(--dark-navy) !important;
-    padding: 14px 28px; border-radius: 10px; font-family: 'Oswald'; font-weight: bold;
-    border: none; cursor: pointer; text-decoration: none; text-transform: uppercase;
+    background: linear-gradient(45deg, var(--afa-celeste), var(--afa-azul-noche));
+    color: var(--white) !important; padding: 14px 28px; border-radius: 10px; border: 1px solid var(--gold);
+    font-family: 'Oswald'; font-weight: bold; cursor: pointer; text-decoration: none;
 }
 
-/* 5. MODAL Y FLIP CARD (Ajuste de contenido) */
-.modal {
-    display: none; position: fixed; z-index: 999999; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9); justify-content: center; align-items: center;
+/* SPONSORS */
+.sponsors-banner {
+    width: 100%; max-width: 800px; padding: 20px 0; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;
 }
-.modal-content-match { 
-    width: 90%; max-width: 400px; height: 550px; position: relative; perspective: 1000px;
+.sponsors-banner img { height: 30px; filter: brightness(0) invert(1); opacity: 0.7; }
+
+/* SECCIONES AFISTAR */
+.afa-main-bg { background-color: var(--afa-azul-oscuro); padding: 40px 15px 100px; }
+.card-section { background: white; border-radius: 20px; padding: 25px; margin-bottom: 30px; border-top: 5px solid var(--afa-celeste); }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 40px; }
+.stat-box-pitch { 
+    background: linear-gradient(135deg, var(--afa-azul-noche), var(--afa-azul-oscuro)); 
+    border: 1px solid var(--gold); border-radius: 15px; padding: 20px; color: white;
 }
+.top-item { display: flex; justify-content: space-between; padding: 8px; background: rgba(116, 172, 223, 0.15); margin-bottom: 5px; border-radius: 5px; }
+
+/* HISTORIAL GRID */
+.mini-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.mini-fecha-card { background: var(--afa-azul-noche); color: white; border: 1px solid var(--gold); border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; font-family: 'Oswald'; }
+
+/* MODAL & FLIP */
+.modal { display: none; position: fixed; z-index: 999999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+.modal-content-match { width: 90%; max-width: 400px; height: 500px; perspective: 1000px; }
 .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
 .flip-card-inner.flipped { transform: rotateY(180deg); }
+.card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; padding: 25px; background: white; overflow-y: auto; }
+.card-back { transform: rotateY(180deg); background: #f9f9f9; border-top: 10px solid var(--gold); }
 
-.card-front, .card-back { 
-    position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-    border-radius: 20px; padding: 25px; background: white; overflow-y: auto; /* Fix: el contenido se queda dentro */
-}
-.card-back { transform: rotateY(180deg); background: #fdfdfd; border-top: 10px solid var(--gold); }
+/* MATRIZ */
+.matrix-scroll-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; margin-top: 10px; }
+.matrix-table { width: 100%; min-width: 600px; border-collapse: collapse; background: white; }
+.matrix-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+.afa-search-input { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--afa-celeste); margin-bottom: 10px; }
 
-/* TOPS Y GRIDS */
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto 40px; }
-.stat-box-pitch { background: linear-gradient(135deg, #1e4d2b, #2d5a27); border: 2px solid var(--gold); border-radius: 20px; padding: 25px; color: white; position: relative; overflow: hidden;}
-.mini-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
-.mini-fecha-card { background: var(--dark-navy); color: white; border: 1px solid var(--gold); border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; font-family: 'Oswald'; }
+footer { text-align: center; padding: 40px; color: white; }
+.footer-trofeo { width: 70px; filter: drop-shadow(0 0 15px var(--gold)); margin-bottom: 10px; }
