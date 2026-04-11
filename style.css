@@ -201,8 +201,75 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .matrix-table td { border: 1px solid #eee; padding: 12px; text-align: center; }
 .afa-search-input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid var(--afa-celeste); margin-bottom: 15px; }
 
-.afa-footer { text-align: center; padding: 20px 20px; background: var(--afa-azul-oscuro); color: white; }
-.footer-trofeo { width: 30px; filter: drop-shadow(0 0 20px var(--gold)); margin-bottom: 25px; }
-
 .mini-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding: 20px 0; }
 .mini-fecha-card { background: var(--afa-azul-noche); color: white; border: 1px solid var(--gold); border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; font-family: 'Oswald'; }
+
+/* FOOTER DINÁMICO */
+.afa-footer {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--afa-azul-oscuro);
+    color: white;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around; /* Distribuye izquierda, centro y derecha */
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto 20px;
+    flex-wrap: wrap; /* Para que en celulares se acomoden uno abajo del otro */
+    gap: 20px;
+}
+
+.footer-item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Imagenes en gris claro (como los sponsors) */
+.footer-img {
+    height: 120px; /* Tamaño base */
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(1) brightness(2); 
+    opacity: 0.7;
+    transition: all 0.4s ease;
+}
+
+/* La copa del centro un poco más grande */
+.trofeo-center {
+    height: 150px;
+}
+
+/* Efecto HOVER: Color y sombra dorada */
+.footer-img:hover {
+    filter: grayscale(0) brightness(1.2);
+    opacity: 1;
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px var(--gold)); /* Sombra dorada solicitada */
+}
+
+.afa-footer p {
+    font-family: 'Oswald';
+    letter-spacing: 2px;
+    margin-top: 20px;
+    opacity: 0.6;
+    text-transform: uppercase;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 600px) {
+    .footer-container {
+        flex-direction: row;
+        gap: 10px;
+    }
+    .footer-img {
+        height: 80px;
+    }
+    .trofeo-center {
+        height: 100px;
+    }
+}
