@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AFA | Fútbol Miércoles 19HS</title>
+    <title>AFA | Gestión Oficial Fútbol Miércoles</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
@@ -14,15 +14,15 @@
         <div class="nav-container">
             <div class="nav-logo-left">
                 <a href="#inicio">
-                    <img src="https://www.afa.com.ar/img/site/logo-afa-dorado.svg" alt="Logo AFA" class="navbar-afa-logo">
+                    <img src="https://www.afa.com.ar/img/site/logo-afa-dorado.svg" alt="AFA" class="navbar-afa-logo">
                 </a>
             </div>
             <div class="nav-buttons-center">
-                <a href="#inicio" title="Inicio">🏠</a>
-                <a href="#top3" title="Tops">🏆</a>
-                <a href="#posiciones" title="Posiciones">📊</a>
-                <a href="#partidos" title="Historial">📅</a>
-                <a href="#sinergia" title="Sinergia">🔥</a>
+                <a href="#inicio">🏠</a>
+                <a href="#top3">🏆</a>
+                <a href="#posiciones">📊</a>
+                <a href="#partidos">📅</a>
+                <a href="#sinergia">🔥</a>
             </div>
             <div id="clima-navbar" class="clima-glass">
                 </div>
@@ -31,7 +31,7 @@
 
     <header id="inicio" class="hero-section">
         <div class="hero-content">
-            <img src="logo.png" alt="Logo" class="main-logo-afa">
+            <img src="logo.png" alt="Logo Principal" class="main-logo-afa">
             
             <div class="hero-layout-row">
                 <div class="side-btn-container">
@@ -57,11 +57,11 @@
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca-Cola">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-ypf.png" alt="YPF">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-betano.png" alt="Betano">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-mcdonalds.png" alt="McDonalds">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-panini.png" alt="Panini">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-schneider.png" alt="Schneider">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-binance.png" alt="Binance">
-                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-betano.png" alt="Betano">
             </div>
         </div>
     </header>
@@ -84,12 +84,12 @@
             </section>
 
             <section id="posiciones" class="card-section">
-                <h2 class="centered-title active">🏆 TABLA DE POSICIONES</h2>
-                <div class="collapsible-content" style="display: block;">
+                <h2 class="centered-title">🏆 TABLA DE POSICIONES</h2>
+                <div class="collapsible-content">
                     <table id="tabla-general" class="display cell-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Nombre</th> <th>PJ</th> <th>PG</th> <th>PE</th> <th>PP</th> <th>Pts</th> <th>Promedio</th>
+                                <th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th>
                             </tr>
                         </thead>
                         <tbody id="body-general"></tbody>
@@ -107,9 +107,7 @@
             <section id="sinergia" class="card-section">
                 <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
                 <div class="collapsible-content">
-                    <div class="search-matrix-container">
-                        <input type="text" id="busqueda-matriz" placeholder="Buscar jugador..." class="afa-search-input">
-                    </div>
+                    <input type="text" id="busqueda-matriz" placeholder="Buscar jugador en la matriz..." class="afa-search-input">
                     <div id="heatmap-container"></div>
                 </div>
             </section>
