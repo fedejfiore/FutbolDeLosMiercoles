@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Miércoles 19HS</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>AFA | Fútbol Miércoles 19HS</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#00355E">
 </head>
 <body>
 
@@ -22,10 +19,8 @@
                 <a href="#partidos">📅</a>
                 <a href="#sinergia">🔥</a>
             </div>
-            <div id="clima-navbar" class="clima-mini">
-                <span class="clima-icon">⌛</span>
-                <span class="clima-text">Cargando...</span>
-            </div>
+            <div id="clima-navbar" class="clima-glass">
+                </div>
         </div>
     </nav>
 
@@ -33,44 +28,45 @@
         <div class="hero-content">
             <img src="logo.png" alt="Logo" class="main-logo-afa">
             
-            <div class="hero-main-row">
-                <div class="countdown-container">
+            <div class="hero-layout-row">
+                <div class="side-btn-container">
+                    <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
+                </div>
+
+                <div class="center-counter-container">
                     <div class="countdown-argentina">
                         <span class="label">RUMBO AL MUNDIAL 2026</span>
                         <div id="countdown" class="timer">--d --h</div>
                     </div>
                 </div>
 
-                <div class="video-link-container">
-                    <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
+                <div class="side-btn-container">
                     <button id="audio-control" class="btn-premium-v2">
-                        <span class="icon">▶️</span> <span class="text">single: EL ASADO</span>
+                        <span class="icon">▶️</span> <span class="text">EL ASADO</span>
                     </button>
                     <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
                 </div>
             </div>
 
-            <div class="sponsors-container">
-                <div class="sponsors-banner">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca-Cola">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-ypf.png" alt="YPF">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-panini.png" alt="Panini">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-schneider.png" alt="Schneider">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-naranja-x.png" alt="NaranjaX">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-binance.png" alt="Binance">
-                    <img src="https://assets1.afa.com.ar/Sponsors/sponsor-betano.png" alt="Betano">
-                </div>
+            <div class="sponsors-wall">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca-Cola">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-ypf.png" alt="YPF">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-panini.png" alt="Panini">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-schneider.png" alt="Schneider">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-naranja-x.png" alt="NaranjaX">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-binance.png" alt="Binance">
+                <img src="https://assets1.afa.com.ar/Sponsors/sponsor-betano.png" alt="Betano">
             </div>
         </div>
     </header>
 
-    <div class="grass-background">
+    <div class="afa-main-bg">
         <div class="container">
             <section id="top3" class="stats-grid">
                 <div class="stat-box-pitch">
                     <h3>⚽ DUEÑOS DE LA PELOTA</h3>
-                    <div id="top-pelota" class="top-list-content"></div>
+                    <div id="top-pelota"></div>
                 </div>
                 <div class="stat-box-pitch">
                     <h3>💰 POZO ACUMULADO</h3>
@@ -78,7 +74,7 @@
                 </div>
                 <div class="stat-box-pitch">
                     <h3>🎽 SEÑORES DE LA PECHERA</h3>
-                    <div id="top-pechera" class="top-list-content"></div>
+                    <div id="top-pechera"></div>
                 </div>
             </section>
 
@@ -104,8 +100,11 @@
             </section>
 
             <section id="sinergia" class="card-section">
-                <h2 class="centered-title">🔥 PARTIDOS COMPARTIDOS</h2>
+                <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
                 <div class="collapsible-content">
+                    <div class="search-matrix-container">
+                        <input type="text" id="busqueda-matriz" placeholder="Buscar jugador en la matriz..." class="afa-search-input">
+                    </div>
                     <div id="heatmap-container"></div>
                 </div>
             </section>
@@ -119,9 +118,9 @@
         </div>
     </div>
 
-    <footer>
+    <footer class="afa-footer">
         <img src="trofeo.png" alt="Trofeo" class="footer-trofeo">
-        <p>la pelota no se mancha</p>
+        <p>AFA - GESTIÓN OFICIAL 2026</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
