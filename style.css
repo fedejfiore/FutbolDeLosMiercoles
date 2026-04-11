@@ -49,7 +49,6 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .stat-box-pitch { background: linear-gradient(135deg, var(--afa-azul-noche), var(--afa-azul-oscuro)); border: 2px solid var(--gold); border-radius: 20px; padding: 30px; color: white; text-align: center; }
 .top-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(116, 172, 223, 0.15); margin-bottom: 8px; border-radius: 8px; font-family: 'Oswald'; }
 
-/* MODALES */
 .modal { 
     display: none; 
     position: fixed; 
@@ -57,11 +56,14 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     top: 0; left: 0; 
     width: 100%; height: 100%; 
     background: rgba(0,0,0,0.9); 
+    backdrop-filter: blur(8px);
     justify-content: center; 
     align-items: center; 
-    padding: 20px; /* Evita que toque los bordes del celular */
+    padding: 20px; 
+    overflow-y: auto; /* Permite scroll si la tarjeta supera el alto de pantalla */
 }
 
+/* Modales de secciones (Tabla, Historial, Heatmap) */
 .modal-content-large { 
     background: #e0e0e0; 
     width: 95%; 
@@ -73,15 +75,14 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     overflow-y: auto; 
 }
 
-/* FIX: Contenedor de la tarjeta con altura controlada */
+/* Contenedor de la tarjeta de partido individual */
 .modal-content-match { 
     width: 95%; 
-    max-width: 500px; 
-    height: 80vh; /* Altura relativa a la pantalla para evitar que se pegue abajo */
-    min-height: 520px; 
-    max-height: 700px; /* Límite para que no sea infinita */
+    max-width: 400px; 
+    margin: auto; /* Centrado horizontal */
     position: relative; 
-    perspective: 1000px; 
+    perspective: 1000px;
+    /* Eliminamos height fijo para que el contenido mande */
 }
 
 .close-modal { 
@@ -91,15 +92,18 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     font-size: 2.5rem; 
     cursor: pointer; 
     color: #333; 
-    z-index: 1000; 
+    z-index: 1000;
+    transition: 0.3s;
 }
+
+.close-modal:hover { color: var(--gold); }
 
 /* ANIMACIÓN FLIP */
 .flip-card-inner { 
     position: relative; 
     width: 100%; 
     height: 100%; 
-    transition: transform 0.6s; 
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
     transform-style: preserve-3d; 
 }
 
@@ -107,12 +111,9 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     transform: rotateY(180deg); 
 }
 
-/* FIX: Caras de la tarjeta */
+/* CARAS DE LA TARJETA */
 .card-front, .card-back { 
-    position: absolute; /* OBLIGATORIO para el efecto flip */
-    top: 0; left: 0; 
     width: 100%; 
-    height: 100%; 
     backface-visibility: hidden; 
     border-radius: 30px; 
     padding: 40px 20px; 
@@ -120,15 +121,38 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    justify-content: flex-start; 
-    overflow-y: auto; /* Permite scroll si la crónica es muy larga */
     text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Le da profundidad */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
+/* FIX: El frente es 'relative' para empujar el alto del contenedor 
+   y que no se corte el texto ni se pegue abajo.
+*/
+.card-front { 
+    position: relative; 
+    min-height: 520px; 
+    border-top: 10px solid var(--afa-azul-noche);
+    z-index: 2;
+}
+
+/* El dorso es 'absolute' para superponerse al frente durante el giro
+*/
 .card-back { 
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%; /* Mismo alto que el frente */
     transform: rotateY(180deg); 
     border-top: 10px solid var(--gold); 
+    overflow-y: auto; /* Scroll interno solo si la crónica es muy larga */
+}
+
+/* Formato de texto para crónicas (Alt+Enter del Sheet) */
+.text-format-mini { 
+    white-space: pre-wrap; 
+    line-height: 1.8; 
+    font-size: 1.1rem; 
+    width: 100%;
+    margin-top: 15px;
 }
 .text-format-mini { white-space: pre-wrap; line-height: 1.8; font-size: 1.1rem; }
 #heatmap-container { width: 100%; overflow-x: auto; margin-top: 20px; }
