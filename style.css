@@ -60,45 +60,18 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     justify-content: center; 
     align-items: center; 
     padding: 20px; 
-    overflow-y: auto; /* Permite scroll si la tarjeta supera el alto de pantalla */
 }
 
-/* Modales de secciones (Tabla, Historial, Heatmap) */
-.modal-content-large { 
-    background: #e0e0e0; 
-    width: 95%; 
-    max-width: 1100px; 
-    max-height: 90vh; 
-    border-radius: 30px; 
-    padding: 40px; 
-    position: relative; 
-    overflow-y: auto; 
-}
-
-/* Contenedor de la tarjeta de partido individual */
+/* Contenedor de la tarjeta */
 .modal-content-match { 
     width: 95%; 
-    max-width: 400px; 
-    margin: auto; /* Centrado horizontal */
+    max-width: 450px; /* Un poco más ancha para legibilidad */
+    height: 80vh; 
+    min-height: 550px;
     position: relative; 
-    perspective: 1000px;
-    /* Eliminamos height fijo para que el contenido mande */
+    perspective: 1000px; /* Necesario para el efecto 3D */
 }
 
-.close-modal { 
-    position: absolute; 
-    top: 15px; 
-    right: 25px; 
-    font-size: 2.5rem; 
-    cursor: pointer; 
-    color: #333; 
-    z-index: 1000;
-    transition: 0.3s;
-}
-
-.close-modal:hover { color: var(--gold); }
-
-/* ANIMACIÓN FLIP */
 .flip-card-inner { 
     position: relative; 
     width: 100%; 
@@ -113,89 +86,71 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 
 /* CARAS DE LA TARJETA */
 .card-front, .card-back { 
+    position: absolute; /* Deben estar una sobre otra */
+    top: 0; left: 0; 
     width: 100%; 
-    backface-visibility: hidden; 
-    border-radius: 30px; 
-    padding: 40px 20px; 
-    background: white; 
+    height: 100%; 
+    backface-visibility: hidden; /* EVITA QUE SE ROMPA AL GIRAR */
+    -webkit-backface-visibility: hidden;
+    border-radius: 25px; 
     display: flex; 
     flex-direction: column; 
-    align-items: center; 
-    text-align: center;
+    overflow-y: auto; 
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* FIX: El frente es 'relative' para empujar el alto del contenedor 
-   y que no se corte el texto ni se pegue abajo.
-*/
-.card-front {
-    position: relative;
-    min-height: 520px;
-    border-top: 10px solid var(--afa-azul-noche);
+/* --- ESTÉTICA DEL FRENTE (PLANILLA AFA) --- */
+.card-front { 
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa); 
+    border-top: 12px solid var(--afa-azul-noche);
+    padding: 30px 20px;
     z-index: 2;
-    /* Fondo con textura sutil de césped o papel */
-    background: linear-gradient(to bottom, #ffffff, #f0f4f8); 
 }
 
-/* Contenedor de equipos tipo "Planilla" */
-.lista-equipos-modal {
+/* --- ESTÉTICA DEL DORSO (CRÓNICA) --- */
+.card-back { 
+    background: #fdfdfd;
+    transform: rotateY(180deg); 
+    border-top: 12px solid var(--gold); 
+    padding: 40px 25px; /* Más aire para leer mejor */
+}
+
+/* Formato de la Crónica */
+.text-format-mini { 
+    white-space: pre-wrap; 
+    line-height: 1.8; 
+    font-size: 1.1rem; 
+    text-align: left; /* Alineación para lectura fácil */
+    color: #222;
+    padding: 15px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+/* Formato de los equipos (Para que no sea solo texto suelto) */
+#detalle-partido-dinamico ul {
     list-style: none;
     padding: 0;
     margin: 15px 0;
     width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden; /* Para que los bordes redondeados funcionen */
 }
 
-/* Cada jugador como una fila de tabla */
-.lista-equipos-modal li {
+#detalle-partido-dinamico li {
     padding: 10px;
     border-bottom: 1px solid #eee;
-    background: white;
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgba(255,255,255,0.5);
 }
 
-/* Filas alternadas (Zebra stripping) */
-.lista-equipos-modal li:nth-child(even) {
-    background-color: #f9f9f9;
+#detalle-partido-dinamico li:nth-child(even) {
+    background: rgba(116, 172, 223, 0.05); /* Toque celeste sutil */
 }
 
-.lista-equipos-modal li:last-child {
-    border-bottom: none;
-}
 
-/* Resaltar los iconos (Pelota/Pechera) */
-.lista-equipos-modal li span {
-    margin-left: 8px;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.1));
-}
-
-/* El dorso es 'absolute' para superponerse al frente durante el giro
-*/
-.card-back {
-    transform: rotateY(180deg);
-    border-top: 10px solid var(--gold);
-    padding: 30px 15px; /* Reducimos padding lateral para ganar ancho de lectura */
-    background: #fdfdfd;
-    overflow-y: auto;
-}
-
-/* Formato de texto para crónicas (Alt+Enter del Sheet) */
-.text-format-mini {
-    white-space: pre-wrap;
-    line-height: 1.8;
-    font-size: 1.05rem;
-    text-align: left; /* Alineado a la izquierda es mucho más fácil de leer que centrado */
-    color: #222;
-    padding: 10px;
-    background-color: rgba(0,0,0,0.02); /* Un toque gris sutil de fondo */
-    border-radius: 10px;
-}
-.text-format-mini { white-space: pre-wrap; line-height: 1.8; font-size: 1.1rem; }
 #heatmap-container { width: 100%; overflow-x: auto; margin-top: 20px; }
 .matrix-table { width: 100%; border-collapse: collapse; background: white; }
 .matrix-table td { border: 1px solid #eee; padding: 12px; text-align: center; }
