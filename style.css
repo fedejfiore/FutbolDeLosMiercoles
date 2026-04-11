@@ -49,21 +49,14 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .stat-box-pitch { background: linear-gradient(135deg, var(--afa-azul-noche), var(--afa-azul-oscuro)); border: 2px solid var(--gold); border-radius: 20px; padding: 30px; color: white; text-align: center; }
 .top-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(116, 172, 223, 0.15); margin-bottom: 8px; border-radius: 8px; font-family: 'Oswald'; }
 
-/* ================================================================
-   RESTAURACIÓN DE CUADRÍCULA DE FECHAS (HISTORIAL)
-   ================================================================ */
-
-/* Contenedor dentro del modal de Historial */
 .mini-card-grid {
-    display: grid;
-    /* Crea columnas automáticas de mínimo 140px */
+    display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 15px;
     padding: 20px 0;
     width: 100%;
 }
 
-/* Las "Mini Cards" de cada fecha */
 .mini-fecha-card {
     background: var(--afa-azul-noche);
     color: white;
@@ -73,85 +66,94 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     text-align: center;
     cursor: pointer;
     font-family: 'Oswald';
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .mini-fecha-card:hover {
-    transform: translateY(-5px);
-    background: var(--afa-celeste);
+    background: var(--gold);
     color: var(--afa-azul-noche);
-    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+    transform: translateY(-5px);
 }
 
 /* ================================================================
-   MODAL DE PARTIDO (FLIP CARD) - ESTABILIDAD TOTAL
+   2. MODAL DE PARTIDO (FLIP CARD) - ESTABILIDAD 3D
    ================================================================ */
-
-.modal { 
-    display: none; 
-    position: fixed; 
-    z-index: 999999; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.9); 
-    backdrop-filter: blur(8px);
-    justify-content: center; 
-    align-items: center; 
-    padding: 20px; 
-}
-
-/* El "teatro" donde ocurre el giro */
-.modal-content-match { 
-    width: 95%; 
-    max-width: 450px; 
-    height: 80vh; /* Altura controlada */
+.modal-content-match {
+    width: 95%;
+    max-width: 450px;
+    height: 80vh; /* Altura controlada para evitar cortes */
     min-height: 550px;
-    position: relative; 
+    position: relative;
     perspective: 1000px;
+    margin: auto;
 }
 
-.flip-card-inner { 
-    position: relative; 
-    width: 100%; 
-    height: 100%; 
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
-    transform-style: preserve-3d; 
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
 }
 
 .flip-card-inner.flipped { transform: rotateY(180deg); }
 
-.card-front, .card-back { 
-    position: absolute; /* Superpuestas */
-    top: 0; left: 0; 
-    width: 100%; 
-    height: 100%; 
-    backface-visibility: hidden; 
+.card-front, .card-back {
+    position: absolute; /* Vuelve a absolute para que el giro sea real */
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    border-radius: 30px; 
-    padding: 40px 20px;
-    display: flex; 
-    flex-direction: column; 
-    overflow-y: auto; /* Scroll interno si el contenido es largo */
+    border-radius: 30px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Scroll interno habilitado */
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     background: white;
 }
 
-.card-back { transform: rotateY(180deg); border-top: 10px solid var(--gold); }
-.card-front { border-top: 10px solid var(--afa-azul-noche); }
+.card-front { 
+    border-top: 10px solid var(--afa-azul-noche); 
+    background: linear-gradient(to bottom, #ffffff, #f0f4f8);
+}
 
-/* X de cerrar más visible */
-.close-modal { 
-    position: absolute; 
-    top: 15px; right: 25px; 
-    font-size: 2.5rem; 
-    color: #333; 
-    z-index: 10001; 
-    cursor: pointer;
+.card-back { 
+    transform: rotateY(180deg); 
+    border-top: 10px solid var(--gold); 
+    background: #fdfdfd;
+}
+
+/* Formato de equipos estilo "Planilla" */
+#detalle-partido-dinamico ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    width: 100%;
+}
+
+#detalle-partido-dinamico li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: center;
+    background: rgba(255,255,255,0.5);
+}
+
+#detalle-partido-dinamico li:nth-child(even) { background: rgba(116, 172, 223, 0.05); }
+
+/* Crónica Peter */
+.text-format-mini {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    text-align: left;
+    padding: 15px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 15px;
 }
 
 
