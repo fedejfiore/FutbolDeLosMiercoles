@@ -49,6 +49,49 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .stat-box-pitch { background: linear-gradient(135deg, var(--afa-azul-noche), var(--afa-azul-oscuro)); border: 2px solid var(--gold); border-radius: 20px; padding: 30px; color: white; text-align: center; }
 .top-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(116, 172, 223, 0.15); margin-bottom: 8px; border-radius: 8px; font-family: 'Oswald'; }
 
+/* ================================================================
+   RESTAURACIÓN DE CUADRÍCULA DE FECHAS (HISTORIAL)
+   ================================================================ */
+
+/* Contenedor dentro del modal de Historial */
+.mini-card-grid {
+    display: grid;
+    /* Crea columnas automáticas de mínimo 140px */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 20px 0;
+    width: 100%;
+}
+
+/* Las "Mini Cards" de cada fecha */
+.mini-fecha-card {
+    background: var(--afa-azul-noche);
+    color: white;
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Oswald';
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mini-fecha-card:hover {
+    transform: translateY(-5px);
+    background: var(--afa-celeste);
+    color: var(--afa-azul-noche);
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* ================================================================
+   MODAL DE PARTIDO (FLIP CARD) - ESTABILIDAD TOTAL
+   ================================================================ */
+
 .modal { 
     display: none; 
     position: fixed; 
@@ -60,17 +103,16 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     justify-content: center; 
     align-items: center; 
     padding: 20px; 
-    overflow-y: auto; /* Permite scroll si la pantalla es muy pequeña */
 }
 
-/* Contenedor 3D: ALTURA FIJA para evitar que se rompa al girar */
+/* El "teatro" donde ocurre el giro */
 .modal-content-match { 
     width: 95%; 
     max-width: 450px; 
-    height: 600px; /* Altura estable para que el blanco llene todo */
+    height: 80vh; /* Altura controlada */
+    min-height: 550px;
     position: relative; 
-    perspective: 1000px; 
-    margin: auto;
+    perspective: 1000px;
 }
 
 .flip-card-inner { 
@@ -84,66 +126,32 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .flip-card-inner.flipped { transform: rotateY(180deg); }
 
 .card-front, .card-back { 
-    position: absolute; /* Crucial para el giro */
+    position: absolute; /* Superpuestas */
     top: 0; left: 0; 
     width: 100%; 
     height: 100%; 
     backface-visibility: hidden; 
     -webkit-backface-visibility: hidden;
-    border-radius: 25px; 
-    padding: 30px 20px;
+    border-radius: 30px; 
+    padding: 40px 20px;
     display: flex; 
     flex-direction: column; 
+    overflow-y: auto; /* Scroll interno si el contenido es largo */
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-    overflow-y: auto; /* Scroll interno para crónicas largas */
-}
-
-/* FRENTE: Estética Planilla Oficial */
-.card-front { 
-    background: linear-gradient(to bottom, #ffffff, #f0f4f8); 
-    border-top: 12px solid var(--afa-azul-noche);
-    z-index: 2;
-}
-
-/* DORSO: Estética Crónica Peter */
-.card-back { 
-    background: #fdfdfd;
-    transform: rotateY(180deg); 
-    border-top: 12px solid var(--gold); 
-}
-
-/* FORMATO DE LISTA TIPO TABLA (Para el detalle de equipos) */
-#detalle-partido-dinamico ul {
-    list-style: none;
-    padding: 0;
-    margin: 15px 0;
-    width: 100%;
-    border: 1px solid #eee;
-    border-radius: 10px;
-}
-
-#detalle-partido-dinamico li {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
     background: white;
-    font-size: 0.95rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-#detalle-partido-dinamico li:nth-child(even) { background: #f9f9f9; }
+.card-back { transform: rotateY(180deg); border-top: 10px solid var(--gold); }
+.card-front { border-top: 10px solid var(--afa-azul-noche); }
 
-/* TEXTO DE CRÓNICA (Respeta Alt+Enter) */
-.text-format-mini { 
-    white-space: pre-wrap; 
-    line-height: 1.8; 
-    font-size: 1.05rem; 
-    text-align: left; /* Mejor lectura */
-    color: #222;
-    padding: 15px;
-    background: rgba(0,0,0,0.02);
-    border-radius: 10px;
+/* X de cerrar más visible */
+.close-modal { 
+    position: absolute; 
+    top: 15px; right: 25px; 
+    font-size: 2.5rem; 
+    color: #333; 
+    z-index: 10001; 
+    cursor: pointer;
 }
 
 
