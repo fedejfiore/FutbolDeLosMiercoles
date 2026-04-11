@@ -40,7 +40,7 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 /* DASHBOARD */
 .afa-main-bg { padding: 40px 20px 100px; }
 .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-.dash-access-card { background: #74ACDF; border-radius: 25px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s; border-top: 8px solid var(--afa-celeste); box-shadow: 0 15px 35px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.dash-access-card { background: #ffffff; border-radius: 25px; padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.3s; border-top: 8px solid var(--afa-celeste); box-shadow: 0 15px 35px rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; gap: 15px; }
 .dash-access-card:hover { transform: translateY(-10px); border-top-color: var(--gold); }
 .dash-access-card h3 { font-family: 'Oswald'; color: var(--afa-azul-noche); margin: 0; }
 
@@ -51,8 +51,8 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 
 /* MODALES */
 .modal { display: none; position: fixed; z-index: 999999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-.modal-content-large { background: #74ACDF; width: 95%; max-width: 1100px; max-height: 90vh; border-radius: 30px; padding: 40px; position: relative; overflow-y: auto; }
-.modal-content-match { width: 95%; max-width: 500px; height: auto; min-height: 520px; margin: 20px auto; position: relative; perspective: 1000px; }
+.modal-content-large { background: #e0e0e0; width: 95%; max-width: 1100px; max-height: 90vh; border-radius: 30px; padding: 40px; position: relative; overflow-y: auto; }
+.modal-content-match { width: 95%; max-width: 500px; height: 100px; min-height: 520px; margin: 20px auto; position: relative; perspective: 1000px; }
 .close-modal { position: absolute; top: 15px; right: 25px; font-size: 2.5rem; cursor: pointer; color: #333; z-index: 1000; }
 
 .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
