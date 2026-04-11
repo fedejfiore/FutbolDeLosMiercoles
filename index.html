@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AFA | Gestión Oficial Fútbol Miércoles</title>
+    <title>Fútbol Miércoles</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
@@ -20,39 +20,34 @@
             <div class="nav-buttons-center">
                 <a href="#inicio">🏠</a>
                 <a href="#top3">🏆</a>
-                <a href="#posiciones">📊</a>
-                <a href="#partidos">📅</a>
-                <a href="#sinergia">🔥</a>
+                <a href="javascript:void(0)" onclick="abrirSeccion('modal-posiciones-full')">📊</a>
+                <a href="javascript:void(0)" onclick="abrirSeccion('modal-historial-full')">📅</a>
+                <a href="javascript:void(0)" onclick="abrirSeccion('modal-heatmap-full')">🔥</a>
             </div>
-            <div id="clima-navbar" class="clima-glass">
-                </div>
+            <div id="clima-navbar" class="clima-glass"></div>
         </div>
     </nav>
 
     <header id="inicio" class="hero-section">
         <div class="hero-content">
             <img src="logo.png" alt="Logo Principal" class="main-logo-afa">
-            
             <div class="hero-layout-row">
                 <div class="side-btn-container">
                     <a href="https://www.sportsreel.com.ar/#/canchasEstablecimiento/21/cancha/30" target="_blank" class="btn-premium-v2">🎥 REPETICIONES</a>
                 </div>
-
                 <div class="center-counter-container">
                     <div class="countdown-argentina">
                         <span class="label">RUMBO AL MUNDIAL 2026</span>
                         <div id="countdown" class="timer">--d --h</div>
                     </div>
                 </div>
-
                 <div class="side-btn-container">
                     <button id="audio-control" class="btn-premium-v2">
-                        <span class="icon">▶️</span> <span class="text">EL ASADO</span>
+                        <span class="icon">▶️</span> <span class="text">Single: EL ASADO</span>
                     </button>
                     <audio id="main-audio" src="Dónde Están los Asados.mp3"></audio>
                 </div>
             </div>
-
             <div class="sponsors-wall">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-adidas.png" alt="Adidas">
                 <img src="https://assets1.afa.com.ar/Sponsors/sponsor-cocacola.png" alt="Coca-Cola">
@@ -83,47 +78,66 @@
                 </div>
             </section>
 
-            <section id="posiciones" class="card-section">
-                <h2 class="centered-title">🏆 TABLA DE POSICIONES</h2>
-                <div class="collapsible-content">
-                    <table id="tabla-general" class="display cell-border" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th>
-                            </tr>
-                        </thead>
-                        <tbody id="body-general"></tbody>
-                    </table>
+            <div class="dashboard-grid">
+                <div class="dash-access-card" onclick="abrirSeccion('modal-posiciones-full')">
+                    <span>📊</span>
+                    <h3>POSICIONES</h3>
+                    <p>Ver tabla general y promedios</p>
                 </div>
-            </section>
+                <div class="dash-access-card" onclick="abrirSeccion('modal-historial-full')">
+                    <span>📅</span>
+                    <h3>HISTORIAL</h3>
+                    <p>Crónicas y resultados</p>
+                </div>
+                <div class="dash-access-card" onclick="abrirSeccion('modal-heatmap-full')">
+                    <span>🔥</span>
+                    <h3>SINERGIA</h3>
+                    <p>Partidos compartidos</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <section id="partidos" class="card-section">
-                <h2 class="centered-title">📅 HISTORIAL DE PARTIDOS</h2>
-                <div class="collapsible-content">
-                    <div id="contenedor-fechas" class="mini-card-grid"></div>
-                </div>
-            </section>
+    <div id="modal-posiciones-full" class="modal">
+        <div class="modal-content-large">
+            <span class="close-modal" onclick="cerrarSeccion('modal-posiciones-full')">✕</span>
+            <h2 style="font-family:'Oswald'; color:var(--afa-azul-noche); text-align:center;">🏆 TABLA DE POSICIONES</h2>
+            <table id="tabla-general" class="display cell-border" style="width:100%">
+                <thead>
+                    <tr><th>Nombre</th><th>PJ</th><th>PG</th><th>PE</th><th>PP</th><th>Pts</th><th>Promedio</th></tr>
+                </thead>
+                <tbody id="body-general"></tbody>
+            </table>
+        </div>
+    </div>
 
-            <section id="sinergia" class="card-section">
-                <h2 class="centered-title">🔥 MAPA DE CALOR</h2>
-                <div class="collapsible-content">
-                    <input type="text" id="busqueda-matriz" placeholder="Buscar jugador en la matriz..." class="afa-search-input">
-                    <div id="heatmap-container"></div>
-                </div>
-            </section>
+    <div id="modal-historial-full" class="modal">
+        <div class="modal-content-large">
+            <span class="close-modal" onclick="cerrarSeccion('modal-historial-full')">✕</span>
+            <h2 style="font-family:'Oswald'; color:var(--afa-azul-noche); text-align:center;">📅 HISTORIAL DE PARTIDOS</h2>
+            <div id="contenedor-fechas" class="mini-card-grid"></div>
+        </div>
+    </div>
+
+    <div id="modal-heatmap-full" class="modal">
+        <div class="modal-content-large">
+            <span class="close-modal" onclick="cerrarSeccion('modal-heatmap-full')">✕</span>
+            <h2 style="font-family:'Oswald'; color:var(--afa-azul-noche); text-align:center;">🔥 PARTIDOS COMPARTIDOS</h2>
+            <input type="text" id="busqueda-matriz" placeholder="Buscar jugador..." class="afa-search-input">
+            <div id="heatmap-container"></div>
         </div>
     </div>
 
     <div id="modal-partido" class="modal">
         <div class="modal-content-match">
-            <span class="close-modal">✕</span>
+            <span class="close-modal" onclick="$('#modal-partido').fadeOut()">✕</span>
             <div id="detalle-partido-dinamico"></div>
         </div>
     </div>
 
     <footer class="afa-footer">
         <img src="trofeo.png" alt="Trofeo" class="footer-trofeo">
-        <p>AFA - GESTIÓN OFICIAL 2026</p>
+        <p>la pelota no se mancha</p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>

@@ -5,23 +5,13 @@ const URL_CRONICAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0
 
 const WEATHER_API_KEY = 'f31bb7ce57b0669e92e9827acfe293ec';
 
+let tablaDataTable;
+
 $(document).ready(function() {
     cargarTabla();
     cargarHistorial();
     iniciarContador();
     actualizarClima();
-
-    $('.centered-title').click(function() {
-        $(this).toggleClass('active').next('.collapsible-content').slideToggle();
-    });
-
-    const audio = document.getElementById('main-audio');
-    $('#audio-control').click(function() {
-        if (audio.paused) { audio.play(); $(this).find('.icon').text('⏸️'); } 
-        else { audio.pause(); $(this).find('.icon').text('▶️'); }
-    });
-
-    $('.close-modal').click(() => $('.modal').fadeOut());
 
     $('#busqueda-matriz').on('keyup', function() {
         let val = $(this).val().toLowerCase();
@@ -29,7 +19,22 @@ $(document).ready(function() {
             if(i > 0) $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
         });
     });
+
+    const audio = document.getElementById('main-audio');
+    $('#audio-control').click(function() {
+        if (audio.paused) { audio.play(); $(this).find('.icon').text('⏸️'); } 
+        else { audio.pause(); $(this).find('.icon').text('▶️'); }
+    });
 });
+
+function abrirSeccion(id) {
+    $(`#${id}`).fadeIn().css('display', 'flex');
+    if (id === 'modal-posiciones-full' && tablaDataTable) {
+        setTimeout(() => { tablaDataTable.columns.adjust().draw(); }, 200);
+    }
+}
+
+function cerrarSeccion(id) { $(`#${id}`).fadeOut(); }
 
 function actualizarClima() {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=-34.6291&lon=-58.5135&appid=${WEATHER_API_KEY}&units=metric&lang=es`)
@@ -56,7 +61,7 @@ function cargarTabla() {
                 }
             });
             $('#body-general').html(html);
-            $('#tabla-general').DataTable({"destroy": true, "order": [[5, "desc"]]});
+            tablaDataTable = $('#tabla-general').DataTable({"destroy": true, "order": [[5, "desc"]]});
         }
     });
 }
