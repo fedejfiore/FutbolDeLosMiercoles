@@ -90,7 +90,7 @@ function cargarHistorial() {
                         if(m){ tPozo += m; pzF += m; r = n; cPozo[n] = (cPozo[n]||0)+m; }
                     }
                 }
-                contenedor.append(`<div class="mini-fecha-card" onclick="abrirPartido('${f}', '${e1}', '${e2}', \`${dicCron[f.trim()] || ''}\`, '${s1}', '${s2}', '${pzF}', '${r}')">${f}</div>`);
+                contenedor.append(`<div class="mini-fecha-card" onclick="abrirPartido('${f}', '${e1}', '${e2}', \`${dicCron[f.trim()] || ''}\`, '${g1}', '', '${pzF}', '${r}')">${f}</div>`);
             }
             actualizarTop3(cPel, '#top-pelota', '⚽'); actualizarTop3(cPech, '#top-pechera', '🎽'); renderizarPozo(cPozo, tPozo);
         }});
@@ -117,32 +117,32 @@ function abrirPartido(fecha, e1, e2, cron, winner_val, dummy, pozo, responsable)
     
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
-            <div class="card-front">
+            <div class="card-front" style="display: flex; flex-direction: column; align-items: center; padding: 25px 15px; background: white; height: 100%;">
                 <h3 style="font-family:'Oswald'; font-size:1.6rem; color:var(--afa-azul-noche); margin-bottom:5px;">📅 ${fecha}</h3>
                 
                 <div style="display:flex; justify-content:space-around; width:100%; gap:10px; margin-top:10px;">
                     <div style="flex:1;">
-                        <span class="status-badge" style="color:${color1}">${label1}</span>
+                        <span class="status-badge" style="color:${color1}; font-weight:bold; display:block; margin-bottom:5px;">${label1}</span>
                         <ul class="lista-planilla">${e1}</ul>
                     </div>
                     <div style="flex:1;">
-                        <span class="status-badge" style="color:${color2}">${label2}</span>
+                        <span class="status-badge" style="color:${color2}; font-weight:bold; display:block; margin-bottom:5px;">${label2}</span>
                         <ul class="lista-planilla">${e2}</ul>
                     </div>
                 </div>
 
                 ${pzH}
 
-                <div onclick="girarCarta()" class="peter-container">
+                <div onclick="girarCarta()" class="peter-container" style="cursor:pointer; margin-top:auto; padding-top:15px; border-top: 1px solid #eee; width: 100%; display: flex; flex-direction: column; align-items: center;">
                     <img src="peter.png" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--gold);">
                     <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald';">VER CRÓNICA 🔄</p>
                 </div>
             </div>
 
-            <div class="card-back" onclick="girarCarta()">
-                <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px;">CRÓNICA OFICIAL</div>
-                <div class="text-format-mini" style="text-align:left; font-size:0.95rem; width:100%;">${cron || "Sin comentarios..."}</div>
-                <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald;">VOLVER 🔄</div>
+            <div class="card-back" onclick="girarCarta()" style="display: flex; flex-direction: column; align-items: center; padding: 30px; background: #fdfdfd; height: 100%;">
+                <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px; text-align:center;">CRÓNICA OFICIAL</div>
+                <div class="text-format-mini" style="text-align:left; font-size:0.95rem; width:100%; white-space: pre-wrap;">${cron || "Sin comentarios..."}</div>
+                <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald; text-align:center;">VOLVER 🔄</div>
             </div>
         </div>
     `);
