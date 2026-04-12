@@ -99,23 +99,24 @@ function cargarHistorial() {
 }
 
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pzH = pozo != "0" ? `<div style="margin:10px 0; color:#d4af37; font-weight:bold; font-size:0.9rem;">💰 Pozo: $${pozo}</div>` : "";
+    let pzH = pozo != "0" ? `<div style="margin:15px 0; color:#d4af37; font-weight:bold;">💰 Pozo: $${pozo}</div>` : "";
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="font-family:'Oswald'; font-size:1.6rem; margin-bottom:10px;">📅 ${fecha}</h3>
-                <div style="display:flex; justify-content:space-around; width:100%; font-size:0.85rem;">
+                <h3 style="font-family:'Oswald'; font-size:1.8rem; margin-bottom:15px;">📅 ${fecha}</h3>
+                <div style="display:flex; justify-content:space-around; width:100%; font-size:0.9rem;">
                     <div><strong style="color:var(--afa-azul-noche)">${s1}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e1}</ul></div>
                     <div><strong style="color:var(--afa-azul-noche)">${s2}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e2}</ul></div>
                 </div>
                 ${pzH}
-                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto; padding-top:10px;">
-                    <img src="peter.png" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold);"> <p style="font-size:0.7rem; color:#666; margin-top:5px;">Crónica 🔄</p>
+                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto;">
+                    <img src="peter.png" style="width:70px; height:70px; border-radius:50%; border:3px solid var(--gold);">
+                    <p style="font-size:0.75rem; color:#666; margin-top:5px; font-family:'Oswald'">LEER CRÓNICA 🔄</p>
                 </div>
             </div>
             <div class="card-back" onclick="girarCarta()">
-                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:15px; font-size:1.2rem; border-bottom:2px solid #d4af37;">CRÓNICA OFICIAL</div>
-                <div class="text-format-mini" style="font-size:0.95rem; line-height:1.6;">${cron || "Sin comentarios..."}</div>
+                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:20px; font-size:1.4rem; border-bottom:2px solid #d4af37; width:100%;">CRÓNICA OFICIAL</div>
+                <div style="white-space:pre-wrap; text-align:left; line-height:1.7; font-size:1.05rem; background:#f9f9f9; padding:15px; border-radius:15px;">${cron || "Sin comentarios..."}</div>
             </div>
         </div>`);
     $('#modal-partido').fadeIn().css('display', 'flex');
