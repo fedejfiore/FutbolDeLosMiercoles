@@ -245,3 +245,29 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 // SI NADA APARECE, agregá este botón temporal de prueba en tu HTML para forzarlo:
 // <button onclick="$('#pwa-smart-modal').show()">PROBAR VISUAL</button>
+
+// --- CONSOLA EN PANTALLA PARA MOBILE ---
+(function() {
+    var logger = document.createElement('div');
+    logger.style.position = 'fixed';
+    logger.style.bottom = '0';
+    logger.style.left = '0';
+    logger.style.width = '100%';
+    logger.style.maxHeight = '150px';
+    logger.style.background = 'rgba(0,0,0,0.8)';
+    logger.style.color = '#00ff00';
+    logger.style.fontFamily = 'monospace';
+    logger.style.fontSize = '10px';
+    logger.style.padding = '10px';
+    logger.style.overflowY = 'auto';
+    logger.style.zIndex = '9999999';
+    logger.style.pointerEvents = 'none'; // No molesta para tocar botones
+    document.body.appendChild(logger);
+
+    console.log = console.error = function(message) {
+        var item = document.createElement('div');
+        item.innerText = (typeof message === 'object' ? JSON.stringify(message) : message);
+        logger.appendChild(item);
+        logger.scrollTop = logger.scrollHeight;
+    };
+})();
