@@ -198,3 +198,59 @@ function iniciarContador() {
         $('#countdown').html(`${d}<small>d</small> ${h}<small>h</small>`);
     }, 1000);
 }
+
+// ***** PWA *****
+
+let promptInstalacion;
+
+// 1. Detectamos el sistema y si ya es PWA
+const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const esPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const yaSeCerro = sessionStorage.getItem('pwa_banner_cerrado');
+
+$(document).ready(function() {
+    // Si el usuario ya entró desde el icono del celular, salimos y no mostramos nada
+    if (esPWA) return;
+
+    // --- LÓGICA PARA IOS ---
+    if (esIOS && !yaSeCerro) {
+        // En iOS mostramos el banner después de 3 segundos
+        setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
+
+        // Al clickear "INSTALAR" en iPhone, mostramos las instrucciones
+        $('#btn-pwa-install').click(function() {
+            alert('Para descargar en tu iPhone:\n\n1. Toca el botón "Compartir" (el cuadrado con la flecha arriba).\n2. Elegí la opción "Añadir a la pantalla de inicio".');
+            cerrarPWA(); // Cerramos después de explicar
+        });
+    }
+});
+
+// --- LÓGICA PARA ANDROID / CHROME ---
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Evitamos que Android tire su cartel automático
+    e.preventDefault();
+    promptInstalacion = e;
+
+    // Si no es PWA, no es iOS y no se cerró, mostramos nuestro banner
+    if (!esPWA && !yaSeCerro && !esIOS) {
+        setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
+    }
+});
+
+// Acción del botón en Android
+$('#btn-pwa-install').click(async () => {
+    if (promptInstalacion && !esIOS) {
+        promptInstalacion.prompt();
+        const { outcome } = await promptInstalacion.userChoice;
+        if (outcome === 'accepted') {
+            $('#pwa-smart-modal').fadeOut();
+        }
+        promptInstalacion = null;
+    }
+});
+
+// Función para cerrar el modal
+function cerrarPWA() {
+    $('#pwa-smart-modal').fadeOut();
+    sessionStorage.setItem('pwa_banner_cerrado', 'true');
+}
