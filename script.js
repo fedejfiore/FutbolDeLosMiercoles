@@ -98,27 +98,48 @@ function cargarHistorial() {
     cargarMatriz();
 }
 
-function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pzH = pozo != "0" ? `<div style="margin:15px 0; color:#d4af37; font-weight:bold;">💰 Pozo: $${pozo}</div>` : "";
+function abrirPartido(fecha, e1, e2, cron, s1_val, s2_val, pozo, responsable) {
+    // Lógica robusta de etiquetas: 1=Ganador, 2=Perdedor, otro=Empate
+    let label1 = s1_val == "1" ? "👑 Ganador" : (s1_val == "2" ? "Perdedor" : "🤝 Empate");
+    let label2 = s2_val == "1" ? "👑 Ganador" : (s2_val == "2" ? "Perdedor" : "🤝 Empate");
+
+    // Color de la etiqueta según resultado
+    let color1 = s1_val == "1" ? "var(--gold)" : (s1_val == "2" ? "#999" : "var(--afa-celeste)");
+    let color2 = s2_val == "1" ? "var(--gold)" : (s2_val == "2" ? "#999" : "var(--afa-celeste)");
+
+    let pzH = pozo != "0" ? `<div style="margin:10px 0; color:var(--gold); font-weight:bold; font-family:Oswald; border-top: 1px solid #eee; padding-top:10px;">💰 POZO: $${pozo}</div>` : "";
+    
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="font-family:'Oswald'; font-size:1.8rem; margin-bottom:15px;">📅 ${fecha}</h3>
-                <div style="display:flex; justify-content:space-around; width:100%; font-size:0.9rem;">
-                    <div><strong style="color:var(--afa-azul-noche)">${s1}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e1}</ul></div>
-                    <div><strong style="color:var(--afa-azul-noche)">${s2}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e2}</ul></div>
+                <h3 style="font-family:'Oswald'; font-size:1.6rem; color:var(--afa-azul-noche); margin-bottom:5px;">📅 ${fecha}</h3>
+                
+                <div style="display:flex; justify-content:space-around; width:100%; gap:10px; margin-top:10px;">
+                    <div style="flex:1;">
+                        <span class="status-badge" style="color:${color1}">${label1}</span>
+                        <ul class="lista-planilla">${e1}</ul>
+                    </div>
+                    <div style="flex:1;">
+                        <span class="status-badge" style="color:${color2}">${label2}</span>
+                        <ul class="lista-planilla">${e2}</ul>
+                    </div>
                 </div>
+
                 ${pzH}
-                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto;">
-                    <img src="peter.png" style="width:70px; height:70px; border-radius:50%; border:3px solid var(--gold);">
-                    <p style="font-size:0.75rem; color:#666; margin-top:5px; font-family:'Oswald'">LEER CRÓNICA 🔄</p>
+
+                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto; padding-top:15px; border-top: 1px solid #eee; width: 100%;">
+                    <img src="peter.png" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--gold); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald'; letter-spacing:1px;">VER CRÓNICA 🔄</p>
                 </div>
             </div>
+
             <div class="card-back" onclick="girarCarta()">
-                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:20px; font-size:1.4rem; border-bottom:2px solid #d4af37; width:100%;">CRÓNICA OFICIAL</div>
-                <div style="white-space:pre-wrap; text-align:left; line-height:1.7; font-size:1.05rem; background:#f9f9f9; padding:15px; border-radius:15px;">${cron || "Sin comentarios..."}</div>
+                <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px;">CRÓNICA OFICIAL</div>
+                <div class="text-format-mini" style="text-align:left; font-size:0.95rem;">${cron || "Sin comentarios disponibles para esta fecha..."}</div>
+                <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald;">VOLVER A LA FICHA 🔄</div>
             </div>
-        </div>`);
+        </div>
+    `);
     $('#modal-partido').fadeIn().css('display', 'flex');
 }
 

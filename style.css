@@ -101,3 +101,39 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .footer-img { height: 110px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
 .footer-img:hover { filter: grayscale(0) brightness(1.2) drop-shadow(0 0 15px var(--gold)); transform: scale(1.1); opacity: 1; }
 .trofeo-center { height: 150px; }
+
+/* --- FORMATO TIPO PLANILLA PARA EL FRENTE --- */
+.lista-planilla {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    width: 100%;
+    border: 1px solid #e0e4e8;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.lista-planilla li {
+    padding: 10px 5px;
+    border-bottom: 1px solid #eee;
+    background: white;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Filas alternadas */
+.lista-planilla li:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+/* Etiquetas de estado */
+.status-badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
