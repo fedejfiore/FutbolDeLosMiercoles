@@ -98,14 +98,20 @@ function cargarHistorial() {
     cargarMatriz();
 }
 
-function abrirPartido(fecha, e1, e2, cron, s1_val, s2_val, pozo, responsable) {
-    // Lógica robusta de etiquetas: 1=Ganador, 2=Perdedor, otro=Empate
-    let label1 = s1_val == "1" ? "👑 Ganador" : (s1_val == "2" ? "Perdedor" : "🤝 Empate");
-    let label2 = s2_val == "1" ? "👑 Ganador" : (s2_val == "2" ? "Perdedor" : "🤝 Empate");
+function abrirPartido(fecha, e1, e2, cron, winner_val, dummy, pozo, responsable) {
+    // LÓGICA BASADA EN FILA 2 (winner_val): 1=Eq1 Gana, 2=Eq2 Gana, 0=Empate
+    let label1, label2, color1, color2;
 
-    // Color de la etiqueta según resultado
-    let color1 = s1_val == "1" ? "var(--gold)" : (s1_val == "2" ? "#999" : "var(--afa-celeste)");
-    let color2 = s2_val == "1" ? "var(--gold)" : (s2_val == "2" ? "#999" : "var(--afa-celeste)");
+    if (winner_val == "1") {
+        label1 = "👑 Ganador"; label2 = "Perdedor";
+        color1 = "var(--gold)"; color2 = "#999";
+    } else if (winner_val == "2") {
+        label1 = "Perdedor"; label2 = "👑 Ganador";
+        color1 = "#999"; color2 = "var(--gold)";
+    } else {
+        label1 = "🤝 Empate"; label2 = "🤝 Empate";
+        color1 = "var(--afa-celeste)"; color2 = "var(--afa-celeste)";
+    }
 
     let pzH = pozo != "0" ? `<div style="margin:10px 0; color:var(--gold); font-weight:bold; font-family:Oswald; border-top: 1px solid #eee; padding-top:10px;">💰 POZO: $${pozo}</div>` : "";
     
@@ -127,16 +133,16 @@ function abrirPartido(fecha, e1, e2, cron, s1_val, s2_val, pozo, responsable) {
 
                 ${pzH}
 
-                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto; padding-top:15px; border-top: 1px solid #eee; width: 100%;">
-                    <img src="peter.png" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--gold); box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                    <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald'; letter-spacing:1px;">VER CRÓNICA 🔄</p>
+                <div onclick="girarCarta()" class="peter-container">
+                    <img src="peter.png" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--gold);">
+                    <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald';">VER CRÓNICA 🔄</p>
                 </div>
             </div>
 
             <div class="card-back" onclick="girarCarta()">
                 <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px;">CRÓNICA OFICIAL</div>
-                <div class="text-format-mini" style="text-align:left; font-size:0.95rem;">${cron || "Sin comentarios disponibles para esta fecha..."}</div>
-                <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald;">VOLVER A LA FICHA 🔄</div>
+                <div class="text-format-mini" style="text-align:left; font-size:0.95rem; width:100%;">${cron || "Sin comentarios..."}</div>
+                <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald;">VOLVER 🔄</div>
             </div>
         </div>
     `);
