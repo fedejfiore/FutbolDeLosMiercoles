@@ -35,9 +35,11 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 /* HERO */
 .hero-section {
     padding: 150px 20px 80px; text-align: center;
-    background: linear-gradient(rgba(0,18,32,0.85), rgba(0,18,32,0.95)), url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
-    background-size: cover; border-bottom: 5px solid var(--gold);
-}
+    background: linear-gradient(rgba(0,18,32,0.5), rgba(0,18,32,0.7)), url('https://images.unsplash.com/photo-1556056504-5c7696c4c28d?q=80&w=2000');
+    background-size: cover; 
+    background-position: center;
+    border-bottom: 5px solid var(--gold);}
+
 .main-logo-afa { width: 320px; margin-bottom: 60px; filter: drop-shadow(0 0 20px rgba(116, 172, 223, 0.4)); }
 .hero-layout-row { display: flex; justify-content: center; align-items: center; gap: 40px; max-width: 1200px; margin: 0 auto 60px; flex-wrap: wrap; }
 .countdown-argentina { background: var(--white); border-radius: 12px; padding: 20px 40px; border: 4px solid var(--afa-celeste); box-shadow: 0 15px 35px rgba(0,0,0,0.5); min-width: 350px; }
@@ -110,7 +112,7 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 /* MODIFICACIÓN: Altura al 100% y centrado de Peter */
 .card-front, .card-back { 
     position: absolute; top: 0; left: 0; 
-    width: 100%; height: 500px !important; /* Corregido para llenar los 580px */
+    width: 100%; height: 580px !important; /* Corregido para llenar los 580px */
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
     border-radius: 30px; padding: 35px; background: white; 
     display: flex; flex-direction: column; align-items: center;
@@ -186,7 +188,17 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 }
 
 /* SPONSORS */
-.sponsors-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; padding: 50px; background: rgba(255,255,255,0.05); border-radius: 30px; }
+.sponsors-wall { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 30px; 
+    padding: 30px; 
+    max-width: 900px; /* Al limitar el ancho, se fuerzan las dos líneas */
+    margin: 0 auto;
+    background: rgba(255,255,255,0.05); 
+    border-radius: 30px; 
+}
 .sponsors-wall img { height: 55px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
 .sponsors-wall img:hover { filter: grayscale(0) brightness(1) drop-shadow(0 0 15px var(--gold)); opacity: 1; transform: scale(1.1); }
 
@@ -205,72 +217,69 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 }
 
 /* ==========================================
-   VERSION MOBILE (AJUSTES FINALES)
+   VERSION MOBILE (AJUSTADA)
    ========================================== */
-
 @media (max-width: 768px) {
-    /* 1. FIX: Elimina el desplazamiento lateral derecho */
-    html, body {
-        overflow-x: hidden;
-        width: 100%;
-        position: relative;
-    }
+    /* FIX: Scroll lateral */
+    html, body { overflow-x: hidden; width: 100%; }
 
-    /* 2. DOBLE NAV: Logo/Clima arriba - Botones abajo */
-    .afa-navbar {
-        height: 120px; /* Le damos más altura para el doble piso */
-        padding: 5px 0;
-    }
-
+    /* NAVBAR: Doble fila */
+    .afa-navbar { height: auto; padding: 10px 0; }
+    
     .nav-container {
-        flex-direction: column; /* Apilamos los elementos */
-        justify-content: center;
-        gap: 10px;
-    }
-
-    /* Piso 1: Logo y Clima en los extremos */
-    .nav-logo-left, #clima-navbar {
-        width: 100%;
         display: flex;
+        flex-wrap: wrap; /* Permite las dos filas */
         justify-content: space-between;
         align-items: center;
         padding: 0 15px;
     }
 
-    /* Piso 2: Botones centrados y con espacio */
+    .nav-logo-left { 
+        order: 1; 
+        width: 45%; /* Mitad de la fila */
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    #clima-navbar { 
+        order: 2; 
+        width: 45%; /* Mitad de la fila */
+        display: flex;
+        justify-content: flex-end;
+        background: rgba(255,255,255,0.1);
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+
     .nav-buttons-center {
-        position: static; /* Quitamos el centrado absoluto del desktop */
+        order: 3;
+        position: static;
         transform: none;
-        width: 100%;
+        width: 100%; /* Segunda fila completa */
+        display: flex;
         justify-content: space-around;
-        padding-top: 5px;
-        border-top: 1px solid rgba(255,255,255,0.1);
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(212, 175, 55, 0.3);
     }
 
-    .nav-buttons-center a {
-        font-size: 1.6rem; /* Un poco más chicos para que entren todos */
+    .nav-buttons-center a { font-size: 1.7rem; }
+
+    /* SPONSORS MOBILE: 2 Columnas */
+    .sponsors-wall { 
+        display: grid !important; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px; 
+        padding: 20px;
+        max-width: 100%;
+    }
+    
+    .sponsors-wall img { 
+        height: 35px; /* Un poco más chicos en móvil para que entren */
+        width: 100%;
+        margin: 0;
     }
 
-    /* 3. Ajuste del Hero para que no tape el nuevo Nav */
-    .hero-section {
-        padding-top: 140px; 
-    }
-
-    /* 4. Footer en Mobile: Menos espacio para que no se amontonen */
-    .footer-container {
-        padding: 0 10px;
-        gap: 5px;
-    }
-    .footer-img {
-        height: 70px; /* Imágenes más chicas en celular */
-    }
-    .trofeo-center {
-        height: 90px;
-    }
-
-    /* 5. Fix de la Matriz de Calor en móvil */
-    .table-responsive {
-        margin-top: 10px;
-        -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-    }
+    /* Ajuste de Hero para que el menú no lo tape */
+    .hero-section { padding-top: 160px; }
 }
