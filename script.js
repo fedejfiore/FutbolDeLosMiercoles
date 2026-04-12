@@ -203,55 +203,33 @@ function iniciarContador() {
 // ***** PWA *****
 
 let promptInstalacion;
-
-// 1. Detectamos el sistema y si ya es PWA
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const esPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-const yaSeCerro = sessionStorage.getItem('pwa_banner_cerrado');
+
+console.log("PWA Check: esPWA =", esPWA, "| esIOS =", esIOS);
 
 $(document).ready(function() {
-    // Si el usuario ya entró desde el icono del celular, salimos y no mostramos nada
-    if (esPWA) return;
+    if (esPWA) {
+        console.log("PWA Detectada: Ya estás navegando dentro de la App.");
+        return;
+    }
 
-    // --- LÓGICA PARA IOS ---
-    if (esIOS && !yaSeCerro) {
-        // En iOS mostramos el banner después de 3 segundos
+    if (esIOS) {
+        console.log("Sistema detectado: iOS (iPhone/iPad). Mostrando modal manual.");
         setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
-
-        // Al clickear "INSTALAR" en iPhone, mostramos las instrucciones
-        $('#btn-pwa-install').click(function() {
-            alert('Para descargar en tu iPhone:\n\n1. Toca el botón "Compartir" (el cuadrado con la flecha arriba).\n2. Elegí la opción "Añadir a la pantalla de inicio".');
-            cerrarPWA(); // Cerramos después de explicar
-        });
     }
 });
 
-// --- LÓGICA PARA ANDROID / CHROME ---
+// Este evento SOLO se dispara en Android/PC y SOLO con HTTPS
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Evitamos que Android tire su cartel automático
+    console.log("PWA Event: beforeinstallprompt capturado con éxito.");
     e.preventDefault();
     promptInstalacion = e;
 
-    // Si no es PWA, no es iOS y no se cerró, mostramos nuestro banner
-    if (!esPWA && !yaSeCerro && !esIOS) {
+    if (!sessionStorage.getItem('pwa_banner_cerrado')) {
         setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
     }
 });
 
-// Acción del botón en Android
-$('#btn-pwa-install').click(async () => {
-    if (promptInstalacion && !esIOS) {
-        promptInstalacion.prompt();
-        const { outcome } = await promptInstalacion.userChoice;
-        if (outcome === 'accepted') {
-            $('#pwa-smart-modal').fadeOut();
-        }
-        promptInstalacion = null;
-    }
-});
-
-// Función para cerrar el modal
-function cerrarPWA() {
-    $('#pwa-smart-modal').fadeOut();
-    sessionStorage.setItem('pwa_banner_cerrado', 'true');
-}
+// SI NADA APARECE, agregá este botón temporal de prueba en tu HTML para forzarlo:
+// <button onclick="$('#pwa-smart-modal').show()">PROBAR VISUAL</button>
