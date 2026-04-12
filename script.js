@@ -99,24 +99,23 @@ function cargarHistorial() {
 }
 
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pzH = pozo != "0" ? `<div style="margin:15px 0; color:#d4af37; font-weight:bold;">💰 Pozo: $${pozo} (${responsable})</div>` : "";
+    let pzH = pozo != "0" ? `<div style="margin:10px 0; color:#d4af37; font-weight:bold; font-size:0.9rem;">💰 Pozo: $${pozo}</div>` : "";
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="font-family:'Oswald'; font-size:2rem;">📅 ${fecha}</h3>
-                <div style="display:flex; justify-content:space-around; width:100%; margin-top:20px; gap: 20px;">
-                    <div style="flex:1;"><strong style="color:var(--afa-azul-noche); font-family:Oswald">${s1}</strong><ul class="lista-planilla">${e1}</ul></div>
-                    <div style="flex:1;"><strong style="color:var(--afa-azul-noche); font-family:Oswald">${s2}</strong><ul class="lista-planilla">${e2}</ul></div>
+                <h3 style="font-family:'Oswald'; font-size:1.6rem; margin-bottom:10px;">📅 ${fecha}</h3>
+                <div style="display:flex; justify-content:space-around; width:100%; font-size:0.85rem;">
+                    <div><strong style="color:var(--afa-azul-noche)">${s1}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e1}</ul></div>
+                    <div><strong style="color:var(--afa-azul-noche)">${s2}</strong><ul style="list-style:none; padding:0; margin-top:5px;">${e2}</ul></div>
                 </div>
                 ${pzH}
-                <div onclick="girarCarta()" style="cursor:pointer; margin-top:20px;">
-                    <img src="peter.png" style="width:85px; border-radius:50%; border:3px solid #d4af37;">
-                    <p style="font-size:0.8rem; color:#666;">Toca para la Crónica 🔄</p>
+                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto; padding-top:10px;">
+                    <img src="peter.png" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--gold);"> <p style="font-size:0.7rem; color:#666; margin-top:5px;">Crónica 🔄</p>
                 </div>
             </div>
             <div class="card-back" onclick="girarCarta()">
-                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:20px; font-size:1.5rem; border-bottom:2px solid #d4af37; padding-bottom:10px;">CRÓNICA OFICIAL</div>
-                <div class="text-format-mini">${cron || "Sin comentarios..."}</div>
+                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:15px; font-size:1.2rem; border-bottom:2px solid #d4af37;">CRÓNICA OFICIAL</div>
+                <div class="text-format-mini" style="font-size:0.95rem; line-height:1.6;">${cron || "Sin comentarios..."}</div>
             </div>
         </div>`);
     $('#modal-partido').fadeIn().css('display', 'flex');
