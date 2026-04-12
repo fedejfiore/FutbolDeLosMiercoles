@@ -350,12 +350,10 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     .nav-buttons-center a { font-size: 1.7rem; }
 
     /* SPONSORS MOBILE: 2 Columnas */
-    .sponsors-wall { 
-        display: grid !important; 
-        grid-template-columns: 1fr 1fr; 
-        gap: 15px; 
-        padding: 20px;
-        max-width: 100%;
+    .sponsors-wall {
+        padding: 30px 10px !important;
+        margin: 20px auto !important;
+        gap: 20px !important;
     }
     
     .sponsors-wall img { 
@@ -367,14 +365,17 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     /* Ajuste de Hero para que el menú no lo tape */
     .hero-section { padding-top: 160px; }
 
-.sponsors-row {
-        gap: 15px; /* Menos espacio entre logos en celular */
+    .sponsors-row {
+        display: flex !important; /* Usamos flex para que el wrap manual funcione */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px !important;
     }
     .sponsors-wall img {
         height: 35px; /* Logos más chicos en celular */
         max-width: 90px;
     }
-.sponsors-row {
+    .sponsors-row {
         display: grid !important;
         grid-template-columns: 1fr 1fr; /* 2 columnas exactas */
         gap: 20px;
@@ -382,13 +383,18 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     }
 
     .logo-wrapper {
-        width: 110px; /* Un poco más chicos en mobile */
-        height: 50px;
+        /* Bajamos el tamaño del contenedor para que entren 2 o 3 por línea */
+        width: 100px !important; 
+        height: 45px !important;
+    }
+    .logo-wrapper img {
+        max-width: 90% !important;
+        max-height: 90% !important;
     }
     
-    .sponsors-wall {
-        padding: 30px 10px;
-        margin: 20px auto;
+    .sponsors-wall h3 {
+        font-size: 1.4rem !important;
+        margin-bottom: 25px !important;
+        letter-spacing: 2px !important;
     }
-
 }

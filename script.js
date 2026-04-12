@@ -113,7 +113,14 @@ function abrirPartido(fecha, e1, e2, cron, winner_val, dummy, pozo, responsable)
         color1 = "var(--afa-celeste)"; color2 = "var(--afa-celeste)";
     }
 
-    let pzH = pozo != "0" ? `<div style="margin:10px 0; color:var(--gold); font-weight:bold; font-family:Oswald; border-top: 1px solid #eee; padding-top:10px;">💰 POZO: $${pozo}</div>` : "";
+    let pzH = pozo != "0" ? `
+    <div style="margin:10px 0; color:var(--gold); font-weight:bold; font-family:Oswald; border-top: 1px solid #eee; padding-top:10px;">
+        💰 POZO: $${pozo} 
+        <br>
+        <span style="font-size:0.75rem; color:#666; font-weight:normal; text-transform:uppercase;">
+            Responsable: ${responsable}
+        </span>
+    </div>` : "";
     
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
