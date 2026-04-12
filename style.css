@@ -66,10 +66,6 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     transform: scale(1.02);
 }
 
-/* SPONSORS */
-.sponsors-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; padding: 50px; background: rgba(255,255,255,0.05); border-radius: 30px; }
-.sponsors-wall img { height: 55px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
-.sponsors-wall img:hover { filter: grayscale(0) brightness(1) drop-shadow(0 0 15px var(--gold)); opacity: 1; transform: scale(1.1); }
 
 /* DASHBOARD & TOPS */
 .afa-main-bg { padding: 40px 20px 100px; }
@@ -151,7 +147,15 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 
 /* FOOTER */
 .afa-footer { text-align: center; padding: 100px 20px; background: var(--afa-azul-oscuro); color: white; }
-.footer-container { display: flex; justify-content: center; align-items: center; gap: 50px; margin-bottom: 25px; flex-wrap: wrap; }
+.footer-container {
+    display: flex;
+    justify-content: space-between; /* Distribuye: izquierda, centro, derecha */
+    align-items: center;
+    width: 100%;
+    max-width: 1100px; /* Para que no se peguen tanto a los bordes en pantallas enormes */
+    margin: 0 auto 25px;
+    padding: 0 40px; /* Margen interno para que no toquen el borde físico */
+}
 .footer-img { height: 110px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
 .footer-img:hover { filter: grayscale(0) brightness(1.2) drop-shadow(0 0 15px var(--gold)); transform: scale(1.1); opacity: 1; }
 .trofeo-center { height: 150px; }
@@ -179,4 +183,94 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     font-size: 1.1rem; 
     text-align: left;
     width: 100%;
+}
+
+/* SPONSORS */
+.sponsors-wall { display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; padding: 50px; background: rgba(255,255,255,0.05); border-radius: 30px; }
+.sponsors-wall img { height: 55px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
+.sponsors-wall img:hover { filter: grayscale(0) brightness(1) drop-shadow(0 0 15px var(--gold)); opacity: 1; transform: scale(1.1); }
+
+/* Unifica el tamaño de todos los sponsors */
+.sponsors-wall img {
+    height: 45px; /* Altura fija para todos */
+    width: 110px;  /* Ancho máximo fijo */
+    object-fit: contain; /* Ajusta la imagen sin deformar */
+    margin: 10px;
+}
+
+/* OPCIONAL: Si uno queda muy grande todavía, puedes crear esta clase 
+   y ponérsela en el HTML a ese <img> específico */
+.img-small {
+    transform: scale(0.8); /* Lo achica un 20% más */
+}
+
+/* ==========================================
+   VERSION MOBILE (AJUSTES FINALES)
+   ========================================== */
+
+@media (max-width: 768px) {
+    /* 1. FIX: Elimina el desplazamiento lateral derecho */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    /* 2. DOBLE NAV: Logo/Clima arriba - Botones abajo */
+    .afa-navbar {
+        height: 120px; /* Le damos más altura para el doble piso */
+        padding: 5px 0;
+    }
+
+    .nav-container {
+        flex-direction: column; /* Apilamos los elementos */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    /* Piso 1: Logo y Clima en los extremos */
+    .nav-logo-left, #clima-navbar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    /* Piso 2: Botones centrados y con espacio */
+    .nav-buttons-center {
+        position: static; /* Quitamos el centrado absoluto del desktop */
+        transform: none;
+        width: 100%;
+        justify-content: space-around;
+        padding-top: 5px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-buttons-center a {
+        font-size: 1.6rem; /* Un poco más chicos para que entren todos */
+    }
+
+    /* 3. Ajuste del Hero para que no tape el nuevo Nav */
+    .hero-section {
+        padding-top: 140px; 
+    }
+
+    /* 4. Footer en Mobile: Menos espacio para que no se amontonen */
+    .footer-container {
+        padding: 0 10px;
+        gap: 5px;
+    }
+    .footer-img {
+        height: 70px; /* Imágenes más chicas en celular */
+    }
+    .trofeo-center {
+        height: 90px;
+    }
+
+    /* 5. Fix de la Matriz de Calor en móvil */
+    .table-responsive {
+        margin-top: 10px;
+        -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    }
 }
