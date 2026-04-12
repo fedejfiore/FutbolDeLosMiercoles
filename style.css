@@ -275,9 +275,15 @@ body {
     transition: all 0.4s ease;
 }
 
-/* Desfasaje de animación para naturalidad */
-.logo-wrapper:nth-child(2n) { animation-delay: 1s; }
-.logo-wrapper:nth-child(3n) { animation-delay: 2s; }
+/* Sponsors: cada uno con un tiempo distinto */
+.logo-wrapper:nth-child(1) { animation-delay: 0s; }
+.logo-wrapper:nth-child(2) { animation-delay: 0.8s; }
+.logo-wrapper:nth-child(3) { animation-delay: 1.6s; }
+.logo-wrapper:nth-child(4) { animation-delay: 2.4s; }
+.logo-wrapper:nth-child(5) { animation-delay: 0.4s; }
+.logo-wrapper:nth-child(6) { animation-delay: 1.2s; }
+.logo-wrapper:nth-child(7) { animation-delay: 2.0s; }
+.logo-wrapper:nth-child(8) { animation-delay: 2.8s; }
 
 .logo-ajuste img { padding: 8px; }
 .img-small { padding: 8px !important; box-sizing: border-box; }
@@ -302,6 +308,11 @@ body {
 .footer-img:nth-child(2) { animation-delay: 1.5s; }
 
 .trofeo-center { height: 150px; }
+
+/* Footer: desfasamos los 3 elementos */
+.footer-img:nth-child(1) { animation-delay: 0.5s; } /* Diego */
+.footer-img:nth-child(2) { animation-delay: 1.5s; } /* Trofeo */
+.footer-img:nth-child(3) { animation-delay: 2.5s; } /* Messi */
 
 /* ==========================================
    VERSION MOBILE
