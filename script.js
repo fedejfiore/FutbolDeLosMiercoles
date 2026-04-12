@@ -142,13 +142,13 @@ function abrirPartido(fecha, e1, e2, cron, winner_val, dummy, pozo, responsable)
 
                 <div onclick="girarCarta()" class="peter-container" style="cursor:pointer; margin-top:auto; padding-top:15px; border-top: 1px solid #eee; width: 100%; display: flex; flex-direction: column; align-items: center;">
                     <img src="peter.png" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--gold);">
-                    <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald';">VER CRÓNICA 🔄</p>
+                    <p style="font-size:0.7rem; color:#666; margin-top:5px; font-family:'Oswald';">Cronicas de Peter 🔄</p>
                 </div>
             </div>
 
             <div class="card-back" onclick="girarCarta()" style="display: flex; flex-direction: column; align-items: center; padding: 30px; background: #fdfdfd; height: 100%;">
-                <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px; text-align:center;">CRÓNICA OFICIAL</div>
-                <div class="text-format-mini" style="text-align:left; font-size:0.95rem; width:100%; white-space: pre-wrap;">${cron || "Sin comentarios..."}</div>
+                <div style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:15px; font-size:1.3rem; border-bottom:2px solid var(--gold); width:100%; padding-bottom:5px; text-align:center;">Cronica de Peter</div>
+                <div class="text-format-mini" style="text-align:left; font-size:0.95rem; width:100%; white-space: pre-wrap;">${cron || "Peter no emitio comentarios.."}</div>
                 <div style="margin-top:auto; font-size:0.7rem; color:var(--gold); font-family:Oswald; text-align:center;">VOLVER 🔄</div>
             </div>
         </div>
