@@ -1,21 +1,16 @@
 {
-  "name": "Fútbol Miércoles 19HS",
-  "short_name": "Fútbol19",
-  "start_url": "index.html",
+  "name": "Fútbol Miércoles",
+  "short_name": "Fútbol",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#001220",
-  "theme_color": "#001220",
+  "theme_color": "#d4af37",
   "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "32x32",
-      "type": "image/x-icon"
-    },
     {
       "src": "favicon.png",
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "any maskable"
     }
-]
+  ]
 }
