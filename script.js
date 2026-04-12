@@ -257,3 +257,27 @@ function cerrarPWA() {
     $('#pwa-smart-modal').fadeOut();
     sessionStorage.setItem('pwa_banner_cerrado', 'true');
 }
+
+$(document).ready(function() {
+    // Solo actuamos si es un dispositivo móvil
+    const esMovil = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (esMovil) {
+        $('a[href*="instagram.com"]').on('click', function(e) {
+            // Evitamos que abra el link normal de inmediato
+            e.preventDefault();
+            
+            const urlWeb = $(this).attr('href');
+            const usuario = urlWeb.split('/').filter(Boolean).pop();
+            const uriApp = 'instagram://user?username=' + usuario;
+
+            // Intentamos abrir la aplicación
+            window.location.href = uriApp;
+
+            // "Plan B": Si en 500ms no se abrió la app, abrimos la web
+            setTimeout(function() {
+                window.open(urlWeb, '_blank');
+            }, 500);
+        });
+    }
+});
