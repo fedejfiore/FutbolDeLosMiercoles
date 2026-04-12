@@ -241,8 +241,14 @@ body {
 .lista-planilla li:nth-child(even) { background-color: #fcfcfc; }
 
 .status-badge {
-    font-family: 'Oswald', sans-serif; font-size: 0.9rem;
-    text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: bold;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    display: block; /* Cambiado a block para que ocupe todo el ancho */
+    text-align: center; /* Centra el texto */
+    margin-bottom: 8px;
+    font-weight: bold;
+    width: 100%; /* Asegura que cubra su columna */
 }
 
 .text-format-mini { white-space: pre-wrap; line-height: 1.8; font-size: 1.1rem; text-align: left; width: 100%; }
@@ -404,19 +410,29 @@ body {
     .afa-navbar { height: auto; padding: 10px 0; }
     
     .nav-container {
-        display: flex; flex-wrap: wrap; justify-content: space-between;
-        align-items: center; padding: 0 15px;
+        display: flex !important;
+        flex-direction: row !important; /* Logo y Clima en la misma fila */
+        flex-wrap: wrap !important;
+        justify-content: space-between !important; /* Uno a cada punta */
+        align-items: center !important;
+        padding: 0 20px !important;
     }
 
-    .nav-logo-left { order: 1; width: 45%; display: flex; justify-content: flex-start; }
+    .nav-logo-left {
+        order: 1 !important;
+        width: auto !important; /* Que ocupe solo su espacio */
+        display: flex;
+        justify-content: flex-start;
+    }
 
     #clima-navbar {
-        /* Aseguramos que el link ocupe el espacio correcto en el doble nav */
-        width: 45%; 
-        justify-content: center;
-        text-align: center;
+        order: 2 !important;
+        width: auto !important; /* Que ocupe solo su espacio */
+        display: flex;
+        justify-content: flex-end;
+        /* Quitamos el margin automático si existiera */
+        margin: 0 !important; 
     }
-
 
     .nav-buttons-center {
         order: 3; position: static; transform: none; width: 100%;

@@ -128,12 +128,13 @@ function abrirPartido(fecha, e1, e2, cron, winner_val, dummy, pozo, responsable)
                 <h3 style="font-family:'Oswald'; font-size:1.6rem; color:var(--afa-azul-noche); margin-bottom:5px;">📅 ${fecha}</h3>
                 
                 <div style="display:flex; justify-content:space-around; width:100%; gap:10px; margin-top:10px;">
-                    <div style="flex:1;">
-                        <span class="status-badge" style="color:${color1}; font-weight:bold; display:block; margin-bottom:5px;">${label1}</span>
+                    <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                        <span class="status-badge" style="color:${color1}">${label1}</span>
                         <ul class="lista-planilla">${e1}</ul>
                     </div>
-                    <div style="flex:1;">
-                        <span class="status-badge" style="color:${color2}; font-weight:bold; display:block; margin-bottom:5px;">${label2}</span>
+                    
+                    <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+                        <span class="status-badge" style="color:${color2}">${label2}</span>
                         <ul class="lista-planilla">${e2}</ul>
                     </div>
                 </div>
