@@ -5,6 +5,14 @@ const URL_CRONICAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSlbHnHRA0
 
 const WEATHER_API_KEY = 'f31bb7ce57b0669e92e9827acfe293ec';
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registrado con éxito', reg))
+      .catch(err => console.warn('Error al registrar el Service Worker', err));
+  });
+}
+
 let tablaDataTable;
 
 $(document).ready(function() {
@@ -204,19 +212,23 @@ function iniciarContador() {
 
 let promptInstalacion;
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const esPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const esPWA = window.matchMedia('(display-mode: standalone)').matches || !!window.navigator.standalone;
 
 console.log("PWA Check: esPWA =", esPWA, "| esIOS =", esIOS);
 
 $(document).ready(function() {
+    console.log("PWA Check: esPWA =", esPWA, "| esIOS =", esIOS);
+
     if (esPWA) {
-        console.log("PWA Detectada: Ya estás navegando dentro de la App.");
+        console.log("Ya estás en la versión instalada.");
         return;
     }
 
-    if (esIOS) {
-        console.log("Sistema detectado: iOS (iPhone/iPad). Mostrando modal manual.");
-        setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
+    // Si es iOS, mostramos el modal manual después de un pequeño delay
+    if (esIOS && !sessionStorage.getItem('pwa_banner_cerrado')) {
+        setTimeout(() => { 
+            $('#pwa-smart-modal').fadeIn(); 
+        }, 3000);
     }
 });
 
