@@ -156,9 +156,10 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     width: 100%;
     max-width: 1100px; /* Para que no se peguen tanto a los bordes en pantallas enormes */
     margin: 0 auto 25px;
-    padding: 0 40px; /* Margen interno para que no toquen el borde físico */
+    padding: 0 15px; /* Bajamos el padding para ganar espacio en mobile */
+    box-sizing: border-box; /* Vital para que el padding no sume ancho extra */
 }
-.footer-img { height: 110px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
+.footer-img { height: 110px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; max-width: 30%; }
 .footer-img:hover { filter: grayscale(0) brightness(1.2) drop-shadow(0 0 15px var(--gold)); transform: scale(1.1); opacity: 1; }
 .trofeo-center { height: 150px; }
 
@@ -196,18 +197,21 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     padding: 10px; 
     max-width: 900px; /* Al limitar el ancho, se fuerzan las dos líneas */
     margin: 0 auto;
-    background: rgba(37, 119, 156, 0.377); 
+    background: rgba(255, 255, 255, 0); 
     border-radius: 30px; 
 }
-.sponsors-wall img { height: 55px; filter: grayscale(1) brightness(2); opacity: 0.6; transition: 0.4s; }
+
 .sponsors-wall img:hover { filter: grayscale(0) brightness(1) drop-shadow(0 0 15px var(--gold)); opacity: 1; transform: scale(1.1); }
 
 /* Unifica el tamaño de todos los sponsors */
 .sponsors-wall img {
-    height: 45px; /* Altura fija para todos */
-    width: 110px;  /* Ancho máximo fijo */
-    object-fit: contain; /* Ajusta la imagen sin deformar */
-    margin: 10px;
+    height: 45px;
+    width: auto;
+    max-width: 120px;
+    object-fit: contain;
+    filter: grayscale(1) brightness(2);
+    opacity: 0.6;
+    transition: 0.4s;
 }
 
 /* OPCIONAL: Si uno queda muy grande todavía, puedes crear esta clase 
@@ -215,6 +219,27 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 .img-small {
     transform: scale(0.8); /* Lo achica un 20% más */
 }
+
+.sponsors-wall {
+    display: flex;
+    flex-direction: column; /* Apila las filas una arriba de otra */
+    gap: 20px;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Cada fila de logos */
+.sponsors-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; /* En celular, si no entran, bajan solos */
+    gap: 30px;
+}
+
 
 /* ==========================================
    VERSION MOBILE (AJUSTADA)
@@ -283,3 +308,11 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
     /* Ajuste de Hero para que el menú no lo tape */
     .hero-section { padding-top: 160px; }
 }
+
+.sponsors-row {
+        gap: 15px; /* Menos espacio entre logos en celular */
+    }
+    .sponsors-wall img {
+        height: 35px; /* Logos más chicos en celular */
+        max-width: 90px;
+    }
