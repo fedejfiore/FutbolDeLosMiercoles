@@ -75,7 +75,7 @@ body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--afa
 
 .card-front, .card-back { 
     position: absolute; top: 0; left: 0; 
-    width: 100%; height: 100%; /* Llenado total del blanco */
+    width: 100%; height: 500px; /* Llenado total del blanco */
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
     border-radius: 30px; padding: 35px; background: white; 
     display: flex; flex-direction: column; align-items: center;
