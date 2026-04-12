@@ -208,135 +208,52 @@ function iniciarContador() {
     }, 1000);
 }
 
-// ***** PWA *****
-
-// ==========================================
-// 1. CONSOLA DE DIAGNÓSTICO PARA MÓVIL (Línea 1)
-// ==========================================
-(function() {
-    var logger = document.createElement('div');
-    logger.id = 'mobile-debug-console';
-    logger.style = 'position:fixed; bottom:0; left:0; width:100%; max-height:120px; background:rgba(0,0,0,0.85); color:#00ff00; font-family:monospace; font-size:10px; padding:10px; overflow-y:auto; z-index:9999999; pointer-events:none; border-top:1px solid #d4af37;';
-    document.body.appendChild(logger);
-
-    console.log = function(message) {
-        var item = document.createElement('div');
-        item.innerText = "• " + message;
-        logger.appendChild(item);
-        logger.scrollTop = logger.scrollHeight;
-    };
-})();
-
-// ==========================================
-// 2. CONSTANTES Y DETECCIÓN DE PWA
-// ==========================================
+// ***** PWA LIMPIO *****
 let promptInstalacion;
 const esIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const esPWA = window.matchMedia('(display-mode: standalone)').matches || !!window.navigator.standalone;
 
-console.log("DIAGNÓSTICO INICIADO");
-console.log("¿Es PWA instalada?: " + (esPWA ? "SÍ" : "NO"));
-console.log("¿Es sistema iOS?: " + (esIOS ? "SÍ" : "NO"));
-
-// ==========================================
-// 3. REGISTRO DEL SERVICE WORKER
-// ==========================================
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log("Service Worker: REGISTRADO CON ÉXITO"))
-        .catch(err => console.log("Service Worker: ERROR -> " + err));
+    navigator.serviceWorker.register('sw.js').catch(err => {});
 }
 
-// ==========================================
-// 4. LÓGICA AL CARGAR EL DOCUMENTO
-// ==========================================
 $(document).ready(function() {
-    // Si ya está abierta como APP, ocultamos cualquier rastro del modal
     if (esPWA) {
-        console.log("Navegación: Modo APP Activo.");
         $('#pwa-smart-modal').hide();
         return;
     }
 
-    // Lógica específica para iOS (iPhone)
     if (esIOS && !sessionStorage.getItem('pwa_banner_cerrado')) {
-        console.log("iOS detectado: Preparando instrucciones.");
         setTimeout(() => { 
             $('#pwa-text-instruccion').text('Añadila a tu pantalla de inicio');
             $('#pwa-smart-modal').fadeIn(); 
         }, 3000);
 
-        // Acción del botón en iOS
         $('#btn-pwa-install').click(function() {
-            alert('En tu iPhone:\n1. Toca el botón "Compartir" (el cuadrado con la flecha arriba).\n2. Dale a "Añadir a la pantalla de inicio".');
+            alert('En tu iPhone:\n1. Toca el botón "Compartir" (cuadrado con flecha).\n2. Elegí "Añadir a la pantalla de inicio".');
             cerrarPWA();
         });
     }
 });
 
-// ==========================================
-// 5. EVENTO DE INSTALACIÓN (ANDROID / PC)
-// ==========================================
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Evita que Android muestre el cartel genérico
     e.preventDefault();
     promptInstalacion = e;
-    console.log("EVENTO: ¡Banner de instalación listo!");
-
-    // Solo mostramos nuestro modal si no es iOS y no se cerró antes
     if (!esIOS && !sessionStorage.getItem('pwa_banner_cerrado')) {
-        setTimeout(() => { 
-            $('#pwa-smart-modal').fadeIn(); 
-        }, 3000);
+        setTimeout(() => { $('#pwa-smart-modal').fadeIn(); }, 3000);
     }
 });
 
-// Acción del botón en Android / PC
 $('#btn-pwa-install').on('click', async () => {
     if (promptInstalacion) {
-        promptInstalacion.prompt(); // Muestra el cartel oficial de Google
+        promptInstalacion.prompt();
         const { outcome } = await promptInstalacion.userChoice;
-        console.log("Respuesta del usuario: " + outcome);
-        
-        if (outcome === 'accepted') {
-            $('#pwa-smart-modal').fadeOut();
-        }
+        if (outcome === 'accepted') $('#pwa-smart-modal').fadeOut();
         promptInstalacion = null;
     }
 });
 
-// Función para cerrar el modal manualmente
 function cerrarPWA() {
     $('#pwa-smart-modal').fadeOut();
     sessionStorage.setItem('pwa_banner_cerrado', 'true');
-    console.log("Modal: Cerrado por el usuario.");
 }
-
-// SI NADA APARECE, agregá este botón temporal de prueba en tu HTML para forzarlo:
-// <button onclick="$('#pwa-smart-modal').show()">PROBAR VISUAL</button>
-
-// --- CONSOLA EN PANTALLA PARA MOBILE ---
-(function() {
-    var logger = document.createElement('div');
-    logger.style.position = 'fixed';
-    logger.style.bottom = '0';
-    logger.style.left = '0';
-    logger.style.width = '100%';
-    logger.style.maxHeight = '150px';
-    logger.style.background = 'rgba(0,0,0,0.8)';
-    logger.style.color = '#00ff00';
-    logger.style.fontFamily = 'monospace';
-    logger.style.fontSize = '10px';
-    logger.style.padding = '10px';
-    logger.style.overflowY = 'auto';
-    logger.style.zIndex = '9999999';
-    logger.style.pointerEvents = 'none'; // No molesta para tocar botones
-    document.body.appendChild(logger);
-
-    console.log = console.error = function(message) {
-        var item = document.createElement('div');
-        item.innerText = (typeof message === 'object' ? JSON.stringify(message) : message);
-        logger.appendChild(item);
-        logger.scrollTop = logger.scrollHeight;
-    };
-})();
