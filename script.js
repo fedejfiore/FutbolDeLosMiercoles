@@ -99,37 +99,24 @@ function cargarHistorial() {
 }
 
 function abrirPartido(fecha, e1, e2, cron, s1, s2, pozo, responsable) {
-    let pzH = pozo != "0" ? `<div style="margin:15px 0; color:#d4af37; font-weight:bold; font-size:1.1rem;">💰 Pozo: $${pozo} <br><small style="color:#666; font-weight:normal;">Responsable: ${responsable}</small></div>` : "";
-    
+    let pzH = pozo != "0" ? `<div style="margin:15px 0; color:#d4af37; font-weight:bold;">💰 Pozo: $${pozo} (${responsable})</div>` : "";
     $('#detalle-partido-dinamico').html(`
         <div class="flip-card-inner" id="flip-card-match">
             <div class="card-front">
-                <h3 style="font-family:'Oswald'; font-size:1.8rem; margin-bottom:5px; color:var(--afa-azul-noche);">📅 ${fecha}</h3>
-                <hr style="width:50%; border:1px solid var(--gold); margin-bottom:20px;">
-                
-                <div style="display:flex; justify-content:space-around; width:100%; gap:15px;">
-                    <div style="flex:1;">
-                        <strong style="color:var(--afa-azul-noche); display:block; margin-bottom:10px; font-family:'Oswald';">${s1}</strong>
-                        <ul class="lista-planilla">${e1}</ul>
-                    </div>
-                    <div style="flex:1;">
-                        <strong style="color:var(--afa-azul-noche); display:block; margin-bottom:10px; font-family:'Oswald';">${s2}</strong>
-                        <ul class="lista-planilla">${e2}</ul>
-                    </div>
+                <h3 style="font-family:'Oswald'; font-size:2rem;">📅 ${fecha}</h3>
+                <div style="display:flex; justify-content:space-around; width:100%; margin-top:20px; gap: 20px;">
+                    <div style="flex:1;"><strong style="color:var(--afa-azul-noche); font-family:Oswald">${s1}</strong><ul class="lista-planilla">${e1}</ul></div>
+                    <div style="flex:1;"><strong style="color:var(--afa-azul-noche); font-family:Oswald">${s2}</strong><ul class="lista-planilla">${e2}</ul></div>
                 </div>
-                
                 ${pzH}
-                
-                <div onclick="girarCarta()" style="cursor:pointer; margin-top:auto; padding-top:20px;">
-                    <img src="peter.png" style="width:70px; border-radius:50%; border:3px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                    <p style="font-size:0.8rem; color:#666; margin-top:5px; font-family:'Oswald';">LEER CRÓNICA 🔄</p>
+                <div onclick="girarCarta()" style="cursor:pointer; margin-top:20px;">
+                    <img src="peter.png" style="width:85px; border-radius:50%; border:3px solid #d4af37;">
+                    <p style="font-size:0.8rem; color:#666;">Toca para la Crónica 🔄</p>
                 </div>
             </div>
-            
             <div class="card-back" onclick="girarCarta()">
-                <h3 style="font-family:'Oswald'; color:var(--afa-azul-noche); margin-bottom:10px;">📝 CRÓNICA DEL ENCUENTRO</h3>
-                <div class="text-format-mini">${cron || "El analista Peter no ha emitido comentarios para esta fecha."}</div>
-                <p style="margin-top:20px; font-size:0.8rem; color:var(--gold);">VOLVER A LA FICHA 🔄</p>
+                <div style="font-family:'Oswald'; color:#00355E; margin-bottom:20px; font-size:1.5rem; border-bottom:2px solid #d4af37; padding-bottom:10px;">CRÓNICA OFICIAL</div>
+                <div class="text-format-mini">${cron || "Sin comentarios..."}</div>
             </div>
         </div>`);
     $('#modal-partido').fadeIn().css('display', 'flex');
