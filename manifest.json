@@ -1,6 +1,11 @@
 {
+  "id": "/FutbolDeLosMiercoles/",
   "name": "Fútbol Miércoles",
   "short_name": "Fútbol",
+  "description": "App oficial para el seguimiento del Torneo de los Miércoles.",
+  "lang": "es-AR",
+  "orientation": "portrait",
+  "categories": ["sports", "social"],
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#001220",
@@ -10,7 +15,13 @@
       "src": "favicon.png",
       "sizes": "256x256",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any" 
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "maskable" 
     }
   ]
 }
